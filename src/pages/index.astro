@@ -1,0 +1,34 @@
+---
+import Layout from "../layouts/Layout.astro";
+import roadmap from "../data/roadmap.json";
+const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lumpur" });
+const phaseNow = roadmap.phases.find((p) => today >= p.from && today <= p.to);
+---
+<Layout title="Worship electric, from the back seat" description="One worship guitarist's practice log, drills and lessons. Learning in public, one skill at a time.">
+  <h1>Worship electric, from the back seat</h1>
+  <p>I play guitar at my church. Open chords, bar chords, one pentatonic box. On Sundays the guitar sits in the back seat and mostly isn't heard. By 31 December I want it to build the song: same notes, different strings, and the room lifts.</p>
+  <p>This site is the practice tool. Drills with a timer and metronome on the page, a log of every session, and lessons written only once I can play the thing.</p>
+
+  <div class="cards">
+    <a class="card" href="/drills/week-01/"><strong>This week</strong><span>Week 1 — Clean hands{phaseNow && <> · {phaseNow.name}</>}</span></a>
+    <a class="card" href="/metronome/"><strong>Metronome</strong><span>60 BPM, +5 steps, 1–4 per click</span></a>
+    <a class="card" href="/progress/"><strong>Progress</strong><span>20 skills, 0–4, where I am</span></a>
+    <a class="card" href="/log/"><strong>Log</strong><span>Every session, honest</span></a>
+  </div>
+
+  <h2>Lessons</h2>
+  <p class="small muted">Scale theory I learned first, before I knew hands mattered more. Still true, still useful, just not week 1.</p>
+  <ol>
+    <li><a href="/lesson-1/">What a scale is</a> — why some notes fit a song and some don't</li>
+    <li><a href="/lesson-2/">Hexatonic means six notes</a> — the major hexatonic, and why one note gets left out</li>
+    <li><a href="/lesson-3/">One shape, in G</a> — a single 4-fret shape you can play today</li>
+  </ol>
+  <p><a href="/reference/">Full reference</a> — every hexatonic scale, all six keys, full neck.</p>
+</Layout>
+<style>
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+  .card{display:block;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:12px 14px;text-decoration:none;min-height:72px}
+  .card strong{display:block;font-weight:600}
+  .card span{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+  .card:active{background:#d5d0c3}
+</style>

@@ -1,0 +1,52 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { fretboardSVG } from "../lib/fretboard.js";
+
+// low E, A, D, G, B, high e = string 0..5
+const dots = [
+  { string: 0, fret: 3, root: true, label: "1" },
+  { string: 0, fret: 5, label: "2" },
+  { string: 1, fret: 2, label: "3" },
+  { string: 1, fret: 3, label: "4" },
+  { string: 1, fret: 5, label: "5" },
+  { string: 2, fret: 2, label: "6" },
+  { string: 2, fret: 5, root: true, label: "7" },
+  { string: 3, fret: 2, label: "8" },
+  { string: 3, fret: 4, label: "9" },
+  { string: 3, fret: 5, label: "10" },
+  { string: 4, fret: 3, label: "11" },
+  { string: 4, fret: 5, label: "12" },
+  { string: 5, fret: 3, root: true, label: "13" },
+];
+
+const svg = fretboardSVG({
+  fretStart: 2,
+  fretEnd: 5,
+  dots,
+  ariaLabel: "G hexatonic scale shape, frets 2 to 5",
+});
+---
+<Layout title="Lesson 3 — One shape, in G">
+  <h1>Lesson 3 — One shape, in G</h1>
+  <p>Frets 2 to 5 only. Press one dot at a time, in number order, low string to high string. Amber dots are G, the home note.</p>
+
+  <Fragment set:html={svg} />
+
+  <p>What you're playing, in order:</p>
+  <ol>
+    <li>G (low E string, fret 3) — home</li>
+    <li>A (low E, fret 5)</li>
+    <li>B (A string, fret 2)</li>
+    <li>C (A string, fret 3)</li>
+    <li>D (A string, fret 5)</li>
+    <li>E (D string, fret 2)</li>
+    <li>G (D string, fret 5) — home again, one octave up</li>
+  </ol>
+  <p>Dots 8 to 13 are the same six notes repeated higher. Once 1 to 7 feels easy, keep going.</p>
+  <p><strong>Practice:</strong> play 1–7 ten times. Then put on any song in G (G, C, D, Em) and play these notes in any order you like. They will all fit.</p>
+
+  <div class="lesson-nav">
+    <a href="/lesson-2/">&larr; Lesson 2</a>
+    <a href="/reference/">Full reference &rarr;</a>
+  </div>
+</Layout>

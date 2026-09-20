@@ -1,0 +1,34 @@
+{
+  "asOf": "2026-09-21",
+  "target": "2026-12-31",
+  "scale": ["never tried", "tried, can't", "slow, alone", "in a song at tempo", "Sunday, no thought"],
+  "nodes": [
+    { "id": 1,  "name": "Open chords, changes", "baseline": 4, "now": 4, "goal": 4, "gate": "—" },
+    { "id": 2,  "name": "Bar chords without cramp", "baseline": 2, "now": 2, "goal": 3, "gate": "Full song in B or F#, no cramp, thumb behind the neck" },
+    { "id": 3,  "name": "Fretboard: E and A strings", "baseline": 3, "now": 3, "goal": 4, "gate": "Any natural note in under 3 s, no counting" },
+    { "id": 4,  "name": "Fretboard: all strings via octave shapes", "baseline": 0, "now": 0, "goal": 2, "gate": "Any note, 5 places, under 5 s" },
+    { "id": 5,  "name": "Muting: clean single notes at gain", "baseline": 1, "now": 1, "goal": 3, "gate": "One note, drive patch, nothing else rings, recorded", "core": true },
+    { "id": 6,  "name": "Alternate picking to a metronome", "baseline": 1, "now": 1, "goal": 3, "gate": "Frets 1–12 one string, 60 BPM × 4, clean; then +5", "core": true },
+    { "id": 7,  "name": "Triads up the neck (top 3 / middle 3 strings)", "baseline": 0, "now": 0, "goal": 3, "gate": "Verse on open chords, chorus on triads up the neck, same song", "core": true },
+    { "id": 8,  "name": "Dynamics 30 / 60 / 100 from the hands", "baseline": 0, "now": 0, "goal": 3, "gate": "Same 8 bars at three levels, recorded, a listener can tell", "core": true },
+    { "id": 9,  "name": "Minor pentatonic pos 1, named and rooted", "baseline": 2, "now": 2, "goal": 3, "gate": "Play it in G, E, C, F from the root, naming notes aloud" },
+    { "id": 10, "name": "Minor pentatonic pos 2, joined to pos 1", "baseline": 0, "now": 0, "goal": 2, "gate": "Slide 1 → 2 → 1 over a loop without stopping" },
+    { "id": 11, "name": "Bends in tune", "baseline": 1, "now": 1, "goal": 2, "gate": "Whole-step bend matches the fretted target 10 of 10" },
+    { "id": 12, "name": "Vibrato, controlled", "baseline": 0, "now": 0, "goal": 2, "gate": "Slow and wide, starts after the note speaks" },
+    { "id": 13, "name": "Volume swells with the pinky", "baseline": 0, "now": 0, "goal": 2, "gate": "Swell into a held note on the ambient patch, attack gone" },
+    { "id": 14, "name": "Dotted-eighth delay: play less", "baseline": 0, "now": 0, "goal": 2, "gate": "4 bars, delay on, half the notes, no mud" },
+    { "id": 15, "name": "Nashville numbers", "baseline": 0, "now": 0, "goal": 3, "gate": "Transpose a hymn chart G → E on the spot" },
+    { "id": 16, "name": "Recovery: play through mistakes, no chart", "baseline": 3, "now": 3, "goal": 3, "gate": "Full song standing, no chart, no stop" },
+    { "id": 17, "name": "Record one song a week", "baseline": 0, "now": 0, "goal": 4, "gate": "One recording a week in the log" },
+    { "id": 18, "name": "Major scale / G hexatonic", "baseline": 0, "now": 0, "goal": 1, "gate": "After pentatonic" },
+    { "id": 19, "name": "Modes by ear (Mixolydian, Dorian)", "baseline": 0, "now": 0, "goal": 0, "gate": "After the major scale, 2027" },
+    { "id": 20, "name": "Build my own HX Stomp patch", "baseline": 0, "now": 0, "goal": 0, "gate": "Parked" }
+  ],
+  "phases": [
+    { "weeks": "1–2",   "from": "2026-09-21", "to": "2026-10-04", "name": "Clean hands",  "nodes": [5, 6, 17],       "outcome": "A lead line that hits only the note" },
+    { "weeks": "3–6",   "from": "2026-10-05", "to": "2026-11-01", "name": "Build energy", "nodes": [7, 8, 2],        "outcome": "Chorus on triads up the neck, verse quiet" },
+    { "weeks": "7–10",  "from": "2026-11-02", "to": "2026-11-29", "name": "Lead voice",   "nodes": [9, 10, 11, 12],  "outcome": "One clean fill with one in-tune bend at the peak" },
+    { "weeks": "11–13", "from": "2026-11-30", "to": "2026-12-20", "name": "Texture",      "nodes": [13, 14, 15],     "outcome": "A swell under a quiet moment; transpose on the spot" },
+    { "weeks": "14",    "from": "2026-12-21", "to": "2026-12-31", "name": "Prove it",     "nodes": [16],             "outcome": "One full hymn recorded standing, no chart" }
+  ]
+}

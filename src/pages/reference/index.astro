@@ -1,0 +1,98 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+<Layout title="Reference — hexatonic scales" description="Every hexatonic scale, all six keys, full neck.">
+  <h1>Hexatonic scales on the fretboard</h1>
+  <p>Six notes. Every one below is a seven-note scale with one note pulled out, or a five-note scale with one note added. That is how you learn them: as edits to shapes you already own, not as new shapes.</p>
+
+  <div class="keyrow">
+    <label for="key">Key</label>
+    <select id="key"></select>
+  </div>
+  <div class="legend"><span class="r">root</span><span class="t">scale tone</span></div>
+
+  <div id="scales">Loading…</div>
+
+  <hr>
+  <h2>How to practice these</h2>
+  <p>Pick one key per week. Play the major pentatonic shape you know, then add the 4th. Run it over a I–IV–V loop and listen for what the 4th does over each chord. Then do the same on the minor side with the 2nd. Do not learn all six scales at once; two cover 90% of what you play on a Sunday.</p>
+  <p><a href="/lesson-3/">&larr; Back to the single-shape lesson</a></p>
+</Layout>
+
+<style>
+  .keyrow{display:flex;gap:8px;align-items:center;margin:14px 0 6px;flex-wrap:wrap}
+  .keyrow label{color:var(--muted);font-size:15px}
+  select{font:inherit;font-size:16px;padding:6px 10px;border:1px solid #9c968a;
+    background:#ece8dd;color:var(--ink);border-radius:4px}
+  .legend{display:flex;gap:18px;font-size:14px;color:var(--muted);margin:0 0 8px}
+  .legend span::before{content:"";display:inline-block;width:12px;height:12px;
+    border-radius:50%;margin-right:6px;vertical-align:-1px}
+  .legend .r::before{background:var(--root)}
+  .legend .t::before{background:var(--tone);border:1px solid #777}
+  .formula{font-size:15px;color:var(--muted);margin:0 0 10px}
+  .formula b{color:var(--ink);font-weight:600}
+  .note{border-left:3px solid var(--root);padding:2px 0 2px 14px;margin:14px 0}
+  .dropped{font-size:15px;color:var(--muted)}
+  hr{border:0;border-top:1px solid #b7b1a4;margin:40px 0}
+</style>
+
+<script>
+  import { NOTES, STANDARD_TUNING, fretboardSVG, scaleDots } from "../../lib/fretboard.js";
+
+  const SCALES = [
+    { name: "Major hexatonic", formula: "1 2 3 4 5 6", iv: [0, 2, 4, 5, 7, 9],
+      edit: "Major scale minus the 7th. Or: major pentatonic plus the 4th.",
+      why: "This is the worship-lead scale. The major 7th fights the IV chord (it is a half-step from the IV's root) and pulls hard toward the I. Take it out and every note sits over I, IV and V without needing resolution — which is why so many worship and folk melodies never touch it. If you already play major pentatonic, you have five of these six notes." },
+    { name: "Minor hexatonic", formula: "1 2 b3 4 5 b7", iv: [0, 2, 3, 5, 7, 10],
+      edit: "Natural minor minus the b6. Or: minor pentatonic plus the 2nd.",
+      why: "Minor-key worship (Am, Em, Dm songs) lives here. The b6 is the note that makes natural minor sound dark or medieval; drop it and the 2nd gives you a lift into the minor pentatonic without the gloom. This is the minor mirror of the scale above — same six pitches, relative minor root." },
+    { name: "Blues scale", formula: "1 b3 4 b5 5 b7", iv: [0, 3, 5, 6, 7, 10],
+      edit: "Minor pentatonic plus the b5.",
+      why: "The b5 is a passing note, not a landing note. Slide through it between the 4 and 5. In worship this shows up in gospel-leaning arrangements and in any solo where you want grit for two beats before resolving. Use it sparingly on a congregation night; it reads as 'blues' instantly." },
+    { name: "Major blues", formula: "1 2 b3 3 5 6", iv: [0, 2, 3, 4, 7, 9],
+      edit: "Major pentatonic plus the b3.",
+      why: "The b3-to-3 slide is the entire point. Same trick as the blues scale but on the major side — country and gospel piano players own this sound. On guitar it falls under the major pentatonic shape with one added note a half-step below the 3rd." },
+    { name: "Whole tone", formula: "1 2 3 #4 #5 b7", iv: [0, 2, 4, 6, 8, 10],
+      edit: "Every note a whole step apart. Only two exist (C and C# — every other root is one of those two sets).",
+      why: "Symmetric, no root gravity, floats. Fits over dominant 7#5 chords and almost nowhere in a worship set. Know it exists; don't practise it this year." },
+    { name: "Augmented", formula: "1 b3 3 5 b6 7", iv: [0, 3, 4, 7, 8, 11],
+      edit: "Alternating minor 3rd, half step. Only four exist.",
+      why: "Jazz and film-score colour. Listed for completeness so you know the full hexatonic family is six scales, of which two matter to you." },
+  ];
+
+  const sel = document.getElementById("key");
+  NOTES.forEach((n, i) => {
+    const o = document.createElement("option");
+    o.value = String(i);
+    o.textContent = n;
+    if (n === "G") o.selected = true;
+    sel.appendChild(o);
+  });
+  sel.addEventListener("change", render);
+
+  function render() {
+    const root = Number(sel.value);
+    document.getElementById("scales").innerHTML = SCALES.map((sc) => {
+      const dots = scaleDots(root, sc.iv, STANDARD_TUNING, 0, 12).map((d) => ({
+        ...d,
+        label: d.label,
+      }));
+      const svg = fretboardSVG({
+        fretStart: 0,
+        fretEnd: 12,
+        dots,
+        ariaLabel: `${sc.name} in ${NOTES[root]}`,
+      });
+      const notes = sc.iv.map((i) => NOTES[(root + i) % 12]).join(" · ");
+      return `
+        <h2>${sc.name} in ${NOTES[root]}</h2>
+        <p class="formula"><b>${sc.formula}</b> — ${sc.edit}</p>
+        ${svg}
+        <p class="dropped">Notes: ${notes}</p>
+        <p class="note">${sc.why}</p>
+      `;
+    }).join("");
+  }
+
+  render();
+</script>

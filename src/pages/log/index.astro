@@ -1,0 +1,25 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, render } from "astro:content";
+const entries = (await getCollection("log")).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const fmt = (d) => d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+const rendered = await Promise.all(entries.map(async (e) => ({ e, Content: (await render(e)).Content })));
+---
+<Layout title="Practice log" description="Every session, what was tried, what failed, what fixed it.">
+  <h1>Practice log</h1>
+  <p>Every session. What I did, how it went, what to change. Newest first. This is the raw material; the lessons get written from it once I can actually play the thing.</p>
+  {rendered.map(({ e, Content }) => (
+    <article class="entry">
+      <header>
+        <h2>{e.data.title}</h2>
+        <span class="muted small">{fmt(e.data.date)} · week {e.data.week}{e.data.day && <> · day {e.data.day}</>}{e.data.bpm && <> · {e.data.bpm} BPM</>}{e.data.recorded && <> · recorded</>}</span>
+      </header>
+      <Content />
+      {e.data.nodes.length > 0 && <p class="small muted">nodes {e.data.nodes.join(", ")}</p>}
+    </article>
+  ))}
+</Layout>
+<style>
+  .entry{padding:14px 0 6px;border-top:1px solid var(--rule)}
+  .entry h2{margin:0 0 2px}
+</style>
