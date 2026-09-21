@@ -6,9 +6,9 @@
 const { minutes, nextHref = null, nextTitle = null } = Astro.props;
 ---
 <div class="xt" data-xt data-min={minutes} data-next={nextHref || ""}>
-  <div class="clock" data-clock>{String(minutes).padStart(2, "0")}:00</div>
+  <div class="clock" data-clock role="timer" aria-live="off">{String(minutes).padStart(2, "0")}:00</div>
   <div class="ctl">
-    <button class="primary" data-go>Start {minutes} min</button>
+    <button class="primary" data-go>Start {minutes}&nbsp;min</button>
     {nextHref && <a class="btn" href={nextHref} data-next-link>Next: {nextTitle}</a>}
   </div>
   <div class="bar"><i data-bar></i></div>
@@ -18,7 +18,7 @@ const { minutes, nextHref = null, nextTitle = null } = Astro.props;
   .clock{font-family:var(--mono);font-size:var(--t-xl);line-height:1;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-0.01em}
   .ctl{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
   .bar{grid-column:1/-1;height:2px;background:var(--line);overflow:hidden}
-  .bar i{display:block;height:100%;width:0;background:var(--ink-soft);transition:width .5s linear}
+  .bar i{display:block;height:100%;width:100%;background:var(--ink-soft);transform:scaleX(0);transform-origin:left;transition:transform .5s linear}
   .xt.done [data-go]{background:var(--card);color:var(--ink);border-color:var(--line);font-weight:400}
   .xt.done [data-next-link]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
 </style>
@@ -43,7 +43,7 @@ const { minutes, nextHref = null, nextTitle = null } = Astro.props;
         o.connect(g).connect(c.destination); o.start(t); o.stop(t + 0.16);
       }
     }
-    function stop() { if (timer) clearInterval(timer); timer = null; w.gmStop?.(); go.textContent = `Start ${Number(el.dataset.min)} min`; }
+    function stop() { if (timer) clearInterval(timer); timer = null; w.gmStop?.(); go.textContent = `Start ${Number(el.dataset.min)}\u00a0min`; }
     go.addEventListener("click", () => {
       if (timer) return stop();
       const m = document.querySelector<HTMLElement>("[data-metronome]");
@@ -55,7 +55,7 @@ const { minutes, nextHref = null, nextTitle = null } = Astro.props;
       timer = window.setInterval(() => {
         const left = Math.max(0, Math.round((endAt - Date.now()) / 1000));
         clock.textContent = fmt(left);
-        bar.style.width = `${((total - left) / total) * 100}%`;
+        bar.style.transform = `scaleX(${(total - left) / total})`;
         if (left === 0) { beep(3); stop(); el.classList.add("done"); }
       }, 250);
     });

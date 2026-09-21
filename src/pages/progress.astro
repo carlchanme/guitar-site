@@ -13,7 +13,7 @@ const daysLeft = Math.max(0, Math.ceil((new Date(target).getTime() - new Date(to
   <p class="muted small mono">Rated {asOf} · target 31 Dec 2026 · {daysLeft} days left{phaseNow && <> · now: <strong>{phaseNow.name}</strong> (weeks {phaseNow.weeks})</>}</p>
 
   <h2>The four that fix Sunday</h2>
-  <p>Lead lines hit other strings, fingers slow, guitar unheard. Not a theory problem. These four nodes are the whole job until they're at 3.</p>
+  <p>Lead lines hit other strings, fingers slow, guitar unheard. Not a theory problem. These four nodes are the whole job until they’re at 3.</p>
   {core.map((n) => (
     <div class="node core">
       <div class="head"><span>{n.id}. {n.name}</span><span class="r">{n.now} → {n.goal}</span></div>

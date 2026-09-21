@@ -1,5 +1,6 @@
-/* Tokens + base. OKLCH only. One radius. Three faces: Fraunces (display),
-   Schibsted Grotesk (text), JetBrains Mono (numbers, spec tables). */
+/* Tokens + base. Derived from DESIGN.md front matter, one to one: every
+   custom property here is a token there. OKLCH only. One radius. Three faces:
+   Fraunces (display), Schibsted Grotesk (text), JetBrains Mono (numbers). */
 :root{
   --bg:        oklch(0.17 0.006 60);
   --surface:   oklch(0.21 0.007 60);
@@ -17,6 +18,7 @@
   --string:    oklch(0.91 0.02 85);
   --tone:      oklch(0.93 0.02 85);
   --root:      var(--accent);
+  --scrim:     oklch(0 0 0 / 0.5);
 
   --radius: 2px;
 
@@ -36,13 +38,19 @@
   --track-caps: 0.12em;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;color-scheme:dark}
+html{-webkit-text-size-adjust:100%;color-scheme:dark;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:0.01ms !important;animation-duration:0.01ms !important;scroll-behavior:auto !important}
+}
+.skip{position:absolute;left:16px;top:-100px;z-index:100;background:var(--ink);color:var(--bg);padding:8px 12px;border-radius:var(--radius);text-decoration:none}
+.skip:focus{top:16px}
 body{margin:0;background:var(--bg);color:var(--ink);font:var(--t-base)/var(--lh-base) var(--text);font-weight:400}
 a{color:var(--ink);text-decoration-thickness:1px;text-underline-offset:3px}
 a:hover{opacity:.8;transition:opacity 150ms}
 h1,h2{font-family:var(--display);font-optical-sizing:auto;font-variation-settings:"SOFT" 50,"WONK" 0;font-weight:500;letter-spacing:var(--track-tight)}
-h1{font-size:var(--t-xl);line-height:var(--lh-xl);margin:4px 0 8px}
-h2{font-size:var(--t-lg);line-height:var(--lh-lg);margin:40px 0 8px}
+h1{font-size:var(--t-xl);line-height:var(--lh-xl);margin:4px 0 8px;text-wrap:balance}
+h2{font-size:var(--t-lg);line-height:var(--lh-lg);margin:40px 0 8px;text-wrap:balance}
 h3{font-size:var(--t-base);line-height:var(--lh-base);margin:24px 0 4px;font-weight:700}
 p{margin:12px 0;max-width:64ch}
 strong,b{font-weight:700}
@@ -59,7 +67,7 @@ button{font:inherit;color:var(--ink);background:var(--card);border:1px solid var
   border-radius:var(--radius);padding:10px 14px;min-height:44px;cursor:pointer;touch-action:manipulation;transition:opacity 150ms}
 button:hover{opacity:.85}
 button.primary,.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
-.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:10px 16px;min-height:44px;font-size:var(--t-base);transition:opacity 150ms}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;touch-action:manipulation;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:10px 16px;min-height:44px;font-size:var(--t-base);transition:opacity 150ms}
 .btn:hover{opacity:.85}
 select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px}
 .board{width:100%;max-width:600px;height:auto;display:block;margin:16px 0}

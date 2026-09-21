@@ -23,8 +23,8 @@ const n = hasLesson ? index : index + 1;
   <Stepper day={day} active={ex.id} />
 
   <div class="meta small muted">
-    <span class="mono">{ex.minutes} min</span>
-    {ex.bpm && <span class="mono">{ex.bpm} BPM · {ex.subdiv} per click</span>}
+    <span class="mono">{ex.minutes}&nbsp;min</span>
+    {ex.bpm && <span class="mono">{ex.bpm}&nbsp;BPM · {ex.subdiv} per click</span>}
     <span>{ex.status === "done" ? "done" : "not yet done"}</span>
   </div>
 

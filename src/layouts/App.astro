@@ -26,9 +26,9 @@ const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
   .rail a.item:hover{opacity:.8}
   .rail a.item.on{color:var(--ink);background:var(--card);opacity:1}
   .rail svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-  .side{position:sticky;top:0;height:100dvh}
+  .side{position:sticky;top:0;height:100dvh;overscroll-behavior:contain}
   .scrim{display:none}
-  main{padding:24px 40px 96px;min-width:0;overflow-x:hidden}
+  main{padding:24px max(40px, env(safe-area-inset-right)) 96px 40px;min-width:0;overflow-x:hidden}
   .main-inner{max-width:760px}
   .topbar{display:none}
   @media (max-width:1200px){
@@ -40,7 +40,7 @@ const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
     .rail{display:none}
     .side{position:fixed;inset:0 20% 0 0;z-index:30;height:100dvh;transform:translateX(-100%);transition:transform .2s}
     .side.open{transform:none}
-    .scrim{position:fixed;inset:0;z-index:29;background:oklch(0 0 0 / 0.5);opacity:0;pointer-events:none;transition:opacity .2s}
+    .scrim{position:fixed;inset:0;z-index:29;background:var(--scrim);opacity:0;pointer-events:none;transition:opacity .2s}
     .side.open + .scrim{display:block;opacity:1;pointer-events:auto}
     .scrim{display:block}
     .topbar{display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px;margin:0 -16px 8px}
@@ -52,13 +52,14 @@ const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
     .topbar{padding:10px 32px;margin:0 -32px 8px}
   }
   @media (max-width:600px){
-    main{padding:0 16px 80px}
+    main{padding:0 max(16px, env(safe-area-inset-right)) 80px max(16px, env(safe-area-inset-left))}
     .topbar{padding:10px 16px;margin:0 -16px 8px}
     h1{font-size:var(--t-lg)}
   }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <div class="app">
   <nav class="rail" aria-label="sections">
     <a href="/" class="mark" aria-label="home">Worship electric</a>
@@ -66,7 +67,7 @@ const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
   </nav>
   <Sidebar activeDay={activeDay} />
   <div class="scrim" aria-hidden="true"></div>
-  <main>
+  <main id="main" tabindex="-1">
     <div class="topbar">
       <button id="menu" aria-controls="side" aria-expanded="false">Days</button>
       <nav>{rail.map(([href, label, , pre]) => <a href={href} class={on(pre) ? "on" : ""}>{label}</a>)}</nav>
@@ -77,15 +78,19 @@ const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
 <script>
   const side = document.getElementById("side")!;
   const menu = document.getElementById("menu")!;
-  menu.addEventListener("click", () => {
-    const open = side.classList.toggle("open");
+  const setOpen = (open: boolean) => {
+    side.classList.toggle("open", open);
     menu.setAttribute("aria-expanded", String(open));
-  });
+  };
+  menu.addEventListener("click", () => setOpen(!side.classList.contains("open")));
   side.addEventListener("click", (e) => {
-    if ((e.target as HTMLElement).closest("a")) side.classList.remove("open");
+    if ((e.target as HTMLElement).closest("a")) setOpen(false);
   });
   document.addEventListener("click", (e) => {
-    if (side.classList.contains("open") && !side.contains(e.target as Node) && e.target !== menu) side.classList.remove("open");
+    if (side.classList.contains("open") && !side.contains(e.target as Node) && e.target !== menu) setOpen(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && side.classList.contains("open")) { setOpen(false); menu.focus(); }
   });
 </script>
 </body>

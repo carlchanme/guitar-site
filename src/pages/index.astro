@@ -32,11 +32,12 @@ const spec = [
 
 <section class="hero g" aria-label="intro">
   <!-- HERO ART: when the photo exists, replace the <Fragment> below with
-       <img src="/hero-guitar.jpg" alt="…"> and delete the .stand-in rule. Same box. -->
+       <img src="/hero-guitar.jpg" width="…" height="…" fetchpriority="high" alt="…">
+       and delete the .stand-in rule. Same box. -->
   <figure class="art stand-in"><Fragment set:html={neck} /></figure>
   <h1>Learn to be heard on Sunday.</h1>
   <div class="foot">
-    <p class="kicker">14 weeks · 5 × 30 min · learned in public</p>
+    <p class="kicker">14&nbsp;weeks · 5&nbsp;×&nbsp;30&nbsp;min · learned in public</p>
     <a class="cta" href="/day/1/">Start day 1</a>
   </div>
 </section>
@@ -68,7 +69,7 @@ const spec = [
 
 <section class="quote g" aria-label="from the log">
   <blockquote>
-    <p>Guitar ends up in the back seat, not heard.</p>
+    <p>“Guitar ends up in the back seat, not heard.”</p>
     <footer class="kicker">Practice log · 21 Sep 2026 · Baseline</footer>
   </blockquote>
 </section>
@@ -85,10 +86,10 @@ const spec = [
 
 <style>
   :root{--gutter:clamp(16px, 5vw, 72px)}
-  .g{display:grid;grid-template-columns:repeat(12, 1fr);column-gap:24px;max-width:1440px;margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter)}
+  .g{display:grid;grid-template-columns:repeat(12, 1fr);column-gap:24px;max-width:1440px;margin:0 auto;padding-left:max(var(--gutter), env(safe-area-inset-left));padding-right:max(var(--gutter), env(safe-area-inset-right))}
   .mark{font-family:var(--display);font-variation-settings:"SOFT" 50,"WONK" 0;font-weight:500;font-size:var(--t-md);letter-spacing:var(--track-tight);text-decoration:none}
   .kicker{margin:0}
-  .cta{display:inline-flex;align-items:center;min-height:48px;padding:0 24px;background:var(--accent);color:var(--accent-ink);font-weight:700;text-decoration:none;border-radius:var(--radius);transition:opacity 150ms}
+  .cta{display:inline-flex;align-items:center;touch-action:manipulation;min-height:48px;padding:0 24px;background:var(--accent);color:var(--accent-ink);font-weight:700;text-decoration:none;border-radius:var(--radius);transition:opacity 150ms}
   .cta:hover{opacity:.85}
 
   /* 1 · hero */
@@ -99,7 +100,7 @@ const spec = [
   .hero{position:relative;min-height:calc(100svh - 88px);grid-template-rows:1fr auto;padding-bottom:64px;overflow:hidden}
   .hero .art{grid-column:5/12;grid-row:1;align-self:center;justify-self:center;position:relative;margin:-4svh 0 0;height:min(70svh, 800px);aspect-ratio:4/5;min-width:0}
   .hero .stand-in :global(svg){position:absolute;left:50%;top:50%;width:min(70svh, 800px);max-width:none;height:auto;margin:0;transform:translate(-50%,-50%) rotate(90deg)}
-  .hero h1{grid-column:2/10;grid-row:1;align-self:center;position:relative;z-index:2;margin:0;font-size:var(--t-2xl);line-height:var(--lh-2xl);font-weight:500;padding:24px 0}
+  .hero h1{grid-column:2/10;grid-row:1;align-self:center;position:relative;z-index:2;margin:0;font-size:var(--t-2xl);line-height:var(--lh-2xl);font-weight:500;padding:24px 0;text-wrap:balance}
   /* legibility mask: the page colour, feathered, no hard edge */
   .hero h1::before{content:"";position:absolute;inset:-32px -64px;z-index:-1;background:radial-gradient(ellipse 60% 70% at 50% 50%, oklch(0.17 0.006 60 / 0.9), oklch(0.17 0.006 60 / 0) 100%)}
   .hero .foot{grid-column:2/8;grid-row:2;display:flex;flex-direction:column;gap:20px;align-items:flex-start}
