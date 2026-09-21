@@ -9,7 +9,6 @@ import { fretboardSVG } from "../lib/fretboard.js";
 import { pathway, phases, pathwayProgress } from "../lib/course.js";
 
 const total = pathwayProgress();
-const neck = fretboardSVG({ fretStart: 0, fretEnd: 12, ariaLabel: "Stand-in for the guitar photo: a full electric fretboard, nut to the twelfth fret" });
 const muting = fretboardSVG({
   fretStart: 3, fretEnd: 7,
   dots: [{ string: 3, fret: 5, root: true, label: "C" }],
@@ -28,7 +27,7 @@ const spec = [
 ---
 <Site title={pathway.title} description="A 14-week practice path for rhythm guitarists moving from chords to being heard in the band: clean hands first, one lead line, learned in public.">
 <header class="top g">
-  <a class="mark" href="/">Back seat to lead</a>
+  <a class="mark" href="/"><img class="glyph" src="/icon-192.png" width="28" height="28" alt="" />Back seat to lead</a>
   <nav><a href="/path/">Path</a><a href="/log/">Log</a></nav>
 </header>
 
@@ -36,7 +35,7 @@ const spec = [
   <!-- HERO ART: when the photo exists, replace the <Fragment> below with
        <img src="/hero-guitar.jpg" width="…" height="…" fetchpriority="high" alt="…">
        and delete the .stand-in rule. Same box. -->
-  <figure class="art stand-in"><Fragment set:html={neck} /></figure>
+  <figure class="art stand-in"><img src="/hero-stand-in.png" width="1024" height="1024" fetchpriority="high" alt="Stand-in for the guitar photo: an ivory hollow-body outline with gold binding" /></figure>
   <h1>Learn to be heard in the band.</h1>
   <div class="foot">
     <p class="kicker">14&nbsp;weeks · 5&nbsp;×&nbsp;30&nbsp;min · learned in public</p>
@@ -80,13 +79,15 @@ const spec = [
 
 <footer class="chrome g">
   <p class="mono">I play rhythm guitar in a band. Notes to myself, shared.</p>
-  <a class="mark small" href="/">Back seat to lead</a>
+  <a class="mark small" href="/"><img class="glyph" src="/icon-192.png" width="24" height="24" alt="" />Back seat to lead</a>
 </footer>
 </Site>
 
 <style>
   :root{--gutter:clamp(16px, 5vw, 72px)}
   .g{display:grid;grid-template-columns:repeat(12, 1fr);column-gap:24px;max-width:1440px;margin:0 auto;padding-left:max(var(--gutter), env(safe-area-inset-left));padding-right:max(var(--gutter), env(safe-area-inset-right))}
+  .mark{display:inline-flex;align-items:center;gap:10px}
+  .mark .glyph{border-radius:var(--radius)}
   .mark{font-family:var(--display);font-variation-settings:"SOFT" 50,"WONK" 0;font-weight:500;font-size:var(--t-md);letter-spacing:var(--track-tight);text-decoration:none}
   .kicker{margin:0}
   .cta{min-height:48px;padding:0 24px}
@@ -98,10 +99,10 @@ const spec = [
   .top nav a{text-decoration:none;color:var(--ink-soft)}
   .hero{position:relative;min-height:calc(100svh - 88px);grid-template-rows:1fr auto;padding-bottom:64px;overflow:hidden}
   .hero .art{grid-column:5/12;grid-row:1;align-self:center;justify-self:center;position:relative;margin:-4svh 0 0;height:min(70svh, 800px);aspect-ratio:4/5;min-width:0}
-  .hero .stand-in :global(svg){position:absolute;left:50%;top:50%;width:min(70svh, 800px);max-width:none;height:auto;margin:0;transform:translate(-50%,-50%) rotate(90deg)}
+  .hero .stand-in img{position:absolute;left:50%;top:50%;width:min(70svh, 800px);max-width:none;height:auto;margin:0;transform:translate(-50%,-50%);border-radius:var(--radius)}
   .hero h1{grid-column:2/10;grid-row:1;align-self:center;position:relative;z-index:2;margin:0;font-size:var(--t-2xl);line-height:var(--lh-2xl);font-weight:500;padding:24px 0;text-wrap:balance}
   /* legibility mask: the page colour, feathered, no hard edge */
-  .hero h1::before{content:"";position:absolute;inset:-32px -64px;z-index:-1;background:radial-gradient(ellipse 60% 70% at 50% 50%, oklch(0.17 0.006 60 / 0.9), oklch(0.17 0.006 60 / 0) 100%)}
+  .hero h1::before{content:"";position:absolute;inset:-32px -64px;z-index:-1;background:radial-gradient(ellipse 60% 70% at 50% 50%, oklch(0.955 0.012 85 / 0.6), oklch(0.955 0.012 85 / 0) 100%)}
   .hero .foot{grid-column:2/8;grid-row:2;display:flex;flex-direction:column;gap:20px;align-items:flex-start}
 
   /* 2 · three moments */
@@ -159,7 +160,7 @@ const spec = [
   @media (max-width:720px){
     /* one column: the specific desktop placements below outrank .g > *, so name them */
     .g > *, .m1 h2, .m1 p, .m2 figure, .m2 figcaption, .m3 .big, .m3 .kicker,
-    .editorial p, .specs :global(.spec), .quote blockquote, .end .cta, .chrome p{grid-column:1/-1}
+    .editorial p, .specs :global(.spec), .quote blockquote, .end .cta, .chrome p, .chrome .mark{grid-column:1/-1}
     .m1 p, .m2 figcaption{max-width:none}
     .end .cta{justify-self:start;white-space:nowrap}
     .top nav{justify-content:flex-start}
@@ -167,13 +168,13 @@ const spec = [
     .top .mark{grid-column:1/8}
     .top nav{grid-column:8/-1;justify-content:flex-end}
     .hero .art{grid-column:1/-1;justify-self:stretch;margin:0;height:62svh;aspect-ratio:auto;width:100%}
-    .hero .stand-in :global(svg){width:62svh}
+    .hero .stand-in img{width:min(62svh, 100vw)}
     .hero h1{grid-column:1/-1;align-self:end;margin-bottom:8px;padding:16px 0}
     .hero h1::before{inset:-16px -24px}
     .hero .foot{grid-column:1/-1;gap:16px}
     .m2 figure{margin:0 calc(-1 * var(--gutter))}
     .m3 .big{font-size:clamp(140px, 42vw, 200px)}
     .editorial p{font-size:var(--t-md)}
-    .chrome .mark{justify-self:start;margin-top:16px}
+    .chrome .mark{justify-self:start;margin-top:16px;white-space:nowrap}
   }
 </style>

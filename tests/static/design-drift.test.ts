@@ -127,8 +127,8 @@ describe("DESIGN.md → Elevation & Depth: flat", () => {
   });
   it("the hero mask is the page colour at partial opacity, no hard edge", () => {
     const mask = grep(/\.hero h1::before\{/)[0]?.text ?? "";
-    expect(mask).toMatch(/oklch\(0\.17 0\.006 60 \/ 0\.\d+\)/);
-    expect(mask).toMatch(/oklch\(0\.17 0\.006 60 \/ 0\)/);
+    expect(mask).toMatch(/oklch\(0\.955 0\.012 85 \/ 0\.\d+\)/);
+    expect(mask).toMatch(/oklch\(0\.955 0\.012 85 \/ 0\)/);
   });
 });
 
@@ -179,9 +179,9 @@ describe("DESIGN.md → Do's and Don'ts: labels and behaviour", () => {
     expect(app).toMatch(/class="mark"[^>]*>Back seat to lead</);
     expect(styleOf("src/layouts/App.astro")).toMatch(/\.rail \.mark\{[^}]*font-family:var\(--display\)/);
   });
-  it("the product stays dark", () => {
-    expect(read("src/styles/global.css")).toMatch(/color-scheme:\s*dark/);
-    const light = grep(/prefers-color-scheme:\s*light/);
-    expect(light, fmt(light)).toEqual([]);
+  it("the product stays ivory (White Falcon retoken, DESIGN.md 2026-09-21)", () => {
+    expect(read("src/styles/global.css")).toMatch(/color-scheme:\s*light/);
+    const dark = grep(/prefers-color-scheme:\s*dark/);
+    expect(dark, fmt(dark)).toEqual([]);
   });
 });

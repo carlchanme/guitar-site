@@ -1,24 +1,24 @@
 ---
 version: alpha
 name: Back seat to lead
-description: A rhythm guitarist's practice course, learned in public. Dark, warm, quiet. One accent.
+description: A rhythm guitarist's practice course, learned in public. Ivory, ebony, one gold accent. Quiet.
 colors:
-  bg: "oklch(0.17 0.006 60)"
-  surface: "oklch(0.21 0.007 60)"
-  card: "oklch(0.24 0.008 60)"
-  ink: "oklch(0.94 0.006 80)"
-  ink-soft: "oklch(0.70 0.008 70)"
-  ink-faint: "oklch(0.52 0.008 70)"
-  line: "oklch(0.27 0.008 60)"
-  accent: "oklch(0.72 0.12 250)"
-  accent-ink: "oklch(0.15 0.02 250)"
+  bg: "oklch(0.955 0.012 85)"
+  surface: "oklch(0.93 0.014 85)"
+  card: "oklch(0.905 0.016 85)"
+  ink: "oklch(0.20 0.012 60)"
+  ink-soft: "oklch(0.42 0.012 60)"
+  ink-faint: "oklch(0.60 0.012 70)"
+  line: "oklch(0.87 0.02 85)"
+  accent: "oklch(0.68 0.13 80)"
+  accent-ink: "oklch(0.20 0.05 70)"
   danger: "oklch(0.55 0.16 25)"
-  board: "oklch(0.28 0.04 50)"
+  board: "oklch(0.22 0.012 60)"
   fret: "oklch(0.74 0.03 85)"
-  string: "oklch(0.91 0.02 85)"
-  tone: "oklch(0.93 0.02 85)"
+  string: "oklch(0.88 0.015 85)"
+  tone: "oklch(0.95 0.012 85)"
   root: "{colors.accent}"
-  scrim: "oklch(0 0 0 / 0.5)"
+  scrim: "oklch(0.20 0.012 60 / 0.35)"
   primary: "{colors.ink}"
   secondary: "{colors.ink-soft}"
   tertiary: "{colors.accent}"
@@ -293,50 +293,56 @@ The single failure test: if the result could be reused for a different product
 just by changing the noun, it has failed. The design must be staged around
 *this* product, not next to a generic template.
 
-The product is dark. It stays dark. Do not "fix" it to light paper.
+The product is ivory. It stays ivory. Do not "fix" it to a dark theme.
 
 ## Colors
 
-OKLCH only. No hex, no HSL, no rgb anywhere in source. Warm near-black
-background, warm off-white ink, hairlines within 0.04 L of their surface, one
-committed ink-blue accent. Every hue sits between 50 and 85 (warm) except the
-accent (250) and danger (25).
+OKLCH only. No hex, no HSL, no rgb anywhere in source. Ivory background, warm
+ebony ink, hairlines within 0.04 L of their surface, one committed gold
+accent. Every hue sits between 50 and 85 (warm) except danger (25); the accent
+sits at 80, inside the warm range, but is the one saturated note against the
+otherwise near-neutral ivory/ebony stack.
 
-- **Background (`bg`, oklch 0.17 0.006 60):** warm near-black. The page. Every
+- **Background (`bg`, oklch 0.955 0.012 85):** ivory. The page. Every
   full-bleed image sits on this with no card around it.
-- **Surface (`surface`, 0.21):** the rail and the sidebar. One step up.
-- **Card (`card`, 0.24):** raised rows, the timer, the metronome, the active
-  day in the sidebar, `code`. Two steps up. This is the top of the tonal stack.
-- **Ink (`ink`, 0.94 0.006 80):** body text. ≥ 12:1 on `bg`. Editorial
-  sharpness, not WCAG-minimum grey. Also the "active" colour in chrome: the
-  active stepper step, the active rail item, the selected subdivision, the
-  progress-bar fill, the goal tick.
-- **Ink soft (`ink-soft`, 0.70):** secondary text, kickers, crumbs, the note
+- **Surface (`surface`, 0.93):** the rail and the sidebar. One step down.
+- **Card (`card`, 0.905):** raised rows, the timer, the metronome, the active
+  day in the sidebar, `code`. Two steps down. This is the base of the tonal
+  stack.
+- **Ink (`ink`, 0.20 0.012 60):** warm ebony body text. ≥ 12:1 on `bg`.
+  Editorial sharpness, not WCAG-minimum grey. Also the "active" colour in
+  chrome: the active stepper step, the active rail item, the selected
+  subdivision, the progress-bar fill, the goal tick.
+- **Ink soft (`ink-soft`, 0.42):** secondary text, kickers, crumbs, the note
   callout's left rule, the timer bar.
-- **Ink faint (`ink-faint`, 0.52):** metadata, disabled, locked phases, day
+- **Ink faint (`ink-faint`, 0.60):** metadata, disabled, locked phases, day
   numbers, fret-marker dots, string names.
-- **Line (`line`, 0.27 0.008 60):** hairlines. 0.03 L above `card`. Borders,
-  dividers, the todo ring, the empty track of a bar.
-- **Accent (`accent`, 0.72 0.12 250):** ink-blue. The only saturated element
-  on any screen. Appears on exactly two kinds of thing: status marks (done,
-  current) and the one primary action per screen. Nowhere else. Not on phase
-  titles, not on the timer bar, not on stepper underlines, not on sidebar
-  borders, not on hover.
-- **Accent ink (`accent-ink`, 0.15 0.02 250):** text on the accent. Also the
-  outline and label on fretboard dots.
+- **Line (`line`, 0.87 0.02 85):** hairlines. Within 0.04 L of `card`.
+  Borders, dividers, the todo ring, the empty track of a bar.
+- **Accent (`accent`, 0.68 0.13 80):** gold. The only saturated element on any
+  screen. Fills and hairlines only: appears on exactly two kinds of thing —
+  status marks (done, current) and the one primary action per screen — plus a
+  1px gold hairline on the active sidebar day card. Nowhere else. Not on phase
+  titles, not on the timer bar, not on stepper underlines, not on hover. Never
+  as text colour below 20px (it fails contrast on ivory) — gold text is only
+  ever set at headline sizes, and even there it is spent like the rest of the
+  budget, not as a default heading colour.
+- **Accent ink (`accent-ink`, 0.20 0.05 70):** text on the accent. Also the
+  outline and label on fretboard dots, and the done check mark on
+  `StatusIcon.astro`.
 - **Danger (`danger`, 0.55 0.16 25):** destructive confirmation only, as
   `button-danger` (danger text and border on `card`; never a filled red
   button). Not yet used anywhere. Never for
   validation, never for "error" banners.
-- **Scrim (`scrim`, oklch 0 0 0 / 0.5):** the drawer backdrop under 900px, as
-  its own element.
+- **Scrim (`scrim`, oklch 0.20 0.012 60 / 0.35):** the drawer backdrop under
+  900px, as its own element.
 
-Fretboard material, not UI colour: `board` (0.28 0.04 50, the wood),
-`fret` (0.74 0.03 85, the wire), `string` (0.91 0.02 85), `tone` (0.93 0.02 85,
-a scale-tone dot). `root` is the accent: the root dot is the one thing on a
-diagram that is allowed to be blue. The renderer in `src/lib/fretboard.js`
-reads these as `var(--board)` etc.; its geometry is not a design value and does
-not change.
+Fretboard material, not UI colour: `board` (0.22 0.012 60, the ebony wood, the
+one part of the app that stays dark), `fret` (0.74 0.03 85, the wire),
+`string` (0.88 0.015 85), `tone` (0.95 0.012 85, an ivory scale-tone dot). `root`
+is the accent: the root dot is the one thing on a diagram that is allowed to
+be gold. The renderer in `src/lib/fretboard.js` reads these as `var(--board)`
+etc.; its geometry is not a design value and does not change.
 
 The generic names `primary`, `secondary`, `tertiary`, `neutral` are aliases for
 `ink`, `ink-soft`, `accent`, `bg` so that tooling expecting them resolves.
@@ -349,6 +355,8 @@ Contrast rules:
 - The accent appears at most once per section on the landing page and at most
   on status marks + one primary action inside the app. Never on two elements
   in the hero.
+- Gold is never set as text `color` below 20px. Grep any `--accent` used as
+  `color:` on text and confirm it is `--ink` unless the text is ≥ 20px.
 - A hero headline over the image never depends on the photo for legibility:
   either it sits over negative space, or a feathered mask of the page colour
   (`bg` at ≤ 0.9 opacity, ramped, no hard edge, L drop ≤ 0.15) sits behind it.
@@ -500,8 +508,10 @@ radius ladder (the old 2 / 4 / 5 / 6 / 8 / 9 / 10 / 12 / 14px is gone).
 - **Fretboard diagrams.** SVG from `src/lib/fretboard.js`, `.board` max 600px
   in the app, full-bleed on the landing page. Wood tones as above, root dot
   `accent`, tone dot `tone`, labels and dot outlines `accent-ink`, mute marks
-  `string` with a `board` stroke. Chord boxes: `ink` lines, `ink` dots with
-  `bg` finger numbers, root dot `accent`.
+  `string` with a `board` stroke. Fret position markers at 3/5/7/9 (and the
+  double at 12) are small ivory hump-block inlays: an 18×10 rounded rectangle,
+  fill `tone`, opacity 0.55, same positions the round dots used. Chord boxes:
+  `ink` lines, `ink` dots with `bg` finger numbers, root dot `accent`.
 - **Drawer scrim.** Own element after the sidebar, `scrim`, fades in 200ms.
 - **404 / empty states.** A single object, left-aligned like everything else
   unless it is truly a single object on an otherwise empty page, in which case
@@ -524,7 +534,7 @@ radius ladder (the old 2 / 4 / 5 / 6 / 8 / 9 / 10 / 12 / 14px is gone).
   or lift.
 - Do keep the wordmark as type. Don't put a gradient on it or on the pathway
   art.
-- Do keep the product dark. Don't add a light theme.
+- Do keep the product ivory. Don't "fix" it to a dark theme.
 - Do keep the pull-quote as the author's own log line. Don't invent a
   testimonial, review, subscriber count or "trusted by".
 - Do describe the author as "I play rhythm guitar in a band". Don't name an
@@ -584,7 +594,8 @@ Project-specific slop:
 - Gradients on the wordmark or pathway art.
 - A stats row on `/path/`. Progress is one line of mono text.
 - Accent on more than status marks + one primary action per screen.
-- A light theme.
+- Gold set as text colour below 20px.
+- A dark theme.
 - Changing routes, content, data files, the log, or the fretboard renderer's
   geometry.
 
