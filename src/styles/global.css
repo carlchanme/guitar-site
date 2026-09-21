@@ -2,23 +2,23 @@
    custom property here is a token there. OKLCH only. One radius. Three faces:
    Fraunces (display), Schibsted Grotesk (text), JetBrains Mono (numbers). */
 :root{
-  --bg:        oklch(0.17 0.006 60);
-  --surface:   oklch(0.21 0.007 60);
-  --card:      oklch(0.24 0.008 60);
-  --ink:       oklch(0.94 0.006 80);
-  --ink-soft:  oklch(0.70 0.008 70);
-  --ink-faint: oklch(0.52 0.008 70);
-  --line:      oklch(0.27 0.008 60);
-  --accent:    oklch(0.72 0.12 250);
-  --accent-ink:oklch(0.15 0.02 250);
+  --bg:        oklch(0.955 0.012 85);
+  --surface:   oklch(0.93 0.014 85);
+  --card:      oklch(0.905 0.016 85);
+  --ink:       oklch(0.20 0.012 60);
+  --ink-soft:  oklch(0.42 0.012 60);
+  --ink-faint: oklch(0.60 0.012 70);
+  --line:      oklch(0.87 0.02 85);
+  --accent:    oklch(0.68 0.13 80);
+  --accent-ink:oklch(0.20 0.05 70);
   --danger:    oklch(0.55 0.16 25);
   /* fretboard material, not UI colour */
-  --board:     oklch(0.28 0.04 50);
+  --board:     oklch(0.22 0.012 60);
   --fret:      oklch(0.74 0.03 85);
-  --string:    oklch(0.91 0.02 85);
-  --tone:      oklch(0.93 0.02 85);
+  --string:    oklch(0.88 0.015 85);
+  --tone:      oklch(0.95 0.012 85);
   --root:      var(--accent);
-  --scrim:     oklch(0 0 0 / 0.5);
+  --scrim:     oklch(0.20 0.012 60 / 0.35);
 
   --radius: 2px;
 
@@ -38,7 +38,7 @@
   --track-caps: 0.12em;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;color-scheme:dark;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;color-scheme:light;-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition-duration:0.01ms !important;animation-duration:0.01ms !important;scroll-behavior:auto !important}

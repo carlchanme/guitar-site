@@ -20,6 +20,10 @@ const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
 <style is:global>
   .app{display:grid;grid-template-columns:72px 320px 1fr;min-height:100dvh}
   .rail{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:4px;position:sticky;top:0;height:100dvh}
+  .glyph{display:block;line-height:0}
+  .glyph img{display:block;border-radius:var(--radius)}
+  .rail .glyph{margin:2px 0 14px}
+  .rail .glyph:hover{opacity:.8}
   .rail .mark{font-family:var(--display);font-variation-settings:"SOFT" 50,"WONK" 0;font-size:var(--t-md);letter-spacing:var(--track-tight);text-decoration:none;color:var(--ink);writing-mode:vertical-rl;transform:rotate(180deg);margin-bottom:28px;padding:4px 0}
   .rail .mark:hover{opacity:.8}
   .rail a.item{width:60px;padding:8px 0 6px;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink-soft);text-decoration:none;font-size:11px;line-height:1;transition:opacity 150ms}
@@ -62,6 +66,7 @@ const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
 <a class="skip" href="#main">Skip to content</a>
 <div class="app">
   <nav class="rail" aria-label="sections">
+    <a href="/" class="glyph" aria-label="home"><img src="/icon-192.png" width="36" height="36" alt="" /></a>
     <a href="/" class="mark" aria-label="home">Back seat to lead</a>
     {rail.map(([href, label, d, pre]) => <a href={href} class={"item" + (on(pre) ? " on" : "")} aria-label={label}><svg viewBox="0 0 24 24" aria-hidden="true"><path d={d}/></svg><span>{label}</span></a>)}
   </nav>
@@ -69,6 +74,7 @@ const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
   <div class="scrim" aria-hidden="true"></div>
   <main id="main" tabindex="-1">
     <div class="topbar">
+      <a href="/" class="glyph" aria-label="home"><img src="/icon-192.png" width="28" height="28" alt="" /></a>
       <button id="menu" aria-controls="side" aria-expanded="false">Days</button>
       <nav>{rail.map(([href, label, , pre]) => <a href={href} class={on(pre) ? "on" : ""}>{label}</a>)}</nav>
     </div>

@@ -41,16 +41,18 @@ export function fretboardSVG({
     s += `<line x1="${x}" y1="${top - 10}" x2="${x}" y2="${H - bottom + 10}" stroke="var(--fret)" stroke-width="3"/>`;
   }
 
-  // fret markers + numbers, one per column
+  // fret markers + numbers, one per column. Markers are hump-block inlays:
+  // a small ivory rounded rectangle, not a dot.
   if (fretMarkers) {
+    const hb = (cx, cy) => `<rect x="${cx - 9}" y="${cy - 5}" width="18" height="10" rx="3" fill="var(--tone)" opacity="0.55"/>`;
     for (let i = 0; i < nFrets; i++) {
       const f = fretStart + i;
       const cx = left + i * fw + fw / 2;
       if ([3, 5, 7, 9].includes(f)) {
-        s += `<circle cx="${cx}" cy="${top + sh * 2.5}" r="4" fill="var(--ink-faint)"/>`;
+        s += hb(cx, top + sh * 2.5);
       }
       if (f === 12) {
-        s += `<circle cx="${cx}" cy="${top + sh * 1.5}" r="4" fill="var(--ink-faint)"/><circle cx="${cx}" cy="${top + sh * 3.5}" r="4" fill="var(--ink-faint)"/>`;
+        s += hb(cx, top + sh * 1.5) + hb(cx, top + sh * 3.5);
       }
       s += `<text x="${cx}" y="${H - 8}" font-size="13" fill="var(--ink-faint)" text-anchor="middle">${f}</text>`;
     }
