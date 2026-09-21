@@ -453,6 +453,11 @@ radius ladder (the old 2 / 4 / 5 / 6 / 8 / 9 / 10 / 12 / 14px is gone).
   there is still one. Secondary: `card` background, 1px `line` border, `ink`
   text, weight 400. The landing CTA is the primary at 48px tall, 24px
   horizontal padding. Hover on any button: opacity 0.85 over 150ms.
+  Disabled: the same button at 0.4 opacity, `cursor: not-allowed`, no colour
+  change, `aria-disabled="true"`. All three live in `Action.astro`;
+  `variant="link"` is a text link with no underline at rest and a 1px
+  underline on hover and focus-visible only. No other component may define a
+  primary look.
 - **Rail.** 72px, `surface`, right hairline. Wordmark in Fraunces set
   vertically. Items are a 20px drawn SVG glyph over an 11px text label; active
   = `ink` on `card`. Never accent.

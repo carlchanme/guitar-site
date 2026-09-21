@@ -2,9 +2,12 @@
 // One metronome engine per page (window.gm). Multiple <Metronome> tags can
 // exist; each one drives the shared engine when its Start is pressed, so only
 // one clicks at a time. Props are the starting preset for this instance.
+import Card from "./Card.astro";
+import Action from "./Action.astro";
 const { bpm = 60, subdiv = 1, compact = false, primary = false, id = "m" } = Astro.props;
 ---
-<div class={"metro" + (compact ? " compact" : "")} data-metronome data-bpm={bpm} data-subdiv={subdiv} id={"metro-" + id}>
+<Card data-metronome data-bpm={bpm} data-subdiv={subdiv} id={"metro-" + id}>
+<div class={"metro" + (compact ? " compact" : "")}>
   <div class="row top">
     <button class="adj" data-d="-5" aria-label="minus five">−5</button>
     <button class="adj" data-d="-1" aria-label="minus one">−1</button>
@@ -17,13 +20,13 @@ const { bpm = 60, subdiv = 1, compact = false, primary = false, id = "m" } = Ast
       {[1, 2, 3, 4].map((n) => <button class={"s" + (n === subdiv ? " on" : "")} data-sub={n}>{n}</button>)}
     </div>
     <button class="tap">Tap</button>
-    <button class={"go" + (primary ? " primary" : "")} data-go>Start</button>
+    <Action variant={primary ? "primary" : undefined} class="go" data-go>Start</Action>
   </div>
   <div class="beat" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 </div>
+</Card>
 
 <style>
-  .metro{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:16px 0}
   .row{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
   .row+.row{margin-top:12px}
   .bpm{min-width:96px;text-align:center;font-family:var(--mono);font-size:var(--t-xl);line-height:1;font-weight:500;font-variant-numeric:tabular-nums}
@@ -33,7 +36,7 @@ const { bpm = 60, subdiv = 1, compact = false, primary = false, id = "m" } = Ast
   .sub button{border:0;border-radius:0;min-width:44px;padding:8px 6px;background:transparent;font-family:var(--mono);font-size:var(--t-xs)}
   .sub button+button{border-left:1px solid var(--line)}
   .sub button.on{background:var(--ink);color:var(--bg)}
-  .go{min-width:96px}
+  .metro :global(.go){min-width:96px;justify-content:center}
   .beat{display:flex;gap:6px;justify-content:center;margin-top:12px;height:8px}
   .beat i{width:8px;height:8px;border-radius:50%;background:var(--line);display:none}
   .beat i.show{display:block}

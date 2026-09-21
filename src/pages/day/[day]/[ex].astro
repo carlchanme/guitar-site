@@ -3,6 +3,7 @@ import App from "../../../layouts/App.astro";
 import Stepper from "../../../components/Stepper.astro";
 import Metronome from "../../../components/Metronome.astro";
 import ExerciseTimer from "../../../components/ExerciseTimer.astro";
+import Action from "../../../components/Action.astro";
 import { allDays, getDay, exHref, neighbours } from "../../../lib/course.js";
 export function getStaticPaths() {
   return allDays.flatMap((d) => d.exercises.filter((e) => e.kind !== "lesson").map((e) => ({ params: { day: String(d.day), ex: e.id } })));
@@ -34,8 +35,8 @@ const n = hasLesson ? index : index + 1;
   {Body ? <Body day={day} ex={ex} props={ex.props ?? {}} /> : <p class="muted">Not written yet.</p>}
 
   <div class="pn">
-    {prev && prev.kind !== "lesson" ? <a class="btn" href={exHref(day, prev)}>Back: {prev.title}</a> : <a class="btn" href={`/day/${day.day}/`}>Back: Lesson</a>}
-    <a class="btn" href={nextHref}>Next: {nextTitle}</a>
+    {prev && prev.kind !== "lesson" ? <Action href={exHref(day, prev)}>Back: {prev.title}</Action> : <Action href={`/day/${day.day}/`}>Back: Lesson</Action>}
+    <Action href={nextHref}>Next: {nextTitle}</Action>
   </div>
 </App>
 <style>

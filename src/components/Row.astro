@@ -1,0 +1,25 @@
+---
+// A list row: optional leading mark, title, mono metadata on the right, one
+// hairline above. The list that holds rows closes with its own bottom hairline.
+const { href = null, meta = null, class: extra = "" } = Astro.props;
+const Tag = href ? "a" : "div";
+---
+<li class={["row", extra].filter(Boolean).join(" ")}>
+  <Tag href={href}>
+    <slot name="leading" />
+    <span class="title"><slot /></span>
+    {meta && <span class="meta mono">{meta}</span>}
+  </Tag>
+</li>
+<style>
+  .row{list-style:none;border-top:1px solid var(--line);padding:14px 0}
+  .row > *{display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px;align-items:center;color:var(--ink);text-decoration:none;transition:opacity 150ms}
+  .row > a:hover{opacity:.8}
+  .row > * > :global(svg){grid-row:span 2}
+  .title{min-width:0}
+  .meta{font-family:var(--mono);font-size:var(--t-xs);color:var(--ink-soft);white-space:nowrap;text-align:right}
+  @media (max-width:600px){
+    .row > *{grid-template-columns:auto 1fr}
+    .meta{grid-column:2;text-align:left}
+  }
+</style>

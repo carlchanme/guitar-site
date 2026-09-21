@@ -66,13 +66,11 @@ hr{border:0;border-top:1px solid var(--line);margin:32px 0}
 button{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);
   border-radius:var(--radius);padding:10px 14px;min-height:44px;cursor:pointer;touch-action:manipulation;transition:opacity 150ms}
 button:hover{opacity:.85}
-button.primary,.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
-.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;touch-action:manipulation;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:10px 16px;min-height:44px;font-size:var(--t-base);transition:opacity 150ms}
-.btn:hover{opacity:.85}
 select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px}
 .board{width:100%;max-width:600px;height:auto;display:block;margin:16px 0}
 .chord{height:150px;width:auto;display:inline-block;margin:8px 12px 8px 0}
 .note{border-left:1px solid var(--ink-soft);padding:2px 0 2px 16px;margin:16px 0}
+.notes{font-family:var(--mono);font-size:var(--t-md);font-weight:500;letter-spacing:0.08em;margin:16px 0}
 .muted{color:var(--ink-soft)}
 .faint{color:var(--ink-faint)}
 .small{font-size:var(--t-xs);line-height:var(--lh-xs)}

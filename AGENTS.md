@@ -101,7 +101,30 @@ Four fundamentals, each as a rule for this project:
 5. `npm run build` is clean. Check 375, 768, 1024 and 1440 with no horizontal
    scroll; the hero overlay survives 375.
 6. `npx @google/design.md lint DESIGN.md` reports `errors: 0`.
-7. Do not commit. The author reviews and commits.
+7. `npm test` (static drift + component primitives) is green. `npm run
+   test:visual` matches the committed baselines in `tests/visual/__baselines__`;
+   an intended visual change is re-baselined with `npm run test:visual:update`
+   and the new PNGs go in the same commit.
+8. Do not commit. The author reviews and commits.
+
+## Tests
+
+Design-drift only; no functional tests live here.
+
+- Layer 1 `tests/static/design-drift.test.ts` — scans `src/**` for hex/rgb/hsl,
+  banned fonts, gradients, shadows, radius ladders, scale transforms, symbols,
+  the accent budget, and that every `:root` token exists in `DESIGN.md`.
+- Layer 2 `tests/components/primitives.test.ts` — renders `Card`, `Field`,
+  `Action`, `Row`, `SpecTable`, `StatusIcon` through the Astro Container API and
+  asserts the allowed states exist and the forbidden variants do not. New UI
+  composes these primitives; a second "button" or "card" file fails the suite.
+- Layer 3 `tests/visual/screens.spec.ts` — Playwright screenshots of `/`,
+  `/path/`, `/day/1/`, `/day/1/mute/`, `/progress/`, `/log/`, `/metronome/`,
+  `/404.html` at 1440×900 and 390×844 plus the open drawer, served from `dist/`
+  by `tests/visual/serve.mjs` on :4321.
+- Layer 4 Vizzly — `npm run vizzly:start` (viewer at http://localhost:47392),
+  then every `npm run test:visual` also pushes the PNGs there for approve /
+  reject. `npm run vizzly:stop` when done. `.vizzly/` is local, not committed.
 
 ## Development
 

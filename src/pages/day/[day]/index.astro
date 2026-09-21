@@ -2,6 +2,8 @@
 import App from "../../../layouts/App.astro";
 import Stepper from "../../../components/Stepper.astro";
 import StatusIcon from "../../../components/StatusIcon.astro";
+import Action from "../../../components/Action.astro";
+import Row from "../../../components/Row.astro";
 import { allDays, getDay, exHref, dayProgress } from "../../../lib/course.js";
 export function getStaticPaths() { return allDays.map((d) => ({ params: { day: String(d.day) } })); }
 const day = getDay(Astro.params.day);
@@ -24,11 +26,14 @@ const Lesson = lesson ? mods[`../../../exercises/${lesson.component}.astro`]?.de
     <span class="small muted mono">{dp.done}/{dp.total} done · {day.exercises.reduce((a, e) => a + (e.minutes || 0), 0)} min</span>
   </div>
 
-  {first && <p><a class="btn primary" href={exHref(day, first)}>Start with {first.title}</a></p>}
+  {first && <p><Action variant="primary" href={exHref(day, first)}>Start with {first.title}</Action></p>}
 
   <ol class="exl">
     {day.exercises.filter((e) => e.kind !== "lesson").map((e, i) => (
-      <li><a href={exHref(day, e)}><StatusIcon status={e.status} size={20} /><span>Exercise {i + 1} · {e.title}</span><small class="muted mono">{e.minutes} min{e.bpm && ` · ${e.bpm} BPM · ${e.subdiv} per click`}</small></a></li>
+      <Row href={exHref(day, e)} meta={`${e.minutes} min` + (e.bpm ? ` · ${e.bpm} BPM · ${e.subdiv} per click` : "")}>
+        <StatusIcon slot="leading" status={e.status} size={20} />
+        Exercise {i + 1} · {e.title}
+      </Row>
     ))}
   </ol>
 
@@ -37,16 +42,9 @@ const Lesson = lesson ? mods[`../../../exercises/${lesson.component}.astro`]?.de
 <style>
   .head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-top:24px}
   .head span{white-space:nowrap;padding-top:6px}
-  .exl{list-style:none;padding:0;margin:8px 0 24px;display:flex;flex-direction:column}
-  .exl li{border-top:1px solid var(--line)}
-  .exl li:last-child{border-bottom:1px solid var(--line)}
-  .exl a{display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px;align-items:center;padding:14px 0;text-decoration:none;transition:opacity 150ms}
-  .exl a:hover{opacity:.8}
-  .exl a small{white-space:nowrap}
+  .exl{padding:0;margin:8px 0 24px;border-bottom:1px solid var(--line)}
   @media (max-width:600px){
     .head{flex-direction:column;gap:0}
     .head span{padding-top:0}
-    .exl a{grid-template-columns:auto 1fr}
-    .exl a small{grid-column:2}
   }
 </style>
