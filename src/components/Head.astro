@@ -2,6 +2,7 @@
 // Shared <head>: fonts (Fraunces display · Schibsted Grotesk text · JetBrains Mono numbers), meta, favicon.
 import "../styles/global.css";
 const { title, description = "" } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -10,6 +11,13 @@ const { title, description = "" } = Astro.props;
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <title>{title}</title>
 {description && <meta name="description" content={description} />}
+<link rel="canonical" href={canonical} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Back seat to lead" />
+<meta property="og:title" content={title} />
+{description && <meta property="og:description" content={description} />}
+<meta property="og:url" content={canonical} />
+<meta name="twitter:card" content="summary" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
