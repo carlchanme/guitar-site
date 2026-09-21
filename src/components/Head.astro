@@ -1,0 +1,16 @@
+---
+// Shared <head>: fonts (Fraunces display · Schibsted Grotesk text · JetBrains Mono numbers), meta, favicon.
+import "../styles/global.css";
+const { title, description = "" } = Astro.props;
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="oklch(0.17 0.006 60)" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>{title}</title>
+{description && <meta name="description" content={description} />}
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,50,0&family=JetBrains+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400..800&display=swap" />

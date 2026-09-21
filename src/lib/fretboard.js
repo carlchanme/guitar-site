@@ -47,12 +47,12 @@ export function fretboardSVG({
       const f = fretStart + i;
       const cx = left + i * fw + fw / 2;
       if ([3, 5, 7, 9].includes(f)) {
-        s += `<circle cx="${cx}" cy="${top + sh * 2.5}" r="4" fill="#6f5a48"/>`;
+        s += `<circle cx="${cx}" cy="${top + sh * 2.5}" r="4" fill="var(--ink-faint)"/>`;
       }
       if (f === 12) {
-        s += `<circle cx="${cx}" cy="${top + sh * 1.5}" r="4" fill="#6f5a48"/><circle cx="${cx}" cy="${top + sh * 3.5}" r="4" fill="#6f5a48"/>`;
+        s += `<circle cx="${cx}" cy="${top + sh * 1.5}" r="4" fill="var(--ink-faint)"/><circle cx="${cx}" cy="${top + sh * 3.5}" r="4" fill="var(--ink-faint)"/>`;
       }
-      s += `<text x="${cx}" y="${H - 8}" font-size="13" fill="var(--muted)" text-anchor="middle">${f}</text>`;
+      s += `<text x="${cx}" y="${H - 8}" font-size="13" fill="var(--ink-faint)" text-anchor="middle">${f}</text>`;
     }
   }
 
@@ -69,7 +69,7 @@ export function fretboardSVG({
     const y = top + (5 - st) * sh;
     const width = 1 + (5 - st) * 0.4;
     s += `<line x1="${left - 6}" y1="${y}" x2="${W - right}" y2="${y}" stroke="var(--string)" stroke-width="${width}"/>`;
-    s += `<text x="${left - 14}" y="${y + 5}" font-size="14" fill="var(--muted)" text-anchor="end">${stringNames[st]}</text>`;
+    s += `<text x="${left - 14}" y="${y + 5}" font-size="14" fill="var(--ink-faint)" text-anchor="end">${stringNames[st]}</text>`;
   }
 
   // dots
@@ -77,9 +77,9 @@ export function fretboardSVG({
     const cx = left + (d.fret - fretStart) * fw + fw / 2;
     const cy = top + (5 - d.string) * sh;
     const fill = d.root ? "var(--root)" : "var(--tone)";
-    const textFill = d.root ? "#fff" : "#1a120c";
+    const textFill = "var(--accent-ink)";
     const op = d.dim ? ' opacity="0.45"' : "";
-    s += `<circle cx="${cx}" cy="${cy}" r="15" fill="${fill}" stroke="#1a120c" stroke-width="1"${op}/>`;
+    s += `<circle cx="${cx}" cy="${cy}" r="15" fill="${fill}" stroke="var(--accent-ink)" stroke-width="1"${op}/>`;
     s += `<text x="${cx}" y="${cy + 5}" font-size="14" font-weight="700" text-anchor="middle" fill="${textFill}"${op}>${d.label ?? ""}</text>`;
   }
 
@@ -124,7 +124,7 @@ export function chordBoxSVG({ name, fingers, baseFret = 1, ariaLabel }) {
   if (baseFret === 1) {
     s += `<rect x="${left - 1}" y="${top - 4}" width="${sw * 5 + 2}" height="5" fill="var(--ink)"/>`;
   } else {
-    s += `<text x="${left - 8}" y="${top + fh / 2 + 5}" font-size="13" text-anchor="end" fill="var(--muted)">${baseFret}fr</text>`;
+    s += `<text x="${left - 8}" y="${top + fh / 2 + 5}" font-size="13" text-anchor="end" fill="var(--ink-faint)">${baseFret}fr</text>`;
   }
   for (let i = 0; i <= nFrets; i++) {
     const y = top + i * fh;
@@ -135,14 +135,14 @@ export function chordBoxSVG({ name, fingers, baseFret = 1, ariaLabel }) {
     s += `<line x1="${x}" y1="${top}" x2="${x}" y2="${top + fh * nFrets}" stroke="var(--ink)" stroke-width="${1.6 - st * 0.15}"/>`;
     const f = fingers[st];
     if (f === "x") {
-      s += `<text x="${x}" y="${top - 10}" font-size="15" text-anchor="middle" fill="var(--warn)">×</text>`;
+      s += `<text x="${x}" y="${top - 10}" font-size="15" text-anchor="middle" fill="var(--ink-faint)">×</text>`;
     } else if (f === 0) {
       s += `<circle cx="${x}" cy="${top - 14}" r="5" fill="none" stroke="var(--ink)" stroke-width="1.5"/>`;
     } else if (f && typeof f === "object") {
       const cy = top + (f.fret - baseFret) * fh + fh / 2;
       const fill = f.root ? "var(--root)" : "var(--ink)";
       s += `<circle cx="${x}" cy="${cy}" r="12" fill="${fill}"/>`;
-      if (f.finger != null) s += `<text x="${x}" y="${cy + 5}" font-size="13" font-weight="700" text-anchor="middle" fill="#fff">${f.finger}</text>`;
+      if (f.finger != null) s += `<text x="${x}" y="${cy + 5}" font-size="13" font-weight="700" text-anchor="middle" fill="${f.root ? "var(--accent-ink)" : "var(--bg)"}">${f.finger}</text>`;
     }
   }
   s += `</svg>`;

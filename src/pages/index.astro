@@ -1,57 +1,179 @@
 ---
-import App from "../layouts/App.astro";
-import StatusIcon from "../components/StatusIcon.astro";
-import { pathway, phases, pathwayProgress, phaseProgress, currentDay, dayHref, dayProgress } from "../lib/course.js";
+// Landing page. Six sections. The hero is staged around the author's own
+// guitar; until the photo is shot, a rendered fretboard stands in, in the
+// same box, so the swap is a file change (see HERO ART below).
+import Site from "../layouts/Site.astro";
+import { fretboardSVG } from "../lib/fretboard.js";
+import { pathway, phases, pathwayProgress } from "../lib/course.js";
+
 const total = pathwayProgress();
-const cur = currentDay();
-const cp = dayProgress(cur);
+const neck = fretboardSVG({ fretStart: 0, fretEnd: 12, ariaLabel: "Stand-in for the guitar photo: a full electric fretboard, nut to the twelfth fret" });
+const muting = fretboardSVG({
+  fretStart: 3, fretEnd: 7,
+  dots: [{ string: 3, fret: 5, root: true, label: "C" }],
+  marks: [0, 1, 2, 4, 5].map((s) => ({ string: s })),
+  ariaLabel: "The muting test: one note, C on the G string at the fifth fret, every other string marked silent",
+});
+const spec = [
+  ["Phases", String(phases.length)],
+  ["Days", String(total.total)],
+  ["Session", "30 min"],
+  ["Sessions per week", "5"],
+  ["Gate rule", "fail = repeat the week"],
+  ["Gear assumed", "any electric, any amp or modeller"],
+  ["Cost", "free"],
+];
 ---
-<App title={pathway.title} description={pathway.intro}>
-  <p class="crumb">{pathway.subtitle}</p>
-  <h1>{pathway.title}</h1>
-  <p>{pathway.intro}</p>
+<Site title={pathway.title} description="A 14-week practice path for church worship guitarists moving from chords to being heard: clean hands first, one lead line, learned in public.">
+<header class="top g">
+  <a class="mark" href="/">Worship electric</a>
+  <nav><a href="/path/">Path</a><a href="/log/">Log</a></nav>
+</header>
 
-  <a class="continue" href={dayHref(cur)}>
-    <div>
-      <span class="small muted">Continue</span>
-      <strong>Day {cur.day}. {cur.title}</strong>
-      <span class="small muted">{cur.phase.title} · {cp.done}/{cp.total} exercises done</span>
-    </div>
-    <StatusIcon status="current" size={32} />
-  </a>
-
-  <div class="stat">
-    <div><b>{total.done}</b><span>of {total.total} days</span></div>
-    <div><b>{phases.filter((p) => p.status === "done").length}</b><span>of {phases.length} phases</span></div>
-    <div><b>{pathway.end.slice(8)} Dec</b><span>target</span></div>
+<section class="hero g" aria-label="intro">
+  <!-- HERO ART: when the photo exists, replace the <Fragment> below with
+       <img src="/hero-guitar.jpg" alt="…"> and delete the .stand-in rule. Same box. -->
+  <figure class="art stand-in"><Fragment set:html={neck} /></figure>
+  <h1>Learn to be heard on Sunday.</h1>
+  <div class="foot">
+    <p class="kicker">14 weeks · 5 × 30 min · learned in public</p>
+    <a class="cta" href="/day/1/">Start day 1</a>
   </div>
+</section>
 
-  <h2>Phases</h2>
-  {phases.map((p) => { const pp = phaseProgress(p); return (
-    <div class={"phase " + p.status}>
-      <div class="ph">
-        <div><b>{p.name} · {p.title}</b><span class="small muted">{p.weeks} · {pp.done}/{pp.total} days</span></div>
-        <StatusIcon status={p.status} />
-      </div>
-      <i class="bar"><b style={`width:${pp.pct}%`}></b></i>
-      <p class="small">{p.outcome}</p>
-      {p.days.length > 0 && <p class="small"><a href={dayHref(p.days[0])}>Open day {p.days[0].day} →</a></p>}
-    </div>
-  ); })}
-</App>
+<section class="moments" aria-label="three moments">
+  <div class="g m1">
+    <h2>Hands before theory.</h2>
+    <p>On Sunday the lead lines fail for two physical reasons: strings I am not playing ring under the gain, and the picking is uneven. Two weeks of muting and metronome picking, and the same lines come out clean.</p>
+  </div>
+  <div class="g m2">
+    <figure><Fragment set:html={muting} /></figure>
+    <figcaption class="kicker">01 · The muting test. Fret C, pick once, four beats. Anything else ringing is a fail.</figcaption>
+  </div>
+  <div class="g m3">
+    <p class="big">14</p>
+    <p class="kicker">weeks to 31 December</p>
+  </div>
+</section>
+
+<section class="editorial g" aria-label="what it is">
+  <p>It is a daily path. Each day is one page with a timer, a metronome and the diagrams for that day. Press start, play, log it. It is not a theory course: nothing gets written here until I can play it, and no scale gets explained before the hands can hold a note clean.</p>
+</section>
+
+<section class="spec g" aria-label="specification">
+  <dl>
+    {spec.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+  </dl>
+</section>
+
+<section class="quote g" aria-label="from the log">
+  <blockquote>
+    <p>Guitar ends up in the back seat, not heard.</p>
+    <footer class="kicker">Practice log · 21 Sep 2026 · Baseline</footer>
+  </blockquote>
+</section>
+
+<section class="end g" aria-label="start">
+  <a class="cta" href="/day/1/">Start day 1</a>
+</section>
+
+<footer class="chrome g">
+  <p class="mono">I play guitar at my church. Notes to myself, shared.</p>
+  <a class="mark small" href="/">Worship electric</a>
+</footer>
+</Site>
+
 <style>
-  .continue{display:flex;justify-content:space-between;align-items:center;gap:14px;background:var(--card);border:1px solid var(--accent);border-radius:14px;padding:16px 18px;text-decoration:none;margin:18px 0}
-  .continue strong{display:block;font-size:20px;margin:2px 0}
-  .continue span{display:block}
-  .stat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
-  .stat div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
-  .stat b{display:block;font-size:26px;line-height:1.1}
-  .stat span{font-size:13px;color:var(--muted)}
-  .phase{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0}
-  .phase.locked{opacity:.7}
-  .ph{display:flex;justify-content:space-between;align-items:center}
-  .ph b{display:block}
-  .ph span{display:block}
-  .bar{display:block;height:3px;background:var(--line);border-radius:2px;margin:8px 0 4px}
-  .bar b{display:block;height:100%;background:var(--accent);border-radius:2px}
+  :root{--gutter:clamp(16px, 5vw, 72px)}
+  .g{display:grid;grid-template-columns:repeat(12, 1fr);column-gap:24px;max-width:1440px;margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter)}
+  .mark{font-family:var(--display);font-variation-settings:"SOFT" 50,"WONK" 0;font-weight:500;font-size:var(--t-md);letter-spacing:var(--track-tight);text-decoration:none}
+  .kicker{margin:0}
+  .cta{display:inline-flex;align-items:center;min-height:48px;padding:0 24px;background:var(--accent);color:var(--accent-ink);font-weight:700;text-decoration:none;border-radius:var(--radius);transition:opacity 150ms}
+  .cta:hover{opacity:.85}
+
+  /* 1 · hero */
+  .top{grid-column:1/-1;align-items:center;padding-top:24px;padding-bottom:24px}
+  .top .mark{grid-column:2/6}
+  .top nav{grid-column:9/12;display:flex;gap:24px;justify-content:flex-end;font-size:var(--t-xs)}
+  .top nav a{text-decoration:none;color:var(--ink-soft)}
+  .hero{position:relative;min-height:calc(100svh - 88px);grid-template-rows:1fr auto;padding-bottom:64px;overflow:hidden}
+  .hero .art{grid-column:5/12;grid-row:1;align-self:center;justify-self:center;position:relative;margin:-4svh 0 0;height:min(70svh, 800px);aspect-ratio:4/5;min-width:0}
+  .hero .stand-in :global(svg){position:absolute;left:50%;top:50%;width:min(70svh, 800px);max-width:none;height:auto;margin:0;transform:translate(-50%,-50%) rotate(90deg)}
+  .hero h1{grid-column:2/10;grid-row:1;align-self:center;position:relative;z-index:2;margin:0;font-size:var(--t-2xl);line-height:var(--lh-2xl);font-weight:500;padding:24px 0}
+  /* legibility mask: the page colour, feathered, no hard edge */
+  .hero h1::before{content:"";position:absolute;inset:-32px -64px;z-index:-1;background:radial-gradient(ellipse 60% 70% at 50% 50%, oklch(0.17 0.006 60 / 0.9), oklch(0.17 0.006 60 / 0) 100%)}
+  .hero .foot{grid-column:2/8;grid-row:2;display:flex;flex-direction:column;gap:20px;align-items:flex-start}
+
+  /* 2 · three moments */
+  .moments{padding-top:144px}
+  .m1 h2{grid-column:2/8;margin:0;font-size:var(--t-xl);line-height:var(--lh-xl)}
+  .m1 p{grid-column:2/8;font-size:var(--t-md);line-height:var(--lh-md);margin:24px 0 0;max-width:34em}
+  .m2{margin-top:144px;overflow:hidden;position:relative}
+  .m2 figure{grid-column:5/13;margin:0 calc(-1 * var(--gutter)) 0 0}
+  .m2 figure :global(svg){width:100%;max-width:none;margin:0}
+  .m2 figcaption{grid-column:2/6;margin-top:24px;max-width:28em}
+  .m3{margin-top:144px}
+  .m3 .big{grid-column:7/12;margin:0;font-family:var(--display);font-variation-settings:"SOFT" 50,"WONK" 0;font-weight:400;font-size:var(--t-3xl);line-height:var(--lh-3xl);letter-spacing:-0.04em}
+  .m3 .kicker{grid-column:7/12;margin-top:8px}
+
+  /* 3 · editorial */
+  .editorial{padding-top:192px}
+  .editorial p{grid-column:2/9;font-size:clamp(22px, 2vw, 28px);line-height:1.4;margin:0;max-width:none}
+
+  /* 4 · spec */
+  .spec{padding-top:144px}
+  .spec dl{grid-column:2/8;margin:0;font-family:var(--mono);font-size:var(--t-xs)}
+  .spec dl div{display:grid;grid-template-columns:1fr 1.4fr;gap:24px;padding:14px 0;border-top:1px solid var(--line)}
+  .spec dl div:last-child{border-bottom:1px solid var(--line)}
+  .spec dt{color:var(--ink-soft);margin:0}
+  .spec dd{margin:0}
+
+  /* 5 · pull-quote */
+  .quote{padding-top:192px}
+  .quote blockquote{grid-column:3/11;margin:0}
+  .quote blockquote p{font-family:var(--display);font-variation-settings:"SOFT" 50,"WONK" 0;font-weight:400;font-size:var(--t-xl);line-height:var(--lh-xl);letter-spacing:var(--track-tight);margin:0;max-width:none}
+  .quote footer{margin-top:24px}
+
+  /* 6 · footer cta */
+  .end{padding-top:192px;padding-bottom:192px}
+  .end .cta{grid-column:2/5;justify-self:start}
+  .chrome{align-items:center;border-top:1px solid var(--line);padding-top:24px;padding-bottom:48px}
+  .chrome p{grid-column:2/8;margin:0;color:var(--ink-soft)}
+  .chrome .mark{grid-column:10/12;justify-self:end;font-size:var(--t-base)}
+
+  /* tablet: same asymmetry, wider spans so 8–10 columns of a 12-col grid carry the text */
+  @media (min-width:721px) and (max-width:1024px){
+    .hero .foot{grid-column:2/12}
+    .m1 h2,.m1 p{grid-column:2/11}
+    .m2 figcaption{grid-column:2/9}
+    .m3 .big,.m3 .kicker{grid-column:6/12}
+    .editorial p{grid-column:2/12}
+    .spec dl{grid-column:2/11}
+    .quote blockquote{grid-column:2/12}
+    .chrome p{grid-column:2/9}
+    .chrome .mark{grid-column:9/12;white-space:nowrap}
+  }
+  @media (max-width:900px){
+    .moments{padding-top:96px}
+    .m2,.m3{margin-top:96px}
+    .editorial,.quote{padding-top:144px}
+    .spec{padding-top:96px}
+    .end{padding-top:144px;padding-bottom:144px}
+  }
+  @media (max-width:720px){
+    .g > *{grid-column:1/-1}
+    .top nav{justify-content:flex-start}
+    .hero{min-height:calc(100svh - 80px);padding-bottom:40px}
+    .top .mark{grid-column:1/8}
+    .top nav{grid-column:8/-1;justify-content:flex-end}
+    .hero .art{grid-column:1/-1;justify-self:stretch;margin:0;height:62svh;aspect-ratio:auto;width:100%}
+    .hero .stand-in :global(svg){width:62svh}
+    .hero h1{grid-column:1/-1;align-self:end;margin-bottom:8px;padding:16px 0}
+    .hero h1::before{inset:-16px -24px}
+    .hero .foot{grid-column:1/-1;gap:16px}
+    .m2 figure{margin:0 calc(-1 * var(--gutter))}
+    .m3 .big{font-size:clamp(140px, 42vw, 200px)}
+    .editorial p{font-size:22px}
+    .chrome .mark{justify-self:start;margin-top:16px}
+  }
 </style>

@@ -1,12 +1,13 @@
 ---
 // done = filled check · current = ring with play · todo = empty ring · locked = padlock
+// Status marks are the only round shapes and (with the one primary action) the only accent on a screen.
 const { status = "todo", size = 22 } = Astro.props;
 const s = size, r = s / 2 - 1.5;
 ---
 <svg class={"st st-" + status} width={s} height={s} viewBox={`0 0 ${s} ${s}`} aria-label={status} role="img">
-  {status === "done" && <><circle cx={s/2} cy={s/2} r={r} fill="var(--accent)"/><path d={`M${s*0.3} ${s*0.52} l${s*0.13} ${s*0.13} l${s*0.28} -${s*0.3}`} fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></>}
+  {status === "done" && <><circle cx={s/2} cy={s/2} r={r} fill="var(--accent)"/><path d={`M${s*0.3} ${s*0.52} l${s*0.13} ${s*0.13} l${s*0.28} -${s*0.3}`} fill="none" stroke="var(--accent-ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></>}
   {status === "current" && <><circle cx={s/2} cy={s/2} r={r} fill="none" stroke="var(--accent)" stroke-width="2"/><path d={`M${s*0.42} ${s*0.33} L${s*0.68} ${s*0.5} L${s*0.42} ${s*0.67} Z`} fill="var(--accent)"/></>}
   {status === "todo" && <circle cx={s/2} cy={s/2} r={r} fill="none" stroke="var(--line)" stroke-width="2"/>}
-  {status === "locked" && <><rect x={s*0.28} y={s*0.45} width={s*0.44} height={s*0.36} rx="2" fill="var(--muted)"/><path d={`M${s*0.36} ${s*0.45} v-${s*0.12} a${s*0.14} ${s*0.14} 0 0 1 ${s*0.28} 0 v${s*0.12}`} fill="none" stroke="var(--muted)" stroke-width="2"/></>}
+  {status === "locked" && <><rect x={s*0.28} y={s*0.45} width={s*0.44} height={s*0.36} rx="2" fill="var(--ink-faint)"/><path d={`M${s*0.36} ${s*0.45} v-${s*0.12} a${s*0.14} ${s*0.14} 0 0 1 ${s*0.28} 0 v${s*0.12}`} fill="none" stroke="var(--ink-faint)" stroke-width="2"/></>}
 </svg>
 <style>.st{flex:none;display:block}</style>

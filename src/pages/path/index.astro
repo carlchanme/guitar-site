@@ -1,0 +1,57 @@
+---
+// Pathway overview. Was `/`; the landing page lives there now.
+import App from "../../layouts/App.astro";
+import StatusIcon from "../../components/StatusIcon.astro";
+import { pathway, phases, pathwayProgress, phaseProgress, currentDay, dayHref, dayProgress } from "../../lib/course.js";
+const total = pathwayProgress();
+const cur = currentDay();
+const cp = dayProgress(cur);
+const phasesDone = phases.filter((p) => p.status === "done").length;
+const end = new Date(pathway.end).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+---
+<App title={pathway.title} description={pathway.intro}>
+  <p class="crumb">{pathway.subtitle}</p>
+  <h1>{pathway.title}</h1>
+  <p>{pathway.intro}</p>
+
+  <p class="progress mono">{total.done}/{total.total} days · {phasesDone}/{phases.length} phases · ends {end}</p>
+
+  <a class="continue" href={dayHref(cur)}>
+    <StatusIcon status="current" size={24} />
+    <span>
+      <span class="small muted">Continue</span>
+      <strong>Day {cur.day}. {cur.title}</strong>
+      <span class="small muted">{cur.phase.title} · <span class="mono">{cp.done}/{cp.total}</span> exercises done</span>
+    </span>
+  </a>
+
+  <h2>Phases</h2>
+  <ol class="phases">
+    {phases.map((p) => { const pp = phaseProgress(p); return (
+      <li class={p.status}>
+        <StatusIcon status={p.status} size={20} />
+        <div class="body">
+          <b>{p.name} · {p.title}</b>
+          <span class="small muted"><span class="mono">{p.weeks}</span> · <span class="mono">{pp.done}/{pp.total}</span> days</span>
+          <p class="small">{p.outcome}</p>
+          {p.days.length > 0 && <a class="small" href={dayHref(p.days[0])}>Open day {p.days[0].day}</a>}
+        </div>
+      </li>
+    ); })}
+  </ol>
+</App>
+<style>
+  .progress{color:var(--ink-soft);margin:24px 0 8px}
+  .continue{display:flex;align-items:center;gap:16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;text-decoration:none;margin:0 0 24px}
+  .continue strong{display:block;font-family:var(--display);font-variation-settings:"SOFT" 50,"WONK" 0;font-weight:500;font-size:var(--t-md);letter-spacing:var(--track-tight);margin:2px 0}
+  .continue > span > span{display:block}
+  .phases{list-style:none;padding:0;margin:8px 0 0}
+  .phases li{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-top:1px solid var(--line)}
+  .phases li:last-child{border-bottom:1px solid var(--line)}
+  .phases li.locked{color:var(--ink-faint)}
+  .phases li.locked b{color:var(--ink-faint)}
+  .phases .body{flex:1;padding-top:1px}
+  .phases b{display:block}
+  .phases .body > span{display:block}
+  .phases p{margin:6px 0}
+</style>
