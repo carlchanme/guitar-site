@@ -157,7 +157,11 @@ const spec = [
     .end{padding-top:144px;padding-bottom:144px}
   }
   @media (max-width:720px){
-    .g > *{grid-column:1/-1}
+    /* one column: the specific desktop placements below outrank .g > *, so name them */
+    .g > *, .m1 h2, .m1 p, .m2 figure, .m2 figcaption, .m3 .big, .m3 .kicker,
+    .editorial p, .specs :global(.spec), .quote blockquote, .end .cta, .chrome p{grid-column:1/-1}
+    .m1 p, .m2 figcaption{max-width:none}
+    .end .cta{justify-self:start;white-space:nowrap}
     .top nav{justify-content:flex-start}
     .hero{min-height:calc(100svh - 80px);padding-bottom:40px}
     .top .mark{grid-column:1/8}

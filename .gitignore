@@ -27,3 +27,8 @@ pnpm-debug.log*
 test-results/
 playwright-report/
 .vizzly/
+
+# oh-my-claudecode session state
+.omc/
+# playwright run output
+test-results/
