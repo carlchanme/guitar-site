@@ -1,23 +1,23 @@
-# Worship electric — working notes
+# Back seat to lead — working notes
 
 ## Product
 
-A worship guitarist's practice course, learned in public. The site is two
+A rhythm guitarist's practice course, learned in public. The site is two
 things: a public landing page that says what the course is and who it is for,
 and the course app itself — a 14-week pathway of days, each day a page with a
 timer, a metronome and fretboard diagrams, plus a practice log and a progress
 view. The author is an intermediate acoustic player moving to electric on a
-church worship team; every lesson is written only after he can play it, and the
+band; every lesson is written only after he can play it, and the
 log is the raw material the course is built from.
 
-Audience: church worship guitarists, mostly hymn-based teams, who play chords
+Audience: rhythm guitarists in any band, who play chords
 already and want to be heard — build energy, play one clean lead line, stop
 being the back seat. They care how things look the way a good notebook looks:
 clear, quiet, no noise. Not the way a startup looks.
 
 Compliance, not style: the site never names the author's employer, its
 products, colleagues, paying clients, any freelance platform, or any company.
-"I play guitar at my church" is the whole bio. No testimonials, reviews, or
+"I play rhythm guitar in a band" is the whole bio. No testimonials, reviews, or
 counts that are not real; there are none today.
 
 ## Pages in scope

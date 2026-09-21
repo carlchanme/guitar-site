@@ -12,7 +12,7 @@ const daysLeft = Math.max(0, Math.ceil((new Date(target).getTime() - new Date(to
   <h1>Progress</h1>
   <p class="muted small mono">Rated {asOf} · target 31 Dec 2026 · {daysLeft} days left{phaseNow && <> · now: <strong>{phaseNow.name}</strong> (weeks {phaseNow.weeks})</>}</p>
 
-  <h2>The four that fix Sunday</h2>
+  <h2>The four that fix the gig</h2>
   <p>Lead lines hit other strings, fingers slow, guitar unheard. Not a theory problem. These four nodes are the whole job until they’re at 3.</p>
   {core.map((n) => (
     <div class="node core">
@@ -37,7 +37,7 @@ const daysLeft = Math.max(0, Math.ceil((new Date(target).getTime() - new Date(to
 
   <h2>Phases</h2>
   <table>
-    <thead><tr><th>Weeks</th><th>Phase</th><th>Nodes</th><th>Sunday-visible result</th></tr></thead>
+    <thead><tr><th>Weeks</th><th>Phase</th><th>Nodes</th><th>Result the band hears</th></tr></thead>
     <tbody>{phases.map((p) => <tr class={p === phaseNow ? "on" : ""}><td>{p.weeks}</td><td>{p.name}</td><td>{p.nodes.join(", ")}</td><td>{p.outcome}</td></tr>)}</tbody>
   </table>
 

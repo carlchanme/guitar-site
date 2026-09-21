@@ -13,7 +13,7 @@ import Field from "../../components/Field.astro";
 
   <hr>
   <h2>How to practice these</h2>
-  <p>Pick one key per week. Play the major pentatonic shape you know, then add the 4th. Run it over a I–IV–V loop and listen for what the 4th does over each chord. Then do the same on the minor side with the 2nd. Do not learn all six scales at once; two cover 90% of what you play on a Sunday.</p>
+  <p>Pick one key per week. Play the major pentatonic shape you know, then add the 4th. Run it over a I–IV–V loop and listen for what the 4th does over each chord. Then do the same on the minor side with the 2nd. Do not learn all six scales at once; two cover 90% of what you play in a set.</p>
   <p><a href="/lesson-3/">&larr; Back to the single-shape lesson</a></p>
 </App>
 
@@ -36,19 +36,19 @@ import Field from "../../components/Field.astro";
   const SCALES = [
     { name: "Major hexatonic", formula: "1 2 3 4 5 6", iv: [0, 2, 4, 5, 7, 9],
       edit: "Major scale minus the 7th. Or: major pentatonic plus the 4th.",
-      why: "This is the worship-lead scale. The major 7th fights the IV chord (it is a half-step from the IV's root) and pulls hard toward the I. Take it out and every note sits over I, IV and V without needing resolution — which is why so many worship and folk melodies never touch it. If you already play major pentatonic, you have five of these six notes." },
+      why: "This is the go-to lead scale for major-key songs. The major 7th fights the IV chord (it is a half-step from the IV's root) and pulls hard toward the I. Take it out and every note sits over I, IV and V without needing resolution — which is why so many pop, folk and worship melodies never touch it. If you already play major pentatonic, you have five of these six notes." },
     { name: "Minor hexatonic", formula: "1 2 b3 4 5 b7", iv: [0, 2, 3, 5, 7, 10],
       edit: "Natural minor minus the b6. Or: minor pentatonic plus the 2nd.",
-      why: "Minor-key worship (Am, Em, Dm songs) lives here. The b6 is the note that makes natural minor sound dark or medieval; drop it and the 2nd gives you a lift into the minor pentatonic without the gloom. This is the minor mirror of the scale above — same six pitches, relative minor root." },
+      why: "Minor-key songs (Am, Em, Dm) live here. The b6 is the note that makes natural minor sound dark or medieval; drop it and the 2nd gives you a lift into the minor pentatonic without the gloom. This is the minor mirror of the scale above — same six pitches, relative minor root." },
     { name: "Blues scale", formula: "1 b3 4 b5 5 b7", iv: [0, 3, 5, 6, 7, 10],
       edit: "Minor pentatonic plus the b5.",
-      why: "The b5 is a passing note, not a landing note. Slide through it between the 4 and 5. In worship this shows up in gospel-leaning arrangements and in any solo where you want grit for two beats before resolving. Use it sparingly on a congregation night; it reads as 'blues' instantly." },
+      why: "The b5 is a passing note, not a landing note. Slide through it between the 4 and 5. It shows up in gospel and blues-leaning arrangements and in any solo where you want grit for two beats before resolving. Use it sparingly in a set; it reads as 'blues' instantly." },
     { name: "Major blues", formula: "1 2 b3 3 5 6", iv: [0, 2, 3, 4, 7, 9],
       edit: "Major pentatonic plus the b3.",
       why: "The b3-to-3 slide is the entire point. Same trick as the blues scale but on the major side — country and gospel piano players own this sound. On guitar it falls under the major pentatonic shape with one added note a half-step below the 3rd." },
     { name: "Whole tone", formula: "1 2 3 #4 #5 b7", iv: [0, 2, 4, 6, 8, 10],
       edit: "Every note a whole step apart. Only two exist (C and C# — every other root is one of those two sets).",
-      why: "Symmetric, no root gravity, floats. Fits over dominant 7#5 chords and almost nowhere in a worship set. Know it exists; don't practise it this year." },
+      why: "Symmetric, no root gravity, floats. Fits over dominant 7#5 chords and almost nowhere in a band set. Know it exists; don't practise it this year." },
     { name: "Augmented", formula: "1 b3 3 5 b6 7", iv: [0, 3, 4, 7, 8, 11],
       edit: "Alternating minor 3rd, half step. Only four exist.",
       why: "Jazz and film-score colour. Listed for completeness so you know the full hexatonic family is six scales, of which two matter to you." },

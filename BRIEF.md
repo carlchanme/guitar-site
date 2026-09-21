@@ -111,3 +111,9 @@ Carl's reference: a pickupmusic-style course UI (sidebar of days with status, ex
 - Verified headless at 1440×900 and 390×844: no horizontal scroll, no console errors, drawer opens and navigates, timer + metronome start together on an exercise page, song page timer beeps without a metronome, redirect works.
 
 Not built: per-exercise "mark done" on the phone. Status changes only through course.json, written from Carl's log line, so the log and the status never disagree.
+
+## 2026-09-22 — Level 3 design system merged to main (3e8b67e)
+
+Public landing at `/` (hero with a rendered-fretboard stand-in until Carl's guitar photo lands), pathway overview moved to `/path/`. OKLCH only, Fraunces / Schibsted Grotesk / JetBrains Mono, `--radius: 2px`, ink-blue accent on status marks + one primary action per screen. `DESIGN.md` is the source of truth; `AGENTS.md` holds the working principles. Tests: `npm test` (46 static + component), `npm run test:visual` (19 Playwright baselines at 1440 and 390, in `tests/visual/__baselines__/`), Vizzly config for the TDD loop. Build prompts that produced this: `level3-output/`. Reviewed independently in the LifeOS session before merge; one mobile-column defect fixed on the tip.
+
+Open: swap the hero stand-in for the photo (`src/pages/index.astro`, `.hero .art`), then update the landing baselines.

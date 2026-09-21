@@ -176,7 +176,7 @@ describe("DESIGN.md → Do's and Don'ts: labels and behaviour", () => {
   });
   it("wordmark is type, not an image or gradient", () => {
     const app = read("src/layouts/App.astro");
-    expect(app).toMatch(/class="mark"[^>]*>Worship electric</);
+    expect(app).toMatch(/class="mark"[^>]*>Back seat to lead</);
     expect(styleOf("src/layouts/App.astro")).toMatch(/\.rail \.mark\{[^}]*font-family:var\(--display\)/);
   });
   it("the product stays dark", () => {

@@ -1,10 +1,10 @@
 {
   "pathway": {
-    "title": "Worship electric in 14 weeks",
+    "title": "Back seat to lead in 14 weeks",
     "subtitle": "Learning pathway",
     "start": "2026-09-21",
     "end": "2026-12-31",
-    "intro": "Rhythm electric that builds the song and plays one clean lead line at the peak of a hymn. Five sessions a week, thirty minutes each. Every day is one page: press start, play, log it."
+    "intro": "Rhythm electric that builds the song and plays one clean lead line at the peak. Five sessions a week, thirty minutes each. Every day is one page: press start, play, log it."
   },
   "phases": [
     {
@@ -86,12 +86,12 @@
     {
       "id": "texture", "name": "Phase 4", "title": "Texture", "weeks": "Weeks 11–13", "nodes": [13, 14, 15], "status": "locked",
       "outcome": "A swell under a quiet moment. Transpose on the spot.",
-      "gate": "Swell into a held note, attack gone. Four bars with dotted-eighth delay, half the notes. Transpose a hymn chart G to E.",
+      "gate": "Swell into a held note, attack gone. Four bars with dotted-eighth delay, half the notes. Transpose a chart G to E.",
       "plannedDays": 15, "days": []
     },
     {
       "id": "prove-it", "name": "Phase 5", "title": "Prove it", "weeks": "Week 14", "nodes": [16], "status": "locked",
-      "outcome": "One full hymn recorded standing, no chart.",
+      "outcome": "One full song recorded standing, no chart.",
       "gate": "The recording exists.",
       "plannedDays": 5, "days": []
     }

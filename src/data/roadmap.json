@@ -1,7 +1,7 @@
 {
   "asOf": "2026-09-21",
   "target": "2026-12-31",
-  "scale": ["never tried", "tried, can't", "slow, alone", "in a song at tempo", "Sunday, no thought"],
+  "scale": ["never tried", "tried, can't", "slow, alone", "in a song at tempo", "on stage, no thought"],
   "nodes": [
     { "id": 1,  "name": "Open chords, changes", "baseline": 4, "now": 4, "goal": 4, "gate": "—" },
     { "id": 2,  "name": "Bar chords without cramp", "baseline": 2, "now": 2, "goal": 3, "gate": "Full song in B or F#, no cramp, thumb behind the neck" },
@@ -17,7 +17,7 @@
     { "id": 12, "name": "Vibrato, controlled", "baseline": 0, "now": 0, "goal": 2, "gate": "Slow and wide, starts after the note speaks" },
     { "id": 13, "name": "Volume swells with the pinky", "baseline": 0, "now": 0, "goal": 2, "gate": "Swell into a held note on the ambient patch, attack gone" },
     { "id": 14, "name": "Dotted-eighth delay: play less", "baseline": 0, "now": 0, "goal": 2, "gate": "4 bars, delay on, half the notes, no mud" },
-    { "id": 15, "name": "Nashville numbers", "baseline": 0, "now": 0, "goal": 3, "gate": "Transpose a hymn chart G → E on the spot" },
+    { "id": 15, "name": "Nashville numbers", "baseline": 0, "now": 0, "goal": 3, "gate": "Transpose a chart G → E on the spot" },
     { "id": 16, "name": "Recovery: play through mistakes, no chart", "baseline": 3, "now": 3, "goal": 3, "gate": "Full song standing, no chart, no stop" },
     { "id": 17, "name": "Record one song a week", "baseline": 0, "now": 0, "goal": 4, "gate": "One recording a week in the log" },
     { "id": 18, "name": "Major scale / G hexatonic", "baseline": 0, "now": 0, "goal": 1, "gate": "After pentatonic" },
@@ -29,6 +29,6 @@
     { "weeks": "3–6",   "from": "2026-10-05", "to": "2026-11-01", "name": "Build energy", "nodes": [7, 8, 2],        "outcome": "Chorus on triads up the neck, verse quiet" },
     { "weeks": "7–10",  "from": "2026-11-02", "to": "2026-11-29", "name": "Lead voice",   "nodes": [9, 10, 11, 12],  "outcome": "One clean fill with one in-tune bend at the peak" },
     { "weeks": "11–13", "from": "2026-11-30", "to": "2026-12-20", "name": "Texture",      "nodes": [13, 14, 15],     "outcome": "A swell under a quiet moment; transpose on the spot" },
-    { "weeks": "14",    "from": "2026-12-21", "to": "2026-12-31", "name": "Prove it",     "nodes": [16],             "outcome": "One full hymn recorded standing, no chart" }
+    { "weeks": "14",    "from": "2026-12-21", "to": "2026-12-31", "name": "Prove it",     "nodes": [16],             "outcome": "One full song recorded standing, no chart" }
   ]
 }

@@ -62,7 +62,7 @@ const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
 <a class="skip" href="#main">Skip to content</a>
 <div class="app">
   <nav class="rail" aria-label="sections">
-    <a href="/" class="mark" aria-label="home">Worship electric</a>
+    <a href="/" class="mark" aria-label="home">Back seat to lead</a>
     {rail.map(([href, label, d, pre]) => <a href={href} class={"item" + (on(pre) ? " on" : "")} aria-label={label}><svg viewBox="0 0 24 24" aria-hidden="true"><path d={d}/></svg><span>{label}</span></a>)}
   </nav>
   <Sidebar activeDay={activeDay} />

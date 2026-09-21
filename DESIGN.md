@@ -1,7 +1,7 @@
 ---
 version: alpha
-name: Worship electric
-description: A worship guitarist's practice course, learned in public. Dark, warm, quiet. One accent.
+name: Back seat to lead
+description: A rhythm guitarist's practice course, learned in public. Dark, warm, quiet. One accent.
 colors:
   bg: "oklch(0.17 0.006 60)"
   surface: "oklch(0.21 0.007 60)"
@@ -262,7 +262,7 @@ components:
     size: 30px
 ---
 
-# Worship electric — design system
+# Back seat to lead — design system
 
 > This document is the source of truth for every visual decision. If a value is
 > not here, it does not exist yet - add it, then build against it. Whenever you
@@ -274,12 +274,12 @@ The tokens in the front matter are normative. The CSS custom properties in
 
 ## Overview
 
-A worship guitarist's practice course, learned in public. Two things share one
+A rhythm guitarist's practice course, learned in public. Two things share one
 system: a public landing page that says what the course is and who it is for,
 and the course app — a 14-week pathway of days, each day a page with a timer, a
 metronome and fretboard diagrams, plus a practice log and a progress view.
 
-The audience is church worship guitarists, mostly hymn-based teams, who already
+The audience is rhythm guitarists in any band who already
 play chords and want to be heard. They care how things look the way a good
 notebook looks: clear, quiet, no noise. Not the way a startup looks.
 
@@ -527,7 +527,7 @@ radius ladder (the old 2 / 4 / 5 / 6 / 8 / 9 / 10 / 12 / 14px is gone).
 - Do keep the product dark. Don't add a light theme.
 - Do keep the pull-quote as the author's own log line. Don't invent a
   testimonial, review, subscriber count or "trusted by".
-- Do describe the author as "I play guitar at my church". Don't name an
+- Do describe the author as "I play rhythm guitar in a band". Don't name an
   employer, product, colleague, client, freelance platform or company. This is
   a compliance rule, not a style rule.
 - Do keep routes, content, `course.json`, `roadmap.json`, the log and the
