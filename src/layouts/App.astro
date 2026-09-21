@@ -1,101 +1,76 @@
 ---
-// App shell: icon rail · sidebar (pathway) · main. Sidebar is a drawer under 900px.
+// App shell: rail · sidebar (pathway) · main. Sidebar is a drawer under 900px.
+import Head from "../components/Head.astro";
 import Sidebar from "../components/Sidebar.astro";
-const { title, description = "", activeDay = null, wide = false } = Astro.props;
+const { title, description = "", activeDay = null } = Astro.props;
 const path = Astro.url.pathname;
 const rail = [
-  ["/", "Home", "M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"],
-  ["/day/", "Pathway", "M6 4h12v16l-6-4-6 4z"],
-  ["/progress/", "Progress", "M4 20V10m6 10V4m6 16v-7m6 7v-4"],
-  ["/log/", "Log", "M5 4h14v16H5zM8 9h8M8 13h8M8 17h5"],
-  ["/metronome/", "Metronome", "M12 3l6 17H6zM12 12l4-6"],
-  ["/library/", "Library", "M4 5h6v14H4zM14 5h6v14h-6z"],
+  ["/path/", "Path", "M6 4h12v16l-6-4-6 4z", ["/path", "/day"]],
+  ["/progress/", "Progress", "M4 20V10m6 10V4m6 16v-7m6 7v-4", ["/progress"]],
+  ["/log/", "Log", "M5 4h14v16H5zM8 9h8M8 13h8M8 17h5", ["/log"]],
+  ["/metronome/", "Metronome", "M12 3l6 17H6zM12 12l4-6", ["/metronome"]],
+  ["/library/", "Library", "M4 5h6v14H4zM14 5h6v14h-6z", ["/library", "/lesson", "/reference"]],
 ];
-const on = (href) => (href === "/" ? path === "/" : path.startsWith(href));
+const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
 ---
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#131316" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>{title}</title>
-{description && <meta name="description" content={description} />}
-<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<Head title={title} description={description} />
 <style is:global>
-  :root{
-    --bg:#131316; --panel:#1a1a1e; --card:#212126; --line:#2e2e35; --ink:#ecebe6; --muted:#8f8e95;
-    --accent:#e08a2c; --accent-ink:#1a120c; --ok:#5fb27a; --warn:#d1573a;
-    --board:#3a2418; --fret:#b8ad98; --string:#e9e3d3; --root:#e08a2c; --tone:#f3ecd8;
-  }
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%;color-scheme:dark}
-  body{margin:0;background:var(--bg);color:var(--ink);
-    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-  a{color:var(--ink)}
-  h1{font-size:30px;line-height:1.15;margin:4px 0 6px;font-weight:700;letter-spacing:-.01em}
-  h2{font-size:20px;margin:26px 0 8px;font-weight:600}
-  h3{font-size:16px;margin:18px 0 4px;font-weight:600}
-  p{margin:10px 0;max-width:68ch}
-  ol,ul{padding-left:22px}
-  li{margin:4px 0}
-  table{border-collapse:collapse;width:100%;font-size:14px;margin:10px 0}
-  th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
-  th{color:var(--muted);font-weight:600}
-  code{font:14px ui-monospace,Menlo,monospace;background:var(--card);padding:1px 6px;border-radius:4px}
-  button{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);
-    border-radius:10px;padding:10px 14px;min-height:46px;cursor:pointer;touch-action:manipulation}
-  button:active{background:#2a2a30}
-  button.primary,.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
-  .btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;min-height:46px;font-size:15px}
-  .board{width:100%;max-width:600px;height:auto;display:block;margin:12px 0;border-radius:8px}
-  .chord{height:150px;width:auto;display:inline-block;margin:6px 10px 6px 0}
-  .note{border-left:3px solid var(--accent);padding:2px 0 2px 14px;margin:14px 0;color:var(--ink)}
-  .muted{color:var(--muted)}
-  .small{font-size:13px}
-  .lesson-nav{display:flex;justify-content:space-between;margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:15px}
-  .crumb{font-size:13px;color:var(--muted);margin:0}
-  .crumb a{color:var(--muted);text-decoration:none}
-
-  .app{display:grid;grid-template-columns:64px 340px 1fr;min-height:100dvh}
-  .rail{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:6px;position:sticky;top:0;height:100dvh}
-  .rail a{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
-  .rail a.on{color:var(--accent);background:var(--card)}
-  .rail svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  .rail .brand{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#5a2d0c);margin-bottom:10px}
-  .side{position:sticky;top:0;height:100dvh}
-  main{padding:18px 26px 80px;min-width:0;overflow-x:hidden}
-  .main-inner{max-width:900px}
+  .app{display:grid;grid-template-columns:72px 320px 1fr;min-height:100dvh}
+  .rail{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:4px;position:sticky;top:0;height:100dvh}
+  .rail .mark{font-family:var(--display);font-variation-settings:"SOFT" 50,"WONK" 0;font-size:var(--t-md);letter-spacing:var(--track-tight);text-decoration:none;color:var(--ink);writing-mode:vertical-rl;transform:rotate(180deg);margin-bottom:28px;padding:4px 0}
+  .rail .mark:hover{opacity:.8}
+  .rail a.item{width:60px;padding:8px 0 6px;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink-soft);text-decoration:none;font-size:11px;line-height:1;transition:opacity 150ms}
+  .rail a.item:hover{opacity:.8}
+  .rail a.item.on{color:var(--ink);background:var(--card);opacity:1}
+  .rail svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .side{position:sticky;top:0;height:100dvh;overscroll-behavior:contain}
+  .scrim{display:none}
+  main{padding:24px max(40px, env(safe-area-inset-right)) 96px 40px;min-width:0;overflow-x:hidden}
+  .main-inner{max-width:760px}
   .topbar{display:none}
+  @media (max-width:1200px){
+    .app{grid-template-columns:72px 280px 1fr}
+    main{padding:24px 32px 96px}
+  }
   @media (max-width:900px){
     .app{grid-template-columns:1fr}
     .rail{display:none}
-    .side{position:fixed;inset:0 20% 0 0;z-index:30;height:100dvh;transform:translateX(-100%);transition:transform .2s;box-shadow:0 0 0 100vw rgba(0,0,0,0)}
-    .side.open{transform:none;box-shadow:0 0 0 100vw rgba(0,0,0,.5)}
-    .topbar{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px;margin:0 -16px 8px}
-    .topbar button{min-height:40px;padding:6px 12px;font-size:14px}
-    .topbar nav{display:flex;gap:14px;font-size:14px;overflow-x:auto;scrollbar-width:none}
-    .topbar nav a{text-decoration:none;color:var(--muted);white-space:nowrap}
-    .topbar nav a.on{color:var(--accent)}
-    main{padding:0 16px 70px}
-    h1{font-size:26px}
-    .board{margin:10px 0}
+    .side{position:fixed;inset:0 20% 0 0;z-index:30;height:100dvh;transform:translateX(-100%);transition:transform .2s}
+    .side.open{transform:none}
+    .scrim{position:fixed;inset:0;z-index:29;background:var(--scrim);opacity:0;pointer-events:none;transition:opacity .2s}
+    .side.open + .scrim{display:block;opacity:1;pointer-events:auto}
+    .scrim{display:block}
+    .topbar{display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px;margin:0 -16px 8px}
+    .topbar button{min-height:36px;padding:6px 12px;font-size:var(--t-xs)}
+    .topbar nav{display:flex;gap:16px;font-size:var(--t-xs);overflow-x:auto;scrollbar-width:none}
+    .topbar nav a{text-decoration:none;color:var(--ink-soft);white-space:nowrap}
+    .topbar nav a.on{color:var(--ink);font-weight:700}
+    main{padding:0 32px 80px}
+    .topbar{padding:10px 32px;margin:0 -32px 8px}
+  }
+  @media (max-width:600px){
+    main{padding:0 max(16px, env(safe-area-inset-right)) 80px max(16px, env(safe-area-inset-left))}
+    .topbar{padding:10px 16px;margin:0 -16px 8px}
+    h1{font-size:var(--t-lg)}
   }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <div class="app">
   <nav class="rail" aria-label="sections">
-    <a href="/" class="brand" aria-label="home"></a>
-    {rail.map(([href, label, d]) => <a href={href} class={on(href) ? "on" : ""} title={label} aria-label={label}><svg viewBox="0 0 24 24"><path d={d}/></svg></a>)}
+    <a href="/" class="mark" aria-label="home">Worship electric</a>
+    {rail.map(([href, label, d, pre]) => <a href={href} class={"item" + (on(pre) ? " on" : "")} aria-label={label}><svg viewBox="0 0 24 24" aria-hidden="true"><path d={d}/></svg><span>{label}</span></a>)}
   </nav>
   <Sidebar activeDay={activeDay} />
-  <main>
+  <div class="scrim" aria-hidden="true"></div>
+  <main id="main" tabindex="-1">
     <div class="topbar">
-      <button id="menu" aria-controls="side" aria-expanded="false">☰ Days</button>
-      <nav>{rail.map(([href, label]) => <a href={href} class={on(href) ? "on" : ""}>{label}</a>)}</nav>
+      <button id="menu" aria-controls="side" aria-expanded="false">Days</button>
+      <nav>{rail.map(([href, label, , pre]) => <a href={href} class={on(pre) ? "on" : ""}>{label}</a>)}</nav>
     </div>
     <div class="main-inner"><slot /></div>
   </main>
@@ -103,15 +78,19 @@ const on = (href) => (href === "/" ? path === "/" : path.startsWith(href));
 <script>
   const side = document.getElementById("side")!;
   const menu = document.getElementById("menu")!;
-  menu.addEventListener("click", () => {
-    const open = side.classList.toggle("open");
+  const setOpen = (open: boolean) => {
+    side.classList.toggle("open", open);
     menu.setAttribute("aria-expanded", String(open));
-  });
+  };
+  menu.addEventListener("click", () => setOpen(!side.classList.contains("open")));
   side.addEventListener("click", (e) => {
-    if ((e.target as HTMLElement).closest("a")) side.classList.remove("open");
+    if ((e.target as HTMLElement).closest("a")) setOpen(false);
   });
   document.addEventListener("click", (e) => {
-    if (side.classList.contains("open") && !side.contains(e.target as Node) && e.target !== menu) side.classList.remove("open");
+    if (side.classList.contains("open") && !side.contains(e.target as Node) && e.target !== menu) setOpen(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && side.classList.contains("open")) { setOpen(false); menu.focus(); }
   });
 </script>
 </body>

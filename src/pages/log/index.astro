@@ -12,14 +12,14 @@ const rendered = await Promise.all(entries.map(async (e) => ({ e, Content: (awai
     <article class="entry">
       <header>
         <h2>{e.data.title}</h2>
-        <span class="muted small">{fmt(e.data.date)} · week {e.data.week}{e.data.day && <> · day {e.data.day}</>}{e.data.bpm && <> · {e.data.bpm} BPM</>}{e.data.recorded && <> · recorded</>}</span>
+        <span class="muted small mono">{fmt(e.data.date)} · week {e.data.week}{e.data.day && <> · day {e.data.day}</>}{e.data.bpm && <> · {e.data.bpm} BPM</>}{e.data.recorded && <> · recorded</>}</span>
       </header>
       <Content />
-      {e.data.nodes.length > 0 && <p class="small muted">nodes {e.data.nodes.join(", ")}</p>}
+      {e.data.nodes.length > 0 && <p class="small muted mono">nodes {e.data.nodes.join(", ")}</p>}
     </article>
   ))}
 </App>
 <style>
-  .entry{padding:14px 0 6px;border-top:1px solid var(--line)}
-  .entry h2{margin:0 0 2px}
+  .entry{padding:24px 0 8px;border-top:1px solid var(--line)}
+  .entry h2{margin:0 0 4px}
 </style>

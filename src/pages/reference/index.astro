@@ -1,14 +1,12 @@
 ---
 import App from "../../layouts/App.astro";
+import Field from "../../components/Field.astro";
 ---
 <App title="Reference — hexatonic scales" description="Every hexatonic scale, all six keys, full neck.">
   <h1>Hexatonic scales on the fretboard</h1>
   <p>Six notes. Every one below is a seven-note scale with one note pulled out, or a five-note scale with one note added. That is how you learn them: as edits to shapes you already own, not as new shapes.</p>
 
-  <div class="keyrow">
-    <label for="key">Key</label>
-    <select id="key"></select>
-  </div>
+  <Field id="key" label="Key" options={[]} />
   <div class="legend"><span class="r">root</span><span class="t">scale tone</span></div>
 
   <div id="scales">Loading…</div>
@@ -20,19 +18,15 @@ import App from "../../layouts/App.astro";
 </App>
 
 <style>
-  .keyrow{display:flex;gap:8px;align-items:center;margin:14px 0 6px;flex-wrap:wrap}
-  .keyrow label{color:var(--muted);font-size:15px}
-  select{font:inherit;font-size:16px;padding:6px 10px;border:1px solid var(--line);
-    background:var(--card);color:var(--ink);border-radius:6px}
-  .legend{display:flex;gap:18px;font-size:14px;color:var(--muted);margin:0 0 8px}
+  .legend{display:flex;gap:18px;font-size:var(--t-xs);color:var(--ink-soft);margin:0 0 8px}
   .legend span::before{content:"";display:inline-block;width:12px;height:12px;
     border-radius:50%;margin-right:6px;vertical-align:-1px}
   .legend .r::before{background:var(--root)}
-  .legend .t::before{background:var(--tone);border:1px solid #777}
-  .formula{font-size:15px;color:var(--muted);margin:0 0 10px}
+  .legend .t::before{background:var(--tone);border:1px solid var(--ink-faint)}
+  .formula{color:var(--ink-soft);margin:0 0 10px}
   .formula b{color:var(--ink);font-weight:600}
-  .note{border-left:3px solid var(--root);padding:2px 0 2px 14px;margin:14px 0}
-  .dropped{font-size:15px;color:var(--muted)}
+  .note{border-left:1px solid var(--ink-soft);padding:2px 0 2px 16px;margin:16px 0}
+  .dropped{color:var(--ink-soft)}
   hr{border:0;border-top:1px solid var(--line);margin:40px 0}
 </style>
 

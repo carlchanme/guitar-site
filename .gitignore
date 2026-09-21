@@ -22,3 +22,13 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# tests
+test-results/
+playwright-report/
+.vizzly/
+
+# oh-my-claudecode session state
+.omc/
+# playwright run output
+test-results/

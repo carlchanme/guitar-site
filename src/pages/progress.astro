@@ -10,10 +10,10 @@ const daysLeft = Math.max(0, Math.ceil((new Date(target).getTime() - new Date(to
 ---
 <App title="Progress" description="Twenty skills, rated 0 to 4. Where I started, where I am, where I'm going.">
   <h1>Progress</h1>
-  <p class="muted small">Rated {asOf} · target 31 Dec 2026 · {daysLeft} days left{phaseNow && <> · now: <strong>{phaseNow.name}</strong> (weeks {phaseNow.weeks})</>}</p>
+  <p class="muted small mono">Rated {asOf} · target 31 Dec 2026 · {daysLeft} days left{phaseNow && <> · now: <strong>{phaseNow.name}</strong> (weeks {phaseNow.weeks})</>}</p>
 
   <h2>The four that fix Sunday</h2>
-  <p>Lead lines hit other strings, fingers slow, guitar unheard. Not a theory problem. These four nodes are the whole job until they're at 3.</p>
+  <p>Lead lines hit other strings, fingers slow, guitar unheard. Not a theory problem. These four nodes are the whole job until they’re at 3.</p>
   {core.map((n) => (
     <div class="node core">
       <div class="head"><span>{n.id}. {n.name}</span><span class="r">{n.now} → {n.goal}</span></div>
@@ -33,7 +33,7 @@ const daysLeft = Math.max(0, Math.ceil((new Date(target).getTime() - new Date(to
       <div class="gate small muted">{n.gate}</div>
     </div>
   ))}
-  <p class="small muted">Bar: grey = where I started, amber = now, tick = goal for 31 Dec.</p>
+  <p class="small muted">Bar: faint = where I started, blue = now, tick = goal for 31 Dec.</p>
 
   <h2>Phases</h2>
   <table>
@@ -52,15 +52,15 @@ const daysLeft = Math.max(0, Math.ceil((new Date(target).getTime() - new Date(to
   </ul>
 </App>
 <style>
-  .node{padding:10px 0 8px;border-top:1px solid var(--rule)}
-  .node.core{border-top-color:var(--accent)}
-  .head{display:flex;justify-content:space-between;gap:10px;font-size:16px}
-  .head .r{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
-  .bar{position:relative;height:10px;background:var(--line);border-radius:5px;margin:6px 0 4px;overflow:visible}
-  .bar i{position:absolute;left:0;top:0;height:100%;border-radius:5px}
-  .bar .base{background:#4a4a52}
+  .node{padding:12px 0 10px;border-top:1px solid var(--line)}
+  .node.core{border-top-color:var(--ink-soft)}
+  .head{display:flex;justify-content:space-between;gap:12px}
+  .head .r{font-family:var(--mono);font-size:var(--t-xs);color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums;padding-top:3px}
+  .bar{position:relative;height:6px;background:var(--line);margin:8px 0 4px;overflow:visible}
+  .bar i{position:absolute;left:0;top:0;height:100%}
+  .bar .base{background:var(--ink-faint)}
   .bar .now{background:var(--accent)}
-  .bar .goal{position:absolute;top:-4px;width:3px;height:18px;background:var(--ink);margin-left:-1px}
+  .bar .goal{position:absolute;top:-4px;width:2px;height:14px;background:var(--ink);margin-left:-1px}
   .gate{margin-top:2px}
   tr.on td{background:var(--card)}
 </style>

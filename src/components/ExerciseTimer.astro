@@ -1,29 +1,36 @@
 ---
 // Countdown for one exercise. Starts the page's metronome preset (if any)
 // and beeps three times at zero. nextHref lights up when done.
+// Start is the one primary action on the exercise page; when the block is
+// done the accent moves to the Next link so there is still only one.
+import Card from "./Card.astro";
+import Action from "./Action.astro";
 const { minutes, nextHref = null, nextTitle = null } = Astro.props;
 ---
-<div class="xt" data-xt data-min={minutes} data-next={nextHref || ""}>
-  <div class="clock" data-clock>{String(minutes).padStart(2, "0")}:00</div>
-  <div class="ctl">
-    <button class="primary" data-go>Start {minutes} min</button>
-    {nextHref && <a class="btn" href={nextHref} data-next-link>Next: {nextTitle} →</a>}
+<Card data-xt data-min={minutes} data-next={nextHref || ""}>
+  <div class="xt">
+    <div class="clock" data-clock role="timer" aria-live="off">{String(minutes).padStart(2, "0")}:00</div>
+    <div class="ctl">
+      <Action variant="primary" data-go>Start {minutes}&nbsp;min</Action>
+      {nextHref && <Action href={nextHref} data-next-link>Next: {nextTitle}</Action>}
+    </div>
+    <div class="bar"><i data-bar></i></div>
   </div>
-  <div class="bar"><i data-bar></i></div>
-</div>
+</Card>
 <style>
-  .xt{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:14px 0}
-  .clock{font-size:40px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums}
+  .xt{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;align-items:center}
+  .clock{font-family:var(--mono);font-size:var(--t-xl);line-height:1;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-0.01em}
   .ctl{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-  .bar{grid-column:1/-1;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
-  .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .5s linear}
-  .xt.done .clock{color:var(--ok)}
-  .xt.done [data-next-link]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+  .bar{grid-column:1/-1;height:2px;background:var(--line);overflow:hidden}
+  .bar i{display:block;height:100%;width:100%;background:var(--ink-soft);transform:scaleX(0);transform-origin:left;transition:transform .5s linear}
 </style>
 <script>
   for (const el of document.querySelectorAll<HTMLElement>("[data-xt]")) {
     const total = Number(el.dataset.min) * 60;
     const clock = el.querySelector<HTMLElement>("[data-clock]")!, bar = el.querySelector<HTMLElement>("[data-bar]")!, go = el.querySelector<HTMLButtonElement>("[data-go]")!;
+    const next = el.querySelector<HTMLElement>("[data-next-link]");
+    // One primary per screen: when the block is done the accent moves to Next.
+    const setDone = (done: boolean) => { el.classList.toggle("done", done); go.classList.toggle("primary", !done); next?.classList.toggle("primary", done); };
     let endAt = 0, timer: number | null = null;
     const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
     const w = window as any;
@@ -41,20 +48,20 @@ const { minutes, nextHref = null, nextTitle = null } = Astro.props;
         o.connect(g).connect(c.destination); o.start(t); o.stop(t + 0.16);
       }
     }
-    function stop() { if (timer) clearInterval(timer); timer = null; w.gmStop?.(); go.textContent = `Start ${Number(el.dataset.min)} min`; }
+    function stop() { if (timer) clearInterval(timer); timer = null; w.gmStop?.(); go.textContent = `Start ${Number(el.dataset.min)}\u00a0min`; }
     go.addEventListener("click", () => {
       if (timer) return stop();
       const m = document.querySelector<HTMLElement>("[data-metronome]");
       if (m) w.gmPreset?.(m, Number(m.dataset.bpm), Number(m.dataset.subdiv), true);
       else ctx()?.resume?.();
-      el.classList.remove("done");
+      setDone(false);
       endAt = Date.now() + total * 1000;
       go.textContent = "Stop";
       timer = window.setInterval(() => {
         const left = Math.max(0, Math.round((endAt - Date.now()) / 1000));
         clock.textContent = fmt(left);
-        bar.style.width = `${((total - left) / total) * 100}%`;
-        if (left === 0) { beep(3); stop(); el.classList.add("done"); }
+        bar.style.transform = `scaleX(${(total - left) / total})`;
+        if (left === 0) { beep(3); stop(); setDone(true); }
       }, 250);
     });
   }

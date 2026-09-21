@@ -1,0 +1,17 @@
+---
+// Label above control, linked by for/id. Never a placeholder as the label.
+// options: [[value, text]] renders a <select>; otherwise an <input>.
+const { id, label, name = id, type = "text", value, options = null, autocomplete = "off", ...rest } = Astro.props;
+---
+<div class="field">
+  <label for={id}>{label}</label>
+  {options
+    ? <select id={id} name={name} {...rest}>{options.map(([v, t]) => <option value={v} selected={v === value}>{t}</option>)}</select>
+    : <input id={id} name={name} type={type} value={value} autocomplete={autocomplete} {...rest} />}
+</div>
+<style>
+  .field{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+  label{font-size:var(--t-xs);color:var(--ink-soft)}
+  input,select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px;min-height:44px}
+  input:focus-visible,select:focus-visible{outline:0;border-width:2px;border-color:var(--ink);padding:7px 9px}
+</style>

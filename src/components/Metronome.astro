@@ -2,9 +2,12 @@
 // One metronome engine per page (window.gm). Multiple <Metronome> tags can
 // exist; each one drives the shared engine when its Start is pressed, so only
 // one clicks at a time. Props are the starting preset for this instance.
-const { bpm = 60, subdiv = 1, compact = false, id = "m" } = Astro.props;
+import Card from "./Card.astro";
+import Action from "./Action.astro";
+const { bpm = 60, subdiv = 1, compact = false, primary = false, id = "m" } = Astro.props;
 ---
-<div class={"metro" + (compact ? " compact" : "")} data-metronome data-bpm={bpm} data-subdiv={subdiv} id={"metro-" + id}>
+<Card data-metronome data-bpm={bpm} data-subdiv={subdiv} id={"metro-" + id}>
+<div class={"metro" + (compact ? " compact" : "")}>
   <div class="row top">
     <button class="adj" data-d="-5" aria-label="minus five">−5</button>
     <button class="adj" data-d="-1" aria-label="minus one">−1</button>
@@ -17,28 +20,28 @@ const { bpm = 60, subdiv = 1, compact = false, id = "m" } = Astro.props;
       {[1, 2, 3, 4].map((n) => <button class={"s" + (n === subdiv ? " on" : "")} data-sub={n}>{n}</button>)}
     </div>
     <button class="tap">Tap</button>
-    <button class="primary go" data-go>Start</button>
+    <Action variant={primary ? "primary" : undefined} class="go" data-go>Start</Action>
   </div>
   <div class="beat" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 </div>
+</Card>
 
 <style>
-  .metro{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:14px 0}
   .row{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
-  .row+.row{margin-top:10px}
-  .bpm{min-width:96px;text-align:center;font-size:44px;line-height:1;font-weight:600}
-  .bpm small{display:block;font-size:12px;color:var(--muted);letter-spacing:.08em;margin-top:2px}
-  .adj{min-width:48px;padding:8px 4px}
-  .sub{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-  .sub button{border:0;border-radius:0;min-width:44px;padding:8px 6px;background:transparent}
+  .row+.row{margin-top:12px}
+  .bpm{min-width:96px;text-align:center;font-family:var(--mono);font-size:var(--t-xl);line-height:1;font-weight:500;font-variant-numeric:tabular-nums}
+  .bpm small{display:block;font-size:11px;color:var(--ink-soft);letter-spacing:var(--track-caps);margin-top:4px}
+  .adj{min-width:48px;padding:8px 4px;font-family:var(--mono);font-size:var(--t-xs)}
+  .sub{display:flex;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .sub button{border:0;border-radius:0;min-width:44px;padding:8px 6px;background:transparent;font-family:var(--mono);font-size:var(--t-xs)}
   .sub button+button{border-left:1px solid var(--line)}
-  .sub button.on{background:var(--accent);color:var(--accent-ink)}
-  .go{min-width:96px}
-  .beat{display:flex;gap:6px;justify-content:center;margin-top:10px;height:10px}
-  .beat i{width:10px;height:10px;border-radius:50%;background:var(--line);display:none}
+  .sub button.on{background:var(--ink);color:var(--bg)}
+  .metro :global(.go){min-width:96px;justify-content:center}
+  .beat{display:flex;gap:6px;justify-content:center;margin-top:12px;height:8px}
+  .beat i{width:8px;height:8px;border-radius:50%;background:var(--line);display:none}
   .beat i.show{display:block}
-  .beat i.hit{background:var(--accent)}
-  .compact .bpm{font-size:34px;min-width:90px}
+  .beat i.hit{background:var(--ink)}
+  .compact .bpm{font-size:var(--t-lg);min-width:80px}
 </style>
 
 <script>

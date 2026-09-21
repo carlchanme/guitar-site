@@ -9,12 +9,25 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots",
+    "test:all": "npm test && npm run test:visual",
+    "vizzly:start": "vizzly tdd start",
+    "vizzly:stop": "vizzly tdd stop",
+    "vizzly:status": "vizzly tdd status"
   },
   "dependencies": {
     "astro": "^7.3.2"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@vizzly-testing/cli": "^0.36.0",
+    "vitest": "^5.0.1"
   }
 }
