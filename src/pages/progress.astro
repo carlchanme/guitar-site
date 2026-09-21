@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import App from "../layouts/App.astro";
 import roadmap from "../data/roadmap.json";
 const { nodes, phases, scale, asOf, target } = roadmap;
 const core = nodes.filter((n) => n.core);
@@ -8,7 +8,7 @@ const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lum
 const phaseNow = phases.find((p) => today >= p.from && today <= p.to);
 const daysLeft = Math.max(0, Math.ceil((new Date(target).getTime() - new Date(today).getTime()) / 86400000));
 ---
-<Layout title="Progress" description="Twenty skills, rated 0 to 4. Where I started, where I am, where I'm going.">
+<App title="Progress" description="Twenty skills, rated 0 to 4. Where I started, where I am, where I'm going.">
   <h1>Progress</h1>
   <p class="muted small">Rated {asOf} · target 31 Dec 2026 · {daysLeft} days left{phaseNow && <> · now: <strong>{phaseNow.name}</strong> (weeks {phaseNow.weeks})</>}</p>
 
@@ -33,7 +33,7 @@ const daysLeft = Math.max(0, Math.ceil((new Date(target).getTime() - new Date(to
       <div class="gate small muted">{n.gate}</div>
     </div>
   ))}
-  <p class="small muted">Bar: light = where I started, amber = now, tick = goal for 31 Dec.</p>
+  <p class="small muted">Bar: grey = where I started, amber = now, tick = goal for 31 Dec.</p>
 
   <h2>Phases</h2>
   <table>
@@ -50,16 +50,16 @@ const daysLeft = Math.max(0, Math.ceil((new Date(target).getTime() - new Date(to
     <li><strong>15 anytime.</strong> Nashville numbers are five minutes a day reading a chart as numbers. No guitar needed.</li>
     <li><strong>18 and 19 after 31 Dec.</strong> Scale theory stacked on a shaky pentatonic is the classic mistake.</li>
   </ul>
-</Layout>
+</App>
 <style>
   .node{padding:10px 0 8px;border-top:1px solid var(--rule)}
-  .node.core{border-top-color:var(--root)}
+  .node.core{border-top-color:var(--accent)}
   .head{display:flex;justify-content:space-between;gap:10px;font-size:16px}
   .head .r{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
-  .bar{position:relative;height:10px;background:#c9c3b5;border-radius:5px;margin:6px 0 4px;overflow:visible}
+  .bar{position:relative;height:10px;background:var(--line);border-radius:5px;margin:6px 0 4px;overflow:visible}
   .bar i{position:absolute;left:0;top:0;height:100%;border-radius:5px}
-  .bar .base{background:#b3ac9c}
-  .bar .now{background:var(--root)}
+  .bar .base{background:#4a4a52}
+  .bar .now{background:var(--accent)}
   .bar .goal{position:absolute;top:-4px;width:3px;height:18px;background:var(--ink);margin-left:-1px}
   .gate{margin-top:2px}
   tr.on td{background:var(--card)}

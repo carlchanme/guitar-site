@@ -1,7 +1,7 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import App from "../../layouts/App.astro";
 ---
-<Layout title="Reference — hexatonic scales" description="Every hexatonic scale, all six keys, full neck.">
+<App title="Reference — hexatonic scales" description="Every hexatonic scale, all six keys, full neck.">
   <h1>Hexatonic scales on the fretboard</h1>
   <p>Six notes. Every one below is a seven-note scale with one note pulled out, or a five-note scale with one note added. That is how you learn them: as edits to shapes you already own, not as new shapes.</p>
 
@@ -17,13 +17,13 @@ import Layout from "../../layouts/Layout.astro";
   <h2>How to practice these</h2>
   <p>Pick one key per week. Play the major pentatonic shape you know, then add the 4th. Run it over a I–IV–V loop and listen for what the 4th does over each chord. Then do the same on the minor side with the 2nd. Do not learn all six scales at once; two cover 90% of what you play on a Sunday.</p>
   <p><a href="/lesson-3/">&larr; Back to the single-shape lesson</a></p>
-</Layout>
+</App>
 
 <style>
   .keyrow{display:flex;gap:8px;align-items:center;margin:14px 0 6px;flex-wrap:wrap}
   .keyrow label{color:var(--muted);font-size:15px}
-  select{font:inherit;font-size:16px;padding:6px 10px;border:1px solid #9c968a;
-    background:#ece8dd;color:var(--ink);border-radius:4px}
+  select{font:inherit;font-size:16px;padding:6px 10px;border:1px solid var(--line);
+    background:var(--card);color:var(--ink);border-radius:6px}
   .legend{display:flex;gap:18px;font-size:14px;color:var(--muted);margin:0 0 8px}
   .legend span::before{content:"";display:inline-block;width:12px;height:12px;
     border-radius:50%;margin-right:6px;vertical-align:-1px}
@@ -33,7 +33,7 @@ import Layout from "../../layouts/Layout.astro";
   .formula b{color:var(--ink);font-weight:600}
   .note{border-left:3px solid var(--root);padding:2px 0 2px 14px;margin:14px 0}
   .dropped{font-size:15px;color:var(--muted)}
-  hr{border:0;border-top:1px solid #b7b1a4;margin:40px 0}
+  hr{border:0;border-top:1px solid var(--line);margin:40px 0}
 </style>
 
 <script>

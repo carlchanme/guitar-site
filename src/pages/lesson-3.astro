@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import App from "../layouts/App.astro";
 import { fretboardSVG } from "../lib/fretboard.js";
 
 // low E, A, D, G, B, high e = string 0..5
@@ -26,7 +26,7 @@ const svg = fretboardSVG({
   ariaLabel: "G hexatonic scale shape, frets 2 to 5",
 });
 ---
-<Layout title="Lesson 3 — One shape, in G">
+<App title="Lesson 3 — One shape, in G">
   <h1>Lesson 3 — One shape, in G</h1>
   <p>Frets 2 to 5 only. Press one dot at a time, in number order, low string to high string. Amber dots are G, the home note.</p>
 
@@ -49,4 +49,4 @@ const svg = fretboardSVG({
     <a href="/lesson-2/">&larr; Lesson 2</a>
     <a href="/reference/">Full reference &rarr;</a>
   </div>
-</Layout>
+</App>

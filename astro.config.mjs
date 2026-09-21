@@ -1,5 +1,9 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  redirects: {
+    '/drills': '/day/',
+    '/drills/week-01': '/day/1/',
+  },
+});

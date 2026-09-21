@@ -1,34 +1,57 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import roadmap from "../data/roadmap.json";
-const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kuala_Lumpur" });
-const phaseNow = roadmap.phases.find((p) => today >= p.from && today <= p.to);
+import App from "../layouts/App.astro";
+import StatusIcon from "../components/StatusIcon.astro";
+import { pathway, phases, pathwayProgress, phaseProgress, currentDay, dayHref, dayProgress } from "../lib/course.js";
+const total = pathwayProgress();
+const cur = currentDay();
+const cp = dayProgress(cur);
 ---
-<Layout title="Worship electric, from the back seat" description="One worship guitarist's practice log, drills and lessons. Learning in public, one skill at a time.">
-  <h1>Worship electric, from the back seat</h1>
-  <p>I play guitar at my church. Open chords, bar chords, one pentatonic box. On Sundays the guitar sits in the back seat and mostly isn't heard. By 31 December I want it to build the song: same notes, different strings, and the room lifts.</p>
-  <p>This site is the practice tool. Drills with a timer and metronome on the page, a log of every session, and lessons written only once I can play the thing.</p>
+<App title={pathway.title} description={pathway.intro}>
+  <p class="crumb">{pathway.subtitle}</p>
+  <h1>{pathway.title}</h1>
+  <p>{pathway.intro}</p>
 
-  <div class="cards">
-    <a class="card" href="/drills/week-01/"><strong>This week</strong><span>Week 1 — Clean hands{phaseNow && <> · {phaseNow.name}</>}</span></a>
-    <a class="card" href="/metronome/"><strong>Metronome</strong><span>60 BPM, +5 steps, 1–4 per click</span></a>
-    <a class="card" href="/progress/"><strong>Progress</strong><span>20 skills, 0–4, where I am</span></a>
-    <a class="card" href="/log/"><strong>Log</strong><span>Every session, honest</span></a>
+  <a class="continue" href={dayHref(cur)}>
+    <div>
+      <span class="small muted">Continue</span>
+      <strong>Day {cur.day}. {cur.title}</strong>
+      <span class="small muted">{cur.phase.title} · {cp.done}/{cp.total} exercises done</span>
+    </div>
+    <StatusIcon status="current" size={32} />
+  </a>
+
+  <div class="stat">
+    <div><b>{total.done}</b><span>of {total.total} days</span></div>
+    <div><b>{phases.filter((p) => p.status === "done").length}</b><span>of {phases.length} phases</span></div>
+    <div><b>{pathway.end.slice(8)} Dec</b><span>target</span></div>
   </div>
 
-  <h2>Lessons</h2>
-  <p class="small muted">Scale theory I learned first, before I knew hands mattered more. Still true, still useful, just not week 1.</p>
-  <ol>
-    <li><a href="/lesson-1/">What a scale is</a> — why some notes fit a song and some don't</li>
-    <li><a href="/lesson-2/">Hexatonic means six notes</a> — the major hexatonic, and why one note gets left out</li>
-    <li><a href="/lesson-3/">One shape, in G</a> — a single 4-fret shape you can play today</li>
-  </ol>
-  <p><a href="/reference/">Full reference</a> — every hexatonic scale, all six keys, full neck.</p>
-</Layout>
+  <h2>Phases</h2>
+  {phases.map((p) => { const pp = phaseProgress(p); return (
+    <div class={"phase " + p.status}>
+      <div class="ph">
+        <div><b>{p.name} · {p.title}</b><span class="small muted">{p.weeks} · {pp.done}/{pp.total} days</span></div>
+        <StatusIcon status={p.status} />
+      </div>
+      <i class="bar"><b style={`width:${pp.pct}%`}></b></i>
+      <p class="small">{p.outcome}</p>
+      {p.days.length > 0 && <p class="small"><a href={dayHref(p.days[0])}>Open day {p.days[0].day} →</a></p>}
+    </div>
+  ); })}
+</App>
 <style>
-  .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
-  .card{display:block;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:12px 14px;text-decoration:none;min-height:72px}
-  .card strong{display:block;font-weight:600}
-  .card span{display:block;font-size:14px;color:var(--muted);margin-top:2px}
-  .card:active{background:#d5d0c3}
+  .continue{display:flex;justify-content:space-between;align-items:center;gap:14px;background:var(--card);border:1px solid var(--accent);border-radius:14px;padding:16px 18px;text-decoration:none;margin:18px 0}
+  .continue strong{display:block;font-size:20px;margin:2px 0}
+  .continue span{display:block}
+  .stat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+  .stat div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .stat b{display:block;font-size:26px;line-height:1.1}
+  .stat span{font-size:13px;color:var(--muted)}
+  .phase{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0}
+  .phase.locked{opacity:.7}
+  .ph{display:flex;justify-content:space-between;align-items:center}
+  .ph b{display:block}
+  .ph span{display:block}
+  .bar{display:block;height:3px;background:var(--line);border-radius:2px;margin:8px 0 4px}
+  .bar b{display:block;height:100%;background:var(--accent);border-radius:2px}
 </style>

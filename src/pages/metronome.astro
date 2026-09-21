@@ -1,8 +1,8 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import App from "../layouts/App.astro";
 import Metronome from "../components/Metronome.astro";
 ---
-<Layout title="Metronome" description="Metronome with 1, 2, 3 or 4 notes per click, tap tempo, +5 steps.">
+<App title="Metronome" description="Metronome with 1, 2, 3 or 4 notes per click, tap tempo, +5 steps.">
   <h1>Metronome</h1>
   <Metronome id="main" bpm={60} subdiv={1} />
   <p class="small muted">Accent on beat 1. Numbers under the tempo are notes per click: 1 for the crawl, 4 for the picking drill. +5 is the pass step. Tap four times to set a tempo from a song. Screen stays on while it runs.</p>
@@ -12,4 +12,4 @@ import Metronome from "../components/Metronome.astro";
     <li>Three clean passes in a row, then +5. One miss, stay.</li>
     <li>Clean and even beats fast and ragged. Always.</li>
   </ul>
-</Layout>
+</App>

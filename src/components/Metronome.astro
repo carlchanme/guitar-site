@@ -23,21 +23,21 @@ const { bpm = 60, subdiv = 1, compact = false, id = "m" } = Astro.props;
 </div>
 
 <style>
-  .metro{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:12px;margin:14px 0}
+  .metro{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:14px 0}
   .row{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
   .row+.row{margin-top:10px}
   .bpm{min-width:96px;text-align:center;font-size:44px;line-height:1;font-weight:600}
   .bpm small{display:block;font-size:12px;color:var(--muted);letter-spacing:.08em;margin-top:2px}
   .adj{min-width:48px;padding:8px 4px}
-  .sub{display:flex;border:1px solid #9c968a;border-radius:8px;overflow:hidden}
+  .sub{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .sub button{border:0;border-radius:0;min-width:44px;padding:8px 6px;background:transparent}
-  .sub button+button{border-left:1px solid #9c968a}
-  .sub button.on{background:var(--ink);color:#fff}
+  .sub button+button{border-left:1px solid var(--line)}
+  .sub button.on{background:var(--accent);color:var(--accent-ink)}
   .go{min-width:96px}
   .beat{display:flex;gap:6px;justify-content:center;margin-top:10px;height:10px}
-  .beat i{width:10px;height:10px;border-radius:50%;background:#c9c3b5;display:none}
+  .beat i{width:10px;height:10px;border-radius:50%;background:var(--line);display:none}
   .beat i.show{display:block}
-  .beat i.hit{background:var(--root)}
+  .beat i.hit{background:var(--accent)}
   .compact .bpm{font-size:34px;min-width:90px}
 </style>
 

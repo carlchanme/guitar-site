@@ -1,0 +1,99 @@
+{
+  "pathway": {
+    "title": "Worship electric in 14 weeks",
+    "subtitle": "Learning pathway",
+    "start": "2026-09-21",
+    "end": "2026-12-31",
+    "intro": "Rhythm electric that builds the song and plays one clean lead line at the peak of a hymn. Five sessions a week, thirty minutes each. Every day is one page: press start, play, log it."
+  },
+  "phases": [
+    {
+      "id": "clean-hands",
+      "name": "Phase 1",
+      "title": "Clean hands",
+      "weeks": "Weeks 1–2",
+      "nodes": [5, 6, 17],
+      "status": "current",
+      "outcome": "A lead line that hits only the note.",
+      "gate": "Muting test 5/5 clean on the drive patch. Three clean picking passes at 60 BPM, four notes per click. One recording exists.",
+      "plannedDays": 10,
+      "days": [
+        {
+          "day": 1, "date": "2026-09-21", "title": "The muting test", "status": "current",
+          "summary": "Find out what rings. Palm on the bass strings, index flat across the trebles. Then the picking drill on the high e.",
+          "exercises": [
+            { "id": "lesson", "title": "Lesson", "kind": "lesson", "component": "w1-lesson", "status": "done" },
+            { "id": "crawl", "title": "Chromatic crawl", "minutes": 5, "bpm": 60, "subdiv": 1, "component": "crawl", "status": "todo" },
+            { "id": "mute", "title": "Muting", "minutes": 10, "bpm": 60, "subdiv": 1, "component": "mute", "status": "todo" },
+            { "id": "pick", "title": "Picking", "minutes": 10, "bpm": 60, "subdiv": 4, "component": "pick", "props": { "string": "e" }, "status": "todo" },
+            { "id": "song", "title": "Song", "minutes": 5, "component": "song", "status": "todo" }
+          ]
+        },
+        {
+          "day": 2, "date": "2026-09-22", "title": "Same drill, listen harder", "status": "todo",
+          "summary": "Identical to day 1. The change is in the ears: stop the note with the palm, hear the silence.",
+          "exercises": [
+            { "id": "crawl", "title": "Chromatic crawl", "minutes": 5, "bpm": 60, "subdiv": 1, "component": "crawl", "status": "todo" },
+            { "id": "mute", "title": "Muting", "minutes": 10, "bpm": 60, "subdiv": 1, "component": "mute", "status": "todo" },
+            { "id": "pick", "title": "Picking", "minutes": 10, "bpm": 60, "subdiv": 4, "component": "pick", "props": { "string": "e" }, "status": "todo" },
+            { "id": "song", "title": "Song", "minutes": 5, "component": "song", "status": "todo" }
+          ]
+        },
+        {
+          "day": 3, "date": "2026-09-23", "title": "Picking moves to the B string", "status": "todo",
+          "summary": "Muting as before. The picking drill moves one string down. Thicker string, same rule: even volume or stay at the tempo.",
+          "exercises": [
+            { "id": "crawl", "title": "Chromatic crawl", "minutes": 5, "bpm": 60, "subdiv": 1, "component": "crawl", "status": "todo" },
+            { "id": "mute", "title": "Muting", "minutes": 10, "bpm": 60, "subdiv": 1, "component": "mute", "status": "todo" },
+            { "id": "pick", "title": "Picking, B string", "minutes": 10, "bpm": 60, "subdiv": 4, "component": "pick", "props": { "string": "B" }, "status": "todo" },
+            { "id": "song", "title": "Song", "minutes": 5, "component": "song", "status": "todo" }
+          ]
+        },
+        {
+          "day": 4, "date": "2026-09-24", "title": "Record it", "status": "todo",
+          "summary": "Picking on the G string. Then the phone goes on the floor and the song block gets recorded. Listen once.",
+          "exercises": [
+            { "id": "crawl", "title": "Chromatic crawl", "minutes": 5, "bpm": 60, "subdiv": 1, "component": "crawl", "status": "todo" },
+            { "id": "mute", "title": "Muting", "minutes": 10, "bpm": 60, "subdiv": 1, "component": "mute", "status": "todo" },
+            { "id": "pick", "title": "Picking, G string", "minutes": 10, "bpm": 60, "subdiv": 4, "component": "pick", "props": { "string": "G" }, "status": "todo" },
+            { "id": "record", "title": "Record the song", "minutes": 5, "component": "record", "status": "todo" }
+          ]
+        },
+        {
+          "day": 5, "date": "2026-09-25", "title": "Gate check", "status": "todo",
+          "summary": "Run the gate. Five clean muting tests in a row, three clean picking passes. Pass or repeat the week; both are fine.",
+          "exercises": [
+            { "id": "crawl", "title": "Chromatic crawl", "minutes": 5, "bpm": 60, "subdiv": 1, "component": "crawl", "status": "todo" },
+            { "id": "mute", "title": "Muting", "minutes": 10, "bpm": 60, "subdiv": 1, "component": "mute", "status": "todo" },
+            { "id": "pick", "title": "Picking, any string", "minutes": 10, "bpm": 60, "subdiv": 4, "component": "pick", "props": { "string": "e" }, "status": "todo" },
+            { "id": "gate", "title": "Gate", "minutes": 5, "component": "gate", "status": "todo" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "build-energy", "name": "Phase 2", "title": "Build energy", "weeks": "Weeks 3–6", "nodes": [7, 8, 2], "status": "locked",
+      "outcome": "Chorus on triads up the neck, verse quiet.",
+      "gate": "Verse on open chords, chorus on triads up the neck, same song. Same eight bars at 30, 60 and 100, recorded.",
+      "plannedDays": 20, "days": []
+    },
+    {
+      "id": "lead-voice", "name": "Phase 3", "title": "Lead voice", "weeks": "Weeks 7–10", "nodes": [9, 10, 11, 12], "status": "locked",
+      "outcome": "One clean fill with one in-tune bend at the peak.",
+      "gate": "Pentatonic box 1 in G, E, C, F naming the notes. Whole-step bend matches the fretted target 10 of 10.",
+      "plannedDays": 20, "days": []
+    },
+    {
+      "id": "texture", "name": "Phase 4", "title": "Texture", "weeks": "Weeks 11–13", "nodes": [13, 14, 15], "status": "locked",
+      "outcome": "A swell under a quiet moment. Transpose on the spot.",
+      "gate": "Swell into a held note, attack gone. Four bars with dotted-eighth delay, half the notes. Transpose a hymn chart G to E.",
+      "plannedDays": 15, "days": []
+    },
+    {
+      "id": "prove-it", "name": "Phase 5", "title": "Prove it", "weeks": "Week 14", "nodes": [16], "status": "locked",
+      "outcome": "One full hymn recorded standing, no chart.",
+      "gate": "The recording exists.",
+      "plannedDays": 5, "days": []
+    }
+  ]
+}

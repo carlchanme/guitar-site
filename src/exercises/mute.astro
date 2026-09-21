@@ -1,0 +1,16 @@
+---
+import { fretboardSVG } from "../lib/fretboard.js";
+const one = fretboardSVG({ fretStart: 3, fretEnd: 7, dots: [{ string: 3, fret: 5, root: true, label: "C" }], marks: [0, 1, 2, 4, 5].map((s) => ({ string: s })), ariaLabel: "One note, C on the G string fret 5. Every other string marked silent." });
+const line = fretboardSVG({ fretStart: 3, fretEnd: 7, dots: [{ string: 3, fret: 5, label: "1" }, { string: 3, fret: 7, label: "2" }, { string: 2, fret: 5, label: "3" }, { string: 2, fret: 7, label: "4" }], marks: [0, 1, 4, 5].map((s) => ({ string: s })), ariaLabel: "Four-note line: G string 5 and 7, D string 5 and 7" });
+---
+<Fragment set:html={one} />
+<p><strong>The test.</strong> Fret C on the G string, 5th fret. Pick it once. Let it ring four beats. Listen. Anything besides that C is a fail.</p>
+<h3>Two fixes, both at once</h3>
+<ol>
+  <li><strong>Picking hand.</strong> Heel of the palm rests on the low E and A strings, right at the bridge saddles. Not pressing. Touching.</li>
+  <li><strong>Fretting hand.</strong> The index finger lies flat across the thinner strings (D, B, e), touching them, not pressing. The tip frets the note; the rest of the finger silences the neighbours.</li>
+</ol>
+<p>Play the C. Four beats. Stop it with the palm. Ten times. Then D string 5th fret (G), ten. Then B string 5th fret (E), ten.</p>
+<h3>Then a four-note line</h3>
+<Fragment set:html={line} />
+<p>Each note two beats. Nothing bleeds. Ten times.</p>

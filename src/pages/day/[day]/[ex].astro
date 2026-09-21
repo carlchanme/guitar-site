@@ -1,0 +1,44 @@
+---
+import App from "../../../layouts/App.astro";
+import Stepper from "../../../components/Stepper.astro";
+import Metronome from "../../../components/Metronome.astro";
+import ExerciseTimer from "../../../components/ExerciseTimer.astro";
+import { allDays, getDay, exHref, neighbours } from "../../../lib/course.js";
+export function getStaticPaths() {
+  return allDays.flatMap((d) => d.exercises.filter((e) => e.kind !== "lesson").map((e) => ({ params: { day: String(d.day), ex: e.id } })));
+}
+const day = getDay(Astro.params.day);
+const ex = day.exercises.find((e) => e.id === Astro.params.ex);
+const { next, prev, index } = neighbours(day, ex);
+const mods = import.meta.glob("../../../exercises/*.astro", { eager: true });
+const Body = mods[`../../../exercises/${ex.component}.astro`]?.default;
+const nextHref = next ? exHref(day, next) : `/day/${day.day}/`;
+const nextTitle = next ? next.title : "Day overview";
+const hasLesson = day.exercises[0]?.kind === "lesson";
+const n = hasLesson ? index : index + 1;
+---
+<App title={`Day ${day.day} · ${ex.title}`} description={day.summary} activeDay={day.day}>
+  <p class="crumb"><a href="/">{day.phase.name}</a> · <a href={`/day/${day.day}/`}>Day {day.day}. {day.title}</a></p>
+  <h1>Exercise {n}. {ex.title}</h1>
+  <Stepper day={day} active={ex.id} />
+
+  <div class="meta small muted">
+    <span>⏱ {ex.minutes} min</span>
+    {ex.bpm && <span>♩ {ex.bpm} BPM · {ex.subdiv} per click</span>}
+    <span>{ex.status === "done" ? "done" : "not yet done"}</span>
+  </div>
+
+  <ExerciseTimer minutes={ex.minutes} nextHref={nextHref} nextTitle={nextTitle} />
+  {ex.bpm && <Metronome id={`d${day.day}-${ex.id}`} bpm={ex.bpm} subdiv={ex.subdiv} compact />}
+
+  {Body ? <Body day={day} ex={ex} props={ex.props ?? {}} /> : <p class="muted">Not written yet.</p>}
+
+  <div class="pn">
+    {prev && prev.kind !== "lesson" ? <a class="btn" href={exHref(day, prev)}>← {prev.title}</a> : <a class="btn" href={`/day/${day.day}/`}>← Lesson</a>}
+    <a class="btn" href={nextHref}>{nextTitle} →</a>
+  </div>
+</App>
+<style>
+  .meta{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0 0}
+  .pn{display:flex;justify-content:space-between;gap:10px;margin-top:30px;padding-top:16px;border-top:1px solid var(--line)}
+</style>

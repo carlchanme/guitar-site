@@ -96,3 +96,18 @@ Scope re-set after interview (see vault `connections/projects/guitar-site/roadma
 Rules unchanged: lesson goes live only when Carl can play it; public site never names employer, clients, WrenchIt, freelance platforms.
 
 Content loop: Carl reports a session in one line → a log entry is written → ratings bump when a gate passes → commit + push → Vercel rebuilds. Weekly: a new `src/pages/drills/week-NN.astro` and a row in `src/pages/drills/index.astro`.
+
+## Build status (2026-09-21, second pass) — course app shell
+
+Carl's reference: a pickupmusic-style course UI (sidebar of days with status, exercise stepper, media area). Rebuilt the site as that app; the light Japandi layout is gone.
+
+- `src/data/course.json` — the mock database. pathway → phases (5) → days → exercises. Statuses `done | current | todo | locked`. Only Phase 1 week 1 (days 1–5) has content; phases 2–5 are locked with `plannedDays` and `days: []`, written after each gate. **This file is the SOURCE OF TRUTH for day/exercise status**; `roadmap.json` stays the source for the 20 skill ratings.
+- `src/lib/course.js` — read helpers (progress %, current day, neighbours, hrefs).
+- `src/layouts/App.astro` — dark shell: icon rail · sidebar · main. Under 900px: rail hidden, top bar with "☰ Days" opens the sidebar as a drawer.
+- `src/components/Sidebar.astro` (phases as `<details>`, days with status icon or progress ring), `Stepper.astro` (Lesson › Exercise 1 › …, auto-scrolls to the active tab), `StatusIcon.astro`, `ExerciseTimer.astro` (countdown, starts the page's metronome, three beeps, lights "Next").
+- `src/exercises/*.astro` — one component per exercise type (`w1-lesson`, `crawl`, `mute`, `pick` with a `string` prop, `song`, `record`, `gate`). course.json names the component per exercise.
+- Routes: `/` pathway overview · `/day/` → current day · `/day/N/` lesson tab · `/day/N/<ex>/` exercise · `/progress/` · `/log/` · `/metronome/` · `/library/` (lessons 1–3 + hexatonic reference). `/drills/*` redirect to the pathway.
+- Fretboard dot labels are now always dark ink (`#1a120c`) so they read on both themes.
+- Verified headless at 1440×900 and 390×844: no horizontal scroll, no console errors, drawer opens and navigates, timer + metronome start together on an exercise page, song page timer beeps without a metronome, redirect works.
+
+Not built: per-exercise "mark done" on the phone. Status changes only through course.json, written from Carl's log line, so the log and the status never disagree.

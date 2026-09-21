@@ -1,0 +1,43 @@
+---
+import App from "../../../layouts/App.astro";
+import Stepper from "../../../components/Stepper.astro";
+import StatusIcon from "../../../components/StatusIcon.astro";
+import { allDays, getDay, exHref, dayProgress } from "../../../lib/course.js";
+export function getStaticPaths() { return allDays.map((d) => ({ params: { day: String(d.day) } })); }
+const day = getDay(Astro.params.day);
+const lesson = day.exercises.find((e) => e.kind === "lesson");
+const dp = dayProgress(day);
+const first = day.exercises.find((e) => e.kind !== "lesson");
+const mods = import.meta.glob("../../../exercises/*.astro", { eager: true });
+const Lesson = lesson ? mods[`../../../exercises/${lesson.component}.astro`]?.default : null;
+---
+<App title={`Day ${day.day}. ${day.title}`} description={day.summary} activeDay={day.day}>
+  <p class="crumb"><a href="/">{day.phase.name}</a> · {day.phase.title} · {day.date}</p>
+  <h1>Day {day.day}. {day.title}</h1>
+  <Stepper day={day} active="lesson" />
+
+  <div class="head">
+    <div>
+      <h2 style="margin-top:0">{lesson ? "Lesson" : "Today"}</h2>
+      <p class="muted" style="margin-top:0">{day.summary}</p>
+    </div>
+    <span class="small muted">{dp.done}/{dp.total} done · {day.exercises.reduce((a, e) => a + (e.minutes || 0), 0)} min</span>
+  </div>
+
+  {first && <p><a class="btn primary" href={exHref(day, first)}>Start with {first.title} →</a></p>}
+
+  <ol class="exl">
+    {day.exercises.filter((e) => e.kind !== "lesson").map((e, i) => (
+      <li><a href={exHref(day, e)}><StatusIcon status={e.status} size={20} /><span>Exercise {i + 1} · {e.title}</span><small class="muted">{e.minutes} min{e.bpm && ` · ${e.bpm} BPM × ${e.subdiv}`}</small></a></li>
+    ))}
+  </ol>
+
+  {Lesson && <Lesson day={day} />}
+</App>
+<style>
+  .head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-top:16px}
+  .head span{white-space:nowrap;padding-top:6px}
+  .exl{list-style:none;padding:0;margin:8px 0 18px;display:flex;flex-direction:column;gap:8px}
+  .exl a{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;text-decoration:none}
+  .exl a span{flex:1}
+</style>

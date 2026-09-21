@@ -1,0 +1,4 @@
+---
+import { currentDay, dayHref } from "../../lib/course.js";
+return Astro.redirect(dayHref(currentDay()));
+---

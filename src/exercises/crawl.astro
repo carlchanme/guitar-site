@@ -1,0 +1,11 @@
+---
+import { fretboardSVG } from "../lib/fretboard.js";
+const crawl = fretboardSVG({ fretStart: 1, fretEnd: 4, dots: [1, 2, 3, 4].map((f) => ({ string: 0, fret: f, label: String(f) })), ariaLabel: "Chromatic crawl on the low E string, frets 1 to 4, one finger per fret" });
+---
+<Fragment set:html={crawl} />
+<p>Low E, frets 1-2-3-4, one finger per fret: index 1, middle 2, ring 3, pinky 4. Then the A string, and so on up to high e, then back down.</p>
+<ul>
+  <li>One note per click. Strict down-up-down-up, no exceptions.</li>
+  <li>Even volume on every note. Speed is not the goal.</li>
+  <li>Fingers stay close to the strings between notes. A finger flying away is wasted time on the way back.</li>
+</ul>

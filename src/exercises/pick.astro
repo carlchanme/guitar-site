@@ -1,0 +1,16 @@
+---
+import { fretboardSVG } from "../lib/fretboard.js";
+const { props = {} } = Astro.props;
+const names = { e: "high e", B: "B", G: "G" };
+const idx = { e: 5, B: 4, G: 3 }[props.string ?? "e"];
+const name = names[props.string ?? "e"];
+const dots = Array.from({ length: 12 }, (_, i) => ({ string: idx, fret: i + 1, label: String((i % 4) + 1) }));
+const a = fretboardSVG({ fretStart: 1, fretEnd: 6, dots: dots.filter((d) => d.fret <= 6), ariaLabel: `Picking drill on the ${name} string, frets 1 to 6` });
+const b = fretboardSVG({ fretStart: 7, fretEnd: 12, dots: dots.filter((d) => d.fret >= 7), ariaLabel: `Picking drill on the ${name} string, frets 7 to 12` });
+---
+<Fragment set:html={a} />
+<Fragment set:html={b} />
+<p><strong>{name} string only.</strong> Frets 1 to 12 and back, one finger per fret, shifting the hand every four (1-2-3-4, shift, 5-6-7-8, shift, 9-10-11-12). Four notes per click. Strict alternate picking. One pass = up and down.</p>
+<h3>Pass rule</h3>
+<p>A full pass with every note the same volume and no missed pick stroke. Three clean passes in a row: press +5. Any miss: stay. Write the BPM you end on in the log.</p>
+{props.string !== "e" && <p class="muted small">Thicker string, same rule. It will feel slower. That is the string, not you.</p>}

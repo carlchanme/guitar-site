@@ -1,0 +1,18 @@
+---
+import { fretboardSVG } from "../lib/fretboard.js";
+const { day } = Astro.props;
+const hero = fretboardSVG({ fretStart: 3, fretEnd: 7, dots: [{ string: 3, fret: 5, root: true, label: "C" }], marks: [0, 1, 2, 4, 5].map((s) => ({ string: s })), ariaLabel: "One note, C on the G string, every other string silent" });
+---
+<Fragment set:html={hero} />
+<h2>Why hands before theory</h2>
+<p>On Sunday the lead lines fail for two physical reasons: strings I'm not playing ring under the gain, and the picking is uneven so the line sounds sloppy through the amp. Neither is a theory problem. Two weeks of muting and metronome picking and the same lines come out clean.</p>
+<h3>This week</h3>
+<ul>
+  <li>Five sessions, thirty minutes. Sitting is fine. Drive patch on the HX Stomp for every block: gain exposes what's ringing.</li>
+  <li>Same four exercises every day. Day 3 and 4 move the picking drill to thicker strings. Day 4 records the song. Day 5 runs the gate.</li>
+  <li>Three clean picking passes in a row: +5 BPM. One miss: stay. Expect 60–70 all week.</li>
+</ul>
+<h3>The gate</h3>
+<p>{day.phase.gate}</p>
+<p>Pass: week 2. Fail: repeat week 1. Repeating a week is the system working, not a setback.</p>
+<div class="note"><strong>Cramp check.</strong> Pinky or hand tenses: stop, shake it out, thumb behind the neck, not over the top, restart. Tension is the cramp, not weakness.</div>

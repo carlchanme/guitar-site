@@ -77,7 +77,7 @@ export function fretboardSVG({
     const cx = left + (d.fret - fretStart) * fw + fw / 2;
     const cy = top + (5 - d.string) * sh;
     const fill = d.root ? "var(--root)" : "var(--tone)";
-    const textFill = d.root ? "#fff" : "var(--ink)";
+    const textFill = d.root ? "#fff" : "#1a120c";
     const op = d.dim ? ' opacity="0.45"' : "";
     s += `<circle cx="${cx}" cy="${cy}" r="15" fill="${fill}" stroke="#1a120c" stroke-width="1"${op}/>`;
     s += `<text x="${cx}" y="${cy + 5}" font-size="14" font-weight="700" text-anchor="middle" fill="${textFill}"${op}>${d.label ?? ""}</text>`;
