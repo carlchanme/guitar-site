@@ -54,17 +54,25 @@ import Field from "../../components/Field.astro";
       why: "Jazz and film-score colour. Listed for completeness so you know the full hexatonic family is six scales, of which two matter to you." },
   ];
 
-  const sel = document.getElementById("key");
-  NOTES.forEach((n, i) => {
-    const o = document.createElement("option");
-    o.value = String(i);
-    o.textContent = n;
-    if (n === "G") o.selected = true;
-    sel.appendChild(o);
-  });
-  sel.addEventListener("change", render);
+  // Bound on first load and on every client-side visit; the page is new each time.
+  function bind() {
+    const sel = document.getElementById("key");
+    if (!sel || sel.dataset.bound !== undefined) return;
+    sel.dataset.bound = "";
+    NOTES.forEach((n, i) => {
+      const o = document.createElement("option");
+      o.value = String(i);
+      o.textContent = n;
+      if (n === "G") o.selected = true;
+      sel.appendChild(o);
+    });
+    sel.addEventListener("change", () => render(sel));
+    render(sel);
+  }
+  bind();
+  document.addEventListener("astro:page-load", bind);
 
-  function render() {
+  function render(sel) {
     const root = Number(sel.value);
     document.getElementById("scales").innerHTML = SCALES.map((sc) => {
       const dots = scaleDots(root, sc.iv, STANDARD_TUNING, 0, 12).map((d) => ({
@@ -87,6 +95,4 @@ import Field from "../../components/Field.astro";
       `;
     }).join("");
   }
-
-  render();
 </script>

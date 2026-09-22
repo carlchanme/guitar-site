@@ -5,8 +5,8 @@ const names = { e: "high e", B: "B", G: "G" };
 const idx = { e: 5, B: 4, G: 3 }[props.string ?? "e"];
 const name = names[props.string ?? "e"];
 const dots = Array.from({ length: 12 }, (_, i) => ({ string: idx, fret: i + 1, label: String((i % 4) + 1) }));
-const a = fretboardSVG({ fretStart: 1, fretEnd: 6, dots: dots.filter((d) => d.fret <= 6), ariaLabel: `Picking drill on the ${name} string, frets 1 to 6` });
-const b = fretboardSVG({ fretStart: 7, fretEnd: 12, dots: dots.filter((d) => d.fret >= 7), ariaLabel: `Picking drill on the ${name} string, frets 7 to 12` });
+const a = fretboardSVG({ fretStart: 1, fretEnd: 6, dots: dots.filter((d) => d.fret <= 6), playOrder: true, ariaLabel: `Picking drill on the ${name} string, frets 1 to 6` });
+const b = fretboardSVG({ fretStart: 7, fretEnd: 12, dots: dots.filter((d) => d.fret >= 7), playOrder: true, ariaLabel: `Picking drill on the ${name} string, frets 7 to 12` });
 ---
 <Fragment set:html={a} />
 <Fragment set:html={b} />

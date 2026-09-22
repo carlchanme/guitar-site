@@ -38,8 +38,9 @@ counts that are not real; there are none today.
 Content lives in `src/data/course.json` (pathway, days, exercises, statuses),
 `src/data/roadmap.json` (skill ratings), `src/content/log/` (markdown),
 `src/exercises/*.astro` (exercise bodies), `src/lib/fretboard.js` (SVG
-diagrams). Visual work does not touch these, and does not change routes or the
-fretboard renderer's geometry.
+diagrams). Visual work does not touch these, and does not change routes. The
+fretboard renderer's look (nut, taper, gauge, inlays, grain) is a design
+value in `DESIGN.md`; change it there first.
 
 ## Design system
 
@@ -57,14 +58,15 @@ Four fundamentals, each as a rule for this project:
   step. Weight is the second axis (400 vs 700), never italic.
 - **Repetition** — the same primitives on every page: hairline lists, the
   status marks from `StatusIcon.astro`, mono for every number, one primary
-  button, the `card` panel for timer and metronome. A new page composes these;
+  button, the borderless `Card` surface for the timer. A new page composes these;
   it does not invent a new row style.
 - **Alignment** — a strong left edge is the anchor. In the app it is the main
   column's left padding; on the landing page it is column 2. Centered layouts
   are forbidden except a single-object empty or error state.
 - **Proximity** — whitespace carries hierarchy, dividers do not. Group by
   spacing (8px steps) first; a hairline is a last resort and sits within
-  0.04 L of its surface.
+  0.04 L of its surface. Surfaces are borderless: a hairline separates, it
+  never encloses.
 
 ## Conventions
 

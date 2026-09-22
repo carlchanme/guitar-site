@@ -117,3 +117,7 @@ Not built: per-exercise "mark done" on the phone. Status changes only through co
 Public landing at `/` (hero with a rendered-fretboard stand-in until Carl's guitar photo lands), pathway overview moved to `/path/`. OKLCH only, Fraunces / Schibsted Grotesk / JetBrains Mono, `--radius: 2px`, ink-blue accent on status marks + one primary action per screen. `DESIGN.md` is the source of truth; `AGENTS.md` holds the working principles. Tests: `npm test` (46 static + component), `npm run test:visual` (19 Playwright baselines at 1440 and 390, in `tests/visual/__baselines__/`), Vizzly config for the TDD loop. Build prompts that produced this: `level3-output/`. Reviewed independently in the LifeOS session before merge; one mobile-column defect fixed on the tip.
 
 Open: swap the hero stand-in for the photo (`src/pages/index.astro`, `.hero .art`), then update the landing baselines.
+
+## 2026-09-22 — White Falcon palette merged (5340fe6)
+
+Site retokened to ivory / warm ebony / one gold accent, after the guitar. Hump-block fretboard inlays. Icons on ivory. Hero stand-in = ivory body outline with gold binding (`public/hero-stand-in.png`), swap for the photo in `src/pages/index.astro` `.hero .art`. Rule added to DESIGN.md: gold is fills and hairlines only, never text under 20px. Built by Forge (executor on sonnet), reviewed here; two defects fixed on review before merge.
