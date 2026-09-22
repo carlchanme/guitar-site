@@ -2,12 +2,12 @@
 // One metronome engine per page (window.gm). Multiple <Metronome> tags can
 // exist; each one drives the shared engine when its Start is pressed, so only
 // one clicks at a time. Props are the starting preset for this instance.
-import Card from "./Card.astro";
+// The engine survives client-side page changes; its DOM bindings are made
+// again on astro:page-load and it stops on astro:before-swap.
 import Action from "./Action.astro";
 const { bpm = 60, subdiv = 1, compact = false, primary = false, id = "m" } = Astro.props;
 ---
-<Card data-metronome data-bpm={bpm} data-subdiv={subdiv} id={"metro-" + id}>
-<div class={"metro" + (compact ? " compact" : "")}>
+<div class={"metro" + (compact ? " compact" : "")} data-metronome data-bpm={bpm} data-subdiv={subdiv} id={"metro-" + id}>
   <div class="row top">
     <button class="adj" data-d="-5" aria-label="minus five">−5</button>
     <button class="adj" data-d="-1" aria-label="minus one">−1</button>
@@ -24,9 +24,10 @@ const { bpm = 60, subdiv = 1, compact = false, primary = false, id = "m" } = Ast
   </div>
   <div class="beat" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 </div>
-</Card>
 
 <style>
+  /* no panel: one hairline above, padding carries the rest. DESIGN.md → Metronome */
+  .metro{border-top:1px solid var(--line);padding:16px 0;margin:16px 0}
   .row{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
   .row+.row{margin-top:12px}
   .bpm{min-width:96px;text-align:center;font-family:var(--mono);font-size:var(--t-xl);line-height:1;font-weight:500;font-variant-numeric:tabular-nums}
@@ -40,7 +41,11 @@ const { bpm = 60, subdiv = 1, compact = false, primary = false, id = "m" } = Ast
   .beat{display:flex;gap:6px;justify-content:center;margin-top:12px;height:8px}
   .beat i{width:8px;height:8px;border-radius:50%;background:var(--line);display:none}
   .beat i.show{display:block}
-  .beat i.hit{background:var(--ink)}
+  /* state pulses on the audio clock: the hit dot swells, the numeral ticks on beat 1. DESIGN.md → Motion */
+  .beat i.hit{background:var(--ink);animation:beat-hit 120ms ease-out}
+  @keyframes beat-hit{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1)}}
+  [data-bpm-out].tick{animation:bpm-tick 120ms ease-out}
+  @keyframes bpm-tick{0%{opacity:1}50%{opacity:.6}100%{opacity:1}}
   .compact .bpm{font-size:var(--t-lg);min-width:80px}
 </style>
 
@@ -97,6 +102,7 @@ const { bpm = 60, subdiv = 1, compact = false, primary = false, id = "m" } = Ast
   }
 
   function stop() {
+    const was = gm.running;
     if (gm.timer) clearInterval(gm.timer);
     gm.timer = null;
     gm.running = false;
@@ -104,6 +110,8 @@ const { bpm = 60, subdiv = 1, compact = false, primary = false, id = "m" } = Ast
     try { gm.wake?.release(); } catch {}
     gm.wake = null;
     document.querySelectorAll("[data-metronome]").forEach((el) => paint(el as HTMLElement));
+    // a running engine that stops tells the page (the diagram player follows it)
+    if (was) document.dispatchEvent(new Event("gm:stop"));
   }
 
   function paint(el: HTMLElement) {
@@ -125,47 +133,59 @@ const { bpm = 60, subdiv = 1, compact = false, primary = false, id = "m" } = Ast
   };
   (window as any).gmStop = stop;
 
-  for (const el of document.querySelectorAll<HTMLElement>("[data-metronome]")) {
-    const saved = Number(localStorage.getItem("gm:" + el.id));
-    if (saved) el.dataset.bpm = String(saved);
-    let taps: number[] = [];
+  // Bind every metronome on the current page. Runs on first load and after
+  // every client-side swap; an element is bound once.
+  function bind() {
+    for (const el of document.querySelectorAll<HTMLElement>("[data-metronome]")) {
+      if (el.dataset.bound !== undefined) continue;
+      el.dataset.bound = "";
+      const saved = Number(localStorage.getItem("gm:" + el.id));
+      if (saved) el.dataset.bpm = String(saved);
+      let taps: number[] = [];
 
-    const setBpm = (v: number) => {
-      v = Math.min(240, Math.max(30, Math.round(v)));
-      el.dataset.bpm = String(v);
-      if (gm.owner === el) gm.bpm = v;
-      try { localStorage.setItem("gm:" + el.id, String(v)); } catch {}
-      paint(el);
-    };
+      const setBpm = (v: number) => {
+        v = Math.min(240, Math.max(30, Math.round(v)));
+        el.dataset.bpm = String(v);
+        if (gm.owner === el) gm.bpm = v;
+        try { localStorage.setItem("gm:" + el.id, String(v)); } catch {}
+        paint(el);
+      };
 
-    el.querySelectorAll<HTMLButtonElement>(".adj").forEach((b) => b.addEventListener("click", () => setBpm(Number(el.dataset.bpm) + Number(b.dataset.d))));
-    el.querySelectorAll<HTMLButtonElement>("[data-sub]").forEach((b) => b.addEventListener("click", () => {
-      el.dataset.subdiv = b.dataset.sub!;
-      if (gm.owner === el) { gm.subdiv = Number(b.dataset.sub); gm.tick = 0; }
+      el.querySelectorAll<HTMLButtonElement>(".adj").forEach((b) => b.addEventListener("click", () => setBpm(Number(el.dataset.bpm) + Number(b.dataset.d))));
+      el.querySelectorAll<HTMLButtonElement>("[data-sub]").forEach((b) => b.addEventListener("click", () => {
+        el.dataset.subdiv = b.dataset.sub!;
+        if (gm.owner === el) { gm.subdiv = Number(b.dataset.sub); gm.tick = 0; }
+        paint(el);
+      }));
+      el.querySelector(".tap")!.addEventListener("click", () => {
+        const now = performance.now();
+        taps = taps.filter((t) => now - t < 2500);
+        taps.push(now);
+        if (taps.length >= 2) {
+          const gaps = taps.slice(1).map((t, i) => t - taps[i]);
+          setBpm(60000 / (gaps.reduce((a, b) => a + b, 0) / gaps.length));
+        }
+      });
+      el.querySelector("[data-go]")!.addEventListener("click", () => {
+        if (gm.owner === el) return stop();
+        gm.bpm = Number(el.dataset.bpm);
+        gm.subdiv = Number(el.dataset.subdiv);
+        start(el);
+      });
       paint(el);
-    }));
-    el.querySelector(".tap")!.addEventListener("click", () => {
-      const now = performance.now();
-      taps = taps.filter((t) => now - t < 2500);
-      taps.push(now);
-      if (taps.length >= 2) {
-        const gaps = taps.slice(1).map((t, i) => t - taps[i]);
-        setBpm(60000 / (gaps.reduce((a, b) => a + b, 0) / gaps.length));
-      }
-    });
-    el.querySelector("[data-go]")!.addEventListener("click", () => {
-      if (gm.owner === el) return stop();
-      gm.bpm = Number(el.dataset.bpm);
-      gm.subdiv = Number(el.dataset.subdiv);
-      start(el);
-    });
-    paint(el);
+    }
   }
+  bind();
+  document.addEventListener("astro:page-load", bind);
+  document.addEventListener("astro:before-swap", stop);
 
   gm.onTick = (tick, sub) => {
     if (sub !== 0 || !gm.owner) return;
     const beat = Math.floor(tick / gm.subdiv) % 4;
     gm.owner.querySelectorAll<HTMLElement>(".beat i").forEach((i, n) => i.classList.toggle("hit", n === beat));
+    gm.owner.querySelector<HTMLElement>("[data-bpm-out]")?.classList.toggle("tick", beat === 0);
+    // anything else on the page that moves on the beat (the diagram player) listens here
+    document.dispatchEvent(new CustomEvent("gm:beat", { detail: { beat } }));
   };
 
   document.addEventListener("visibilitychange", async () => {

@@ -1,0 +1,76 @@
+---
+// Play-order control for diagrams rendered with playOrder: true. Script only,
+// no markup: it finds every svg[data-player] on the page, puts a secondary
+// "Play shape" button under it and lights the dots one per beat. The beat
+// comes from the page's metronome when there is one (window.gm; the engine
+// starts if idle and stops at the end), else a fixed 60 BPM timer. One
+// diagram plays at a time; a second press stops it. DESIGN.md → Motion.
+---
+<script>
+  let stopActive: (() => void) | null = null;
+
+  function play(svg: SVGSVGElement, btn: HTMLButtonElement) {
+    if (stopActive) { const mine = svg.classList.contains("playing"); stopActive(); if (mine) return; }
+    const dots = [...svg.querySelectorAll<SVGGElement>("g[data-order]")].sort((a, b) => Number(a.dataset.order) - Number(b.dataset.order));
+    if (!dots.length) return;
+    const per = Math.max(1, Number(svg.dataset.beats) || 1);
+    const w = window as any;
+    const m = document.querySelector<HTMLElement>("[data-metronome]");
+    let beat = 0, timer: number | null = null, started = false;
+
+    const mark = () => {
+      const n = Math.floor(beat / per);
+      if (n >= dots.length) return stop();
+      dots.forEach((g, k) => { g.classList.toggle("on", k === n); g.classList.toggle("was", k < n); });
+      beat += 1;
+    };
+    const onBeat = () => mark();
+    function stop() {
+      if (timer) clearInterval(timer);
+      timer = null;
+      document.removeEventListener("gm:beat", onBeat);
+      document.removeEventListener("gm:stop", stop);
+      dots.forEach((g) => g.classList.remove("on", "was"));
+      svg.classList.remove("playing");
+      btn.textContent = "Play shape";
+      btn.setAttribute("aria-pressed", "false");
+      if (stopActive === stop) stopActive = null;
+      if (started) { started = false; w.gmStop?.(); }
+    }
+
+    stopActive = stop;
+    svg.classList.add("playing");
+    btn.textContent = "Stop";
+    btn.setAttribute("aria-pressed", "true");
+    if (w.gm?.running) {
+      document.addEventListener("gm:beat", onBeat);
+      document.addEventListener("gm:stop", stop);
+    } else if (m && w.gmPreset) {
+      document.addEventListener("gm:beat", onBeat);
+      document.addEventListener("gm:stop", stop);
+      started = true;
+      w.gmPreset(m, Number(m.dataset.bpm), Number(m.dataset.subdiv), true);
+    } else {
+      mark();
+      timer = window.setInterval(mark, 1000);
+    }
+  }
+
+  // One button per diagram, added once; diagrams are new on every page.
+  function bind() {
+    for (const svg of document.querySelectorAll<SVGSVGElement>("svg[data-player]")) {
+      if (svg.dataset.bound !== undefined) continue;
+      svg.dataset.bound = "";
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "play-shape";
+      btn.textContent = "Play shape";
+      btn.setAttribute("aria-pressed", "false");
+      btn.addEventListener("click", () => play(svg, btn));
+      svg.insertAdjacentElement("afterend", btn);
+    }
+  }
+  bind();
+  document.addEventListener("astro:page-load", bind);
+  document.addEventListener("astro:before-swap", () => stopActive?.());
+</script>

@@ -5,7 +5,7 @@ const { activeDay = null } = Astro.props;
 const total = pathwayProgress();
 const path = Astro.url.pathname;
 ---
-<aside class="side" id="side">
+<aside class="side" id="side" transition:persist="side">
   <div class="path">
     <strong>{pathway.title}</strong>
     <span class="mono">{total.done}/{total.total} days</span>
@@ -34,7 +34,7 @@ const path = Astro.url.pathname;
             {p.days.map((d) => {
               const dp = dayProgress(d);
               return (
-                <li class={(d.day === activeDay ? "on " : "") + d.status}>
+                <li class={(d.day === activeDay ? "on " : "") + d.status} data-day={d.day}>
                   <a href={dayHref(d)}>
                     <span class="n mono">{String(d.day).padStart(2, "0")}</span>
                     <span class="t">{d.title}</span>
@@ -59,11 +59,12 @@ const path = Astro.url.pathname;
   .path{margin:0 0 20px}
   .path strong{display:block;font-family:var(--display);font-variation-settings:"SOFT" 50,"WONK" 0;font-weight:500;font-size:var(--t-md);line-height:1.2;letter-spacing:var(--track-tight)}
   .path span{display:block;color:var(--ink-soft);margin-top:4px}
-  .quick{display:flex;gap:16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:8px}
+  .quick{display:flex;gap:16px;border-top:1px solid var(--line);margin-bottom:8px}
   .quick a{padding:10px 0;text-decoration:none;color:var(--ink-soft);font-size:var(--t-xs);transition:opacity 150ms}
   .quick a:hover{opacity:.8}
   .quick a.on{color:var(--ink);font-weight:700;opacity:1}
-  .phase{border-bottom:1px solid var(--line)}
+  /* one hairline above each phase separates it; no border, no fill. DESIGN.md → Sidebar */
+  .phase{border-top:1px solid var(--line)}
   .phase summary{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;cursor:pointer;list-style:none}
   .phase summary::-webkit-details-marker{display:none}
   .phase summary b{display:block;font-size:var(--t-xs);color:var(--ink);font-weight:700}

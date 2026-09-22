@@ -9,20 +9,26 @@ const hasLesson = day.exercises[0]?.kind === "lesson";
       {ex.status === "done" && <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="var(--accent)"/><path d="M4.8 8.3l2 2 4.2-4.4" fill="none" stroke="var(--accent-ink)" stroke-width="1.8" stroke-linecap="round"/></svg>}
       <span>{ex.kind === "lesson" ? "Lesson" : `Exercise ${hasLesson ? i : i + 1}`}</span>
       <small>{ex.kind === "lesson" ? "Overview" : ex.title}</small>
+      {ex.id === active && <i class="under" transition:name="stepper-under" aria-hidden="true"></i>}
     </a>
   ))}
 </nav>
 <script>
-  document.querySelector(".stepper a.on")?.scrollIntoView({ inline: "center", block: "nearest" });
+  // Keep the active step in view; the stepper is new on every page.
+  const centre = () => document.querySelector(".stepper a.on")?.scrollIntoView({ inline: "center", block: "nearest" });
+  centre();
+  document.addEventListener("astro:page-load", centre);
 </script>
 <style>
   .stepper{display:flex;overflow-x:auto;border-bottom:1px solid var(--line);margin:16px 0 0;scrollbar-width:none}
   .stepper::-webkit-scrollbar{display:none}
-  .stepper a{flex:1 0 auto;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 16px 12px 0;margin-right:16px;text-decoration:none;color:var(--ink-soft);font-size:var(--t-xs);border-bottom:1px solid transparent;margin-bottom:-1px;white-space:nowrap;min-width:96px;transition:opacity 150ms}
+  .stepper a{position:relative;flex:1 0 auto;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 16px 12px 0;margin-right:16px;text-decoration:none;color:var(--ink-soft);font-size:var(--t-xs);border-bottom:1px solid transparent;margin-bottom:-1px;white-space:nowrap;min-width:96px;transition:opacity 150ms}
   .stepper a:hover{opacity:.8}
   .stepper a span{display:flex;align-items:center;gap:6px;font-weight:700}
   .stepper a small{font-size:11px;color:var(--ink-faint)}
-  .stepper a.on{color:var(--ink);border-bottom-color:var(--ink);opacity:1}
+  .stepper a.on{color:var(--ink);opacity:1}
+  /* the active underline is its own element so the view transition can slide it to the next tab */
+  .stepper .under{position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--ink)}
   .stepper a.on small{color:var(--ink-soft)}
   .stepper a.done{color:var(--ink)}
 </style>

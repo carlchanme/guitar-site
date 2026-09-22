@@ -2,21 +2,21 @@
    custom property here is a token there. OKLCH only. One radius. Three faces:
    Fraunces (display), Schibsted Grotesk (text), JetBrains Mono (numbers). */
 :root{
-  --bg:        oklch(0.955 0.012 85);
-  --surface:   oklch(0.93 0.014 85);
-  --card:      oklch(0.905 0.016 85);
+  --bg:        oklch(0.98 0.006 85);
+  --surface:   oklch(0.95 0.010 85);
+  --card:      oklch(0.94 0.010 85);
   --ink:       oklch(0.20 0.012 60);
   --ink-soft:  oklch(0.42 0.012 60);
   --ink-faint: oklch(0.60 0.012 70);
-  --line:      oklch(0.87 0.02 85);
-  --accent:    oklch(0.68 0.13 80);
-  --accent-ink:oklch(0.20 0.05 70);
+  --line:      oklch(0.91 0.012 85);
+  --accent:    oklch(0.72 0.16 82);
+  --accent-ink:oklch(0.20 0.04 70);
   --danger:    oklch(0.55 0.16 25);
   /* fretboard material, not UI colour */
   --board:     oklch(0.22 0.012 60);
   --fret:      oklch(0.74 0.03 85);
   --string:    oklch(0.88 0.015 85);
-  --tone:      oklch(0.95 0.012 85);
+  --tone:      oklch(0.97 0.008 85);
   --root:      var(--accent);
   --scrim:     oklch(0.20 0.012 60 / 0.35);
 
@@ -33,15 +33,17 @@
   --t-lg: 28px;   --lh-lg: 1.25;
   --t-xl: 44px;   --lh-xl: 1.08;
   --t-2xl: clamp(40px, 6.5vw, 88px); --lh-2xl: 1.0;
-  --t-3xl: clamp(160px, 22vw, 320px); --lh-3xl: 0.9;
   --track-tight: -0.02em;
   --track-caps: 0.12em;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;color-scheme:light;-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+/* Reduced motion: every state change is instant. No tween, no keyframe, no
+   view-transition animation; the state itself (ring, dots, drawer) still lands. */
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{transition-duration:0.01ms !important;animation-duration:0.01ms !important;scroll-behavior:auto !important}
+  *,*::before,*::after{transition:none !important;animation:none !important;scroll-behavior:auto !important}
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none !important}
 }
 .skip{position:absolute;left:16px;top:-100px;z-index:100;background:var(--ink);color:var(--bg);padding:8px 12px;border-radius:var(--radius);text-decoration:none}
 .skip:focus{top:16px}
@@ -68,6 +70,12 @@ button{font:inherit;color:var(--ink);background:var(--card);border:1px solid var
 button:hover{opacity:.85}
 select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px}
 .board{width:100%;max-width:600px;height:auto;display:block;margin:16px 0}
+/* play-order diagrams: the dot playing now is the "here" status mark (gold), played dots dim. DESIGN.md → Motion */
+svg[data-player] g[data-order]{transition:opacity 120ms}
+svg[data-player] g[data-order] circle{transition:fill 120ms,stroke-width 120ms}
+svg[data-player] g.on circle{fill:var(--accent);stroke-width:2}
+svg[data-player] g.was{opacity:.6}
+.play-shape{margin:-8px 0 16px}
 .chord{height:150px;width:auto;display:inline-block;margin:8px 12px 8px 0}
 .note{border-left:1px solid var(--ink-soft);padding:2px 0 2px 16px;margin:16px 0}
 .notes{font-family:var(--mono);font-size:var(--t-md);font-weight:500;letter-spacing:0.08em;margin:16px 0}

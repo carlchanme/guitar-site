@@ -1,10 +1,11 @@
 ---
-// The one raised surface: --card, hairline, one radius, one padding. Nothing
-// can override those: class and style props are dropped on purpose. id and
-// data-* attributes pass through for scripts.
+// The one panel surface: --surface, no border, one radius, one padding.
+// Surfaces are borderless; hairlines separate, never enclose (DESIGN.md →
+// Elevation & Depth). Nothing can override those: class and style props are
+// dropped on purpose. id and data-* attributes pass through for scripts.
 const { class: _class, style: _style, ...rest } = Astro.props;
 ---
 <div class="card" {...rest}><slot /></div>
 <style>
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:16px 0}
+  .card{background:var(--surface);border-radius:var(--radius);padding:16px;margin:16px 0}
 </style>

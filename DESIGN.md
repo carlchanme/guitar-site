@@ -3,20 +3,20 @@ version: alpha
 name: Back seat to lead
 description: A rhythm guitarist's practice course, learned in public. Ivory, ebony, one gold accent. Quiet.
 colors:
-  bg: "oklch(0.955 0.012 85)"
-  surface: "oklch(0.93 0.014 85)"
-  card: "oklch(0.905 0.016 85)"
+  bg: "oklch(0.98 0.006 85)"
+  surface: "oklch(0.95 0.010 85)"
+  card: "oklch(0.94 0.010 85)"
   ink: "oklch(0.20 0.012 60)"
   ink-soft: "oklch(0.42 0.012 60)"
   ink-faint: "oklch(0.60 0.012 70)"
-  line: "oklch(0.87 0.02 85)"
-  accent: "oklch(0.68 0.13 80)"
-  accent-ink: "oklch(0.20 0.05 70)"
+  line: "oklch(0.91 0.012 85)"
+  accent: "oklch(0.72 0.16 82)"
+  accent-ink: "oklch(0.20 0.04 70)"
   danger: "oklch(0.55 0.16 25)"
   board: "oklch(0.22 0.012 60)"
   fret: "oklch(0.74 0.03 85)"
   string: "oklch(0.88 0.015 85)"
-  tone: "oklch(0.95 0.012 85)"
+  tone: "oklch(0.97 0.008 85)"
   root: "{colors.accent}"
   scrim: "oklch(0.20 0.012 60 / 0.35)"
   primary: "{colors.ink}"
@@ -30,13 +30,6 @@ typography:
     fontWeight: 500
     lineHeight: 1.0
     letterSpacing: -0.02em
-    fontVariation: "'SOFT' 50, 'WONK' 0"
-  display-number:
-    fontFamily: Fraunces
-    fontSize: 320px
-    fontWeight: 400
-    lineHeight: 0.9
-    letterSpacing: -0.04em
     fontVariation: "'SOFT' 50, 'WONK' 0"
   headline-lg:
     fontFamily: Fraunces
@@ -158,7 +151,7 @@ components:
     padding: 24px
     height: 48px
   panel:
-    backgroundColor: "{colors.card}"
+    backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
     rounded: "{rounded.base}"
     padding: 16px
@@ -214,9 +207,20 @@ components:
   timer-clock:
     typography: "{typography.mono-figure}"
     textColor: "{colors.ink}"
-  timer-bar:
-    backgroundColor: "{colors.ink-soft}"
+  timer-ring:
+    backgroundColor: "{colors.line}"
+    textColor: "{colors.ink-soft}"
+    size: 56px
     height: 2px
+  timer-ring-done:
+    backgroundColor: "{colors.line}"
+    textColor: "{colors.accent}"
+    size: 56px
+    height: 2px
+  metronome-panel:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.ink}"
+    padding: 16px
   metronome-bpm:
     typography: "{typography.mono-figure}"
     textColor: "{colors.ink}"
@@ -249,14 +253,27 @@ components:
   fretboard-fret:
     backgroundColor: "{colors.fret}"
     width: 3px
+  fretboard-nut:
+    backgroundColor: "{colors.tone}"
+    width: 6px
   fretboard-string:
     backgroundColor: "{colors.string}"
     height: 1px
+  fretboard-grain:
+    backgroundColor: "{colors.board}"
   fretboard-root-dot:
     backgroundColor: "{colors.root}"
     textColor: "{colors.accent-ink}"
     size: 30px
   fretboard-tone-dot:
+    backgroundColor: "{colors.tone}"
+    textColor: "{colors.accent-ink}"
+    size: 30px
+  fretboard-dot-playing:
+    backgroundColor: "{colors.accent}"
+    textColor: "{colors.accent-ink}"
+    size: 30px
+  fretboard-dot-played:
     backgroundColor: "{colors.tone}"
     textColor: "{colors.accent-ink}"
     size: 30px
@@ -300,34 +317,46 @@ The product is ivory. It stays ivory. Do not "fix" it to a dark theme.
 OKLCH only. No hex, no HSL, no rgb anywhere in source. Ivory background, warm
 ebony ink, hairlines within 0.04 L of their surface, one committed gold
 accent. Every hue sits between 50 and 85 (warm) except danger (25); the accent
-sits at 80, inside the warm range, but is the one saturated note against the
+sits at 82, inside the warm range, but is the one saturated note against the
 otherwise near-neutral ivory/ebony stack.
 
-- **Background (`bg`, oklch 0.955 0.012 85):** ivory. The page. Every
+Palette note, 2026-09-22: the stack moved from aged-paper ivory (`bg` 0.955
+0.012, `accent` 0.68 0.13 80, which read as mustard on screen) to clean cream
+and a deeper gold (`bg` 0.98 0.006, `accent` 0.72 0.16 82), chosen from a
+side-by-side swatch. Ink, danger and the fretboard wood are unchanged; `tone`
+tracks the new `bg`. The three tonal steps are now 0.98 → 0.95 → 0.94 and
+`line` (0.91) stays within 0.04 L of `card`.
+
+- **Background (`bg`, oklch 0.98 0.006 85):** ivory. The page. Every
   full-bleed image sits on this with no card around it.
-- **Surface (`surface`, 0.93):** the rail and the sidebar. One step down.
-- **Card (`card`, 0.905):** raised rows, the timer, the metronome, the active
-  day in the sidebar, `code`. Two steps down. This is the base of the tonal
-  stack.
+- **Surface (`surface`, 0.95):** the rail, the sidebar and the timer panel.
+  One step down.
+- **Card (`card`, 0.94):** raised rows, secondary buttons, the active day in
+  the sidebar, the active rail item, `code`. Two steps down. This is the base
+  of the tonal stack. The timer panel sits on `surface`; the metronome sits on
+  the page itself.
 - **Ink (`ink`, 0.20 0.012 60):** warm ebony body text. ≥ 12:1 on `bg`.
   Editorial sharpness, not WCAG-minimum grey. Also the "active" colour in
   chrome: the active stepper step, the active rail item, the selected
-  subdivision, the progress-bar fill, the goal tick.
+  subdivision, the sidebar progress-bar fill, the goal tick.
 - **Ink soft (`ink-soft`, 0.42):** secondary text, kickers, crumbs, the note
-  callout's left rule, the timer bar.
+  callout's left rule, the timer ring's progress stroke.
 - **Ink faint (`ink-faint`, 0.60):** metadata, disabled, locked phases, day
   numbers, fret-marker dots, string names.
-- **Line (`line`, 0.87 0.02 85):** hairlines. Within 0.04 L of `card`.
+- **Line (`line`, 0.91 0.012 85):** hairlines. Within 0.04 L of `card`.
   Borders, dividers, the todo ring, the empty track of a bar.
-- **Accent (`accent`, 0.68 0.13 80):** gold. The only saturated element on any
+- **Accent (`accent`, 0.72 0.16 82):** gold. The only saturated element on any
   screen. Fills and hairlines only: appears on exactly two kinds of thing —
   status marks (done, current) and the one primary action per screen — plus a
-  1px gold hairline on the active sidebar day card. Nowhere else. Not on phase
-  titles, not on the timer bar, not on stepper underlines, not on hover. Never
+  1px gold hairline on the active sidebar day row. Two state reports count as
+  status marks: the timer ring's stroke at zero ("done"), and the dot that is
+  playing right now in a play-order diagram ("here"). Nowhere else. Not on phase
+  titles, not on the timer ring while it runs, not on stepper underlines, not
+  on hover, not on the Play control under a diagram. Never
   as text colour below 20px (it fails contrast on ivory) — gold text is only
   ever set at headline sizes, and even there it is spent like the rest of the
   budget, not as a default heading colour.
-- **Accent ink (`accent-ink`, 0.20 0.05 70):** text on the accent. Also the
+- **Accent ink (`accent-ink`, 0.20 0.04 70):** text on the accent. Also the
   outline and label on fretboard dots, and the done check mark on
   `StatusIcon.astro`.
 - **Danger (`danger`, 0.55 0.16 25):** destructive confirmation only, as
@@ -339,10 +368,10 @@ otherwise near-neutral ivory/ebony stack.
 
 Fretboard material, not UI colour: `board` (0.22 0.012 60, the ebony wood, the
 one part of the app that stays dark), `fret` (0.74 0.03 85, the wire),
-`string` (0.88 0.015 85), `tone` (0.95 0.012 85, an ivory scale-tone dot). `root`
-is the accent: the root dot is the one thing on a diagram that is allowed to
-be gold. The renderer in `src/lib/fretboard.js` reads these as `var(--board)`
-etc.; its geometry is not a design value and does not change.
+`string` (0.88 0.015 85), `tone` (0.97 0.008 85, the nut and an ivory
+scale-tone dot). `root` is the accent: the root dot, and the dot that is
+playing right now, are the two things on a diagram allowed to be gold. The
+renderer in `src/lib/fretboard.js` reads these as `var(--board)` etc.
 
 The generic names `primary`, `secondary`, `tertiary`, `neutral` are aliases for
 `ink`, `ink-soft`, `accent`, `bg` so that tooling expecting them resolves.
@@ -388,7 +417,6 @@ other on the ladder never sit next to each other on a screen.
 | Token | Face | Size | Line | Tracking | Where |
 |---|---|---|---|---|---|
 | display-hero | Fraunces 500 | clamp(40px, 6.5vw, 88px) | 1.0 | −0.02em | landing hero only |
-| display-number | Fraunces 400 | clamp(160px, 22vw, 320px) | 0.9 | −0.04em | the "14" callout |
 | headline-lg | Fraunces 500 | 44px | 1.08 | −0.02em | `h1`, "Hands before theory", pull-quote |
 | headline-md | Fraunces 500 | 28px | 1.25 | −0.02em | `h2`; `h1` under 600px |
 | headline-sm | Fraunces 500 | 20px | 1.2 | −0.02em | wordmark, sidebar title, Continue row |
@@ -423,7 +451,8 @@ right-hand space.
 - 8px baseline. Section vertical padding on the landing page scales
   96 / 144 / 192px on desktop and drops one step under 900px.
 - Landing sections: 1 hero · 2 three moments (large text, full-bleed diagram,
-  giant number; never three identical components) · 3 editorial paragraph
+  a second diagram with its Play control on columns 2–8; never three identical
+  components) · 3 editorial paragraph
   columns 2–9 · 4 mono spec table columns 2–8 · 5 pull-quote columns 3–11 ·
   6 footer CTA with extreme negative space. Six max.
 - Tablet (721–1024px): same asymmetry, text spans widen to 8–10 of 12
@@ -435,10 +464,23 @@ right-hand space.
 ## Elevation & Depth
 
 Flat. There are no shadows anywhere. Depth is three tonal layers, `bg` →
-`surface` → `card`, each 0.03–0.04 L apart, and hairlines in `line`. A raised
-element is a `card` rectangle with a 1px `line` border. Nothing lifts on hover.
-The only translucency on the site is the drawer scrim and the hero legibility
-mask, both the page colour or black at partial opacity.
+`surface` → `card`, each 0.03–0.04 L apart, and hairlines in `line`. Surfaces
+are borderless: a panel is a `surface` rectangle with the one 2px radius and
+no border; hairlines separate, never enclose. A hairline above a group is the
+whole divider; padding carries the rest of the hierarchy. Nothing lifts on
+hover. The only translucency on the site is the drawer scrim, the hero
+legibility mask (both the page colour at partial opacity) and the fretboard
+grain below.
+
+Grain: the fretboard SVG carries one `feTurbulence` paper grain over the board
+at 3% opacity, no more. This is the deliberate <3% paper-grain exception in the
+anti-pattern list; it is the only noise on the site and it never leaves the
+board.
+
+Raster marks on the page (the hero stand-in, the brand glyph) are drawn on a pure
+white ground and placed with `mix-blend-mode: multiply`, so the page colour shows
+through and no ivory square appears if `bg` ever moves again. The favicon and
+home-screen icons keep their own ivory ground; they never sit on the page.
 
 Photography and diagrams sit on the continuous background. No rectangular
 photo cards, no drop shadows. A soft contact shadow is allowed only where the
@@ -459,7 +501,10 @@ radius ladder (the old 2 / 4 / 5 / 6 / 8 / 9 / 10 / 12 / 14px is gone).
   Start on `/metronome/`, "Start day 1" on the landing page. When a timer
   finishes, Start reverts to secondary and the Next link takes the accent, so
   there is still one. Secondary: `card` background, 1px `line` border, `ink`
-  text, weight 400. The landing CTA is the primary at 48px tall, 24px
+  text, weight 400 (a button's border is its edge on the page, not an
+  enclosure; the borderless rule is for surfaces). The "Play shape" control
+  under a play-order diagram is a secondary button and is never gold. The
+  landing CTA is the primary at 48px tall, 24px
   horizontal padding. Hover on any button: opacity 0.85 over 150ms.
   Disabled: the same button at 0.4 opacity, `cursor: not-allowed`, no colour
   change, `aria-disabled="true"`. All three live in `Action.astro`;
@@ -470,11 +515,14 @@ radius ladder (the old 2 / 4 / 5 / 6 / 8 / 9 / 10 / 12 / 14px is gone).
   vertically. Items are a 20px drawn SVG glyph over an 11px text label; active
   = `ink` on `card`. Never accent.
 - **Sidebar.** `surface`, 24px padding, hairline lists. Phases are `details`
-  rows separated by hairlines with a 1px progress bar (`line` track,
-  `ink-soft` fill). Days are 44px rows: mono day number in `ink-faint`, title
-  in 13px, status mark right. Active day = `card` background, title 700.
-  Locked = `ink-faint`. Empty state for a phase with no days is one sentence
-  in `ink-faint`.
+  rows with no border and no fill; one hairline above each phase separates it
+  from the one before, and a 1px progress bar (`line` track, `ink-soft` fill)
+  sits under the summary. Days are 44px rows: mono day number in `ink-faint`,
+  title in 13px, status mark right. Active day = `card` background, a 1px
+  gold hairline on its left (a status mark), title 700. Locked = `ink-faint`.
+  Empty state for a phase with no days is one sentence in `ink-faint`. The
+  sidebar persists across client-side page changes (`transition:persist`);
+  the active-day row is re-marked by script after each swap.
 - **Status marks.** 20–22px circles from `StatusIcon.astro`: done = `accent`
   fill with `accent-ink` check; current = `accent` ring with play; todo =
   `line` ring (the stroke is the mark's only colour); locked = `ink-faint`
@@ -482,14 +530,21 @@ radius ladder (the old 2 / 4 / 5 / 6 / 8 / 9 / 10 / 12 / 14px is gone).
   shows an `accent` arc on a `line` ring. These plus the one primary action
   are the whole accent budget.
 - **Stepper.** Horizontal scroll, hairline below. Step name 13px 700, sub
-  label 11px `ink-faint`. Active = `ink` text and a 1px `ink` underline. Done
+  label 11px `ink-faint`. Active = `ink` text and a 1px `ink` underline. The
+  underline is its own element with `transition:name="stepper-under"`, so on a
+  client-side page change it slides to the new tab instead of cutting. Done
   steps carry the 16px done mark. No chevrons.
-- **Timer.** `card` panel, mono clock at 44px, Start primary, Next secondary,
-  2px bar in `ink-soft` on `line`.
-- **Metronome.** `card` panel. ±5 / ±1 secondary buttons in mono, BPM 44px
-  mono with an 11px tracked unit, subdivision segmented control (on = `ink`
-  on `bg`), Tap, Start (secondary unless it is the page's primary). Beat dots
-  8px, `line`, hit = `ink`.
+- **Timer.** `surface` panel, no border. A 56px SVG ring sits left of the
+  mono clock (44px): 2px `line` track, 2px `ink-soft` progress stroke driven
+  by `stroke-dashoffset` from the 250ms tick, `transition: stroke-dashoffset
+  .25s linear`. At zero the progress stroke turns `accent`: that is the "done"
+  status mark and the ring's only gold. Start primary, Next secondary.
+- **Metronome.** No panel: it sits on the page with one hairline above and
+  16px padding. ±5 / ±1 secondary buttons in mono, BPM 44px mono with an 11px
+  tracked unit, subdivision segmented control (on = `ink` on `bg`), Tap, Start
+  (secondary unless it is the page's primary). Beat dots 8px, `line`, hit =
+  `ink` with a 120ms 1 → 1.35 → 1 scale pulse on the hit; the BPM numeral
+  ticks to 0.6 opacity and back over 120ms on beat 1.
 - **Lists.** Rows separated by hairlines, 14px vertical padding, never boxed.
   Leading status mark, title, trailing mono metadata. Under 600px the
   metadata drops under the title.
@@ -508,10 +563,28 @@ radius ladder (the old 2 / 4 / 5 / 6 / 8 / 9 / 10 / 12 / 14px is gone).
 - **Fretboard diagrams.** SVG from `src/lib/fretboard.js`, `.board` max 600px
   in the app, full-bleed on the landing page. Wood tones as above, root dot
   `accent`, tone dot `tone`, labels and dot outlines `accent-ink`, mute marks
-  `string` with a `board` stroke. Fret position markers at 3/5/7/9 (and the
-  double at 12) are small ivory hump-block inlays: an 18×10 rounded rectangle,
-  fill `tone`, opacity 0.55, same positions the round dots used. Chord boxes:
-  `ink` lines, `ink` dots with `bg` finger numbers, root dot `accent`.
+  `string` with a `board` stroke. The board is an instrument, not a grid:
+  - Nut: when the diagram starts at fret 0 the first wire is a 6-unit ivory
+    bar in `tone`; string names sit left of it.
+  - Taper: string spacing is 6% narrower at the left edge than the right, so
+    the strings converge toward the nut. Dots, marks and inlays sit on the
+    interpolated string line at their fret column.
+  - Gauge: string widths run 1.2 (high e) to 3.4 (low E). The two wound
+    strings (A, low E) carry a second, thinner `board` line on top at 40%
+    opacity to suggest the winding.
+  - Inlays: fret position markers at 3/5/7/9 (and the double at 12) are small
+    ivory hump-block inlays, an 18×10 rounded rectangle in `tone` at opacity
+    0.55, with a 1-unit lighter top edge in `string` so they catch light.
+  - Grain: one `feTurbulence` filter per SVG over the whole board at 3%
+    opacity (see Elevation & Depth).
+  - Play order: with `playOrder: true`, every dot with a numeric label is
+    wrapped in `<g data-order="N">` and the SVG carries `data-player`; the
+    page script adds a secondary "Play shape" button under it. While playing,
+    the current dot's fill is `accent` with a 2px `accent-ink` outline (the
+    "here" status mark) and already-played dots sit at 60% opacity. Fill and
+    opacity change over 120ms. Off by default; output without it is unchanged.
+  Chord boxes: `ink` lines, `ink` dots with `bg` finger numbers, root dot
+  `accent`; untouched by any of the above.
 - **Drawer scrim.** Own element after the sidebar, `scrim`, fades in 200ms.
 - **404 / empty states.** A single object, left-aligned like everything else
   unless it is truly a single object on an otherwise empty page, in which case
@@ -530,8 +603,13 @@ radius ladder (the old 2 / 4 / 5 / 6 / 8 / 9 / 10 / 12 / 14px is gone).
 - Do lean on a strong left edge and negative space. Don't center a section.
 - Do use hairlines within 0.04 L of their surface. Don't stack greys or
   shadows.
+- Do separate with one hairline and padding. Don't enclose a surface in a
+  border.
 - Do use opacity shifts or 1px underline reveals on hover, 150ms. Don't scale
   or lift.
+- Do let motion report a state (a beat, elapsed time, play order, a page
+  change). Don't animate for decoration: no scroll-triggered reveals, no
+  parallax, no entrance animations.
 - Do keep the wordmark as type. Don't put a gradient on it or on the pathway
   art.
 - Do keep the product ivory. Don't "fix" it to a dark theme.
@@ -540,8 +618,8 @@ radius ladder (the old 2 / 4 / 5 / 6 / 8 / 9 / 10 / 12 / 14px is gone).
 - Do describe the author as "I play rhythm guitar in a band". Don't name an
   employer, product, colleague, client, freelance platform or company. This is
   a compliance rule, not a style rule.
-- Do keep routes, content, `course.json`, `roadmap.json`, the log and the
-  fretboard renderer's geometry as they are. Visual only.
+- Do keep routes, content, `course.json`, `roadmap.json` and the log as they
+  are. Visual only.
 
 Anti-patterns. Any of these is a build failure. Carry this list verbatim into
 every generated prompt; it becomes the Level 3 test cases.
@@ -564,7 +642,8 @@ Color slop:
 Material slop:
 
 - Glassmorphism anywhere (especially a glassmorphic navigation bar).
-- Noise overlays heavier than a deliberate <3% paper grain.
+- Noise overlays heavier than a deliberate <3% paper grain (the fretboard's
+  3% `feTurbulence` grain is that exception, and the only one).
 - Hover scale transforms or shadow-lift tricks.
 - An incremental default corner-radius ladder (Tailwind 8/12/16, or any
   6/10/16/24-style px ladder) instead of one committed radius language.
@@ -596,18 +675,45 @@ Project-specific slop:
 - Accent on more than status marks + one primary action per screen.
 - Gold set as text colour below 20px.
 - A dark theme.
-- Changing routes, content, data files, the log, or the fretboard renderer's
-  geometry.
+- Changing routes, content, data files or the log.
+- Motion that reports nothing: scroll reveals, parallax, hover scale.
 
 The single failure test: if the result could be reused for a different product
 just by changing the noun, it has failed.
 
 ## Motion
 
-Hover: 150ms opacity shift to 0.8–0.85, or a 1px underline reveal. Drawer:
-200ms translate, scrim 200ms opacity. Timer bar: 500ms linear width. Nothing
-else moves. No scale transforms, no shadow-lift, no parallax, no entrance
-animations.
+Motion is never decorative. Every animation on the site reports a state: a
+beat, elapsed time, play order, a page change. Nothing moves on scroll, nothing
+parallaxes, nothing scales on hover.
+
+- **Hover:** 150ms opacity shift to 0.8–0.85, or a 1px underline reveal.
+- **Drawer:** 200ms translate, scrim 200ms opacity.
+- **Page change:** Astro's `<ClientRouter />` sits in both layouts, so a link
+  inside the site is a client-side swap with the default cross-fade. The
+  sidebar carries `transition:persist` and is not re-rendered between day and
+  exercise pages; the stepper's active underline carries
+  `transition:name="stepper-under"` and slides to the new tab. Every script
+  that binds to the DOM binds on `astro:page-load` and cleans up on
+  `astro:before-swap` (the metronome stops, timers clear, the wake lock is
+  released). The metronome engine on `window.gm` persists; its DOM bindings do
+  not. With JS off, every link is a full page load and everything still works.
+- **Timer ring:** `stroke-dashoffset` transitions 250ms linear on each tick.
+- **Metronome pulse:** the hit beat dot scales 1 → 1.35 → 1 over 120ms; the
+  BPM numeral ticks to 0.6 opacity and back over 120ms on beat 1. `transform`
+  is allowed for state pulses driven by the audio clock, never for hover.
+- **Diagram play order:** one dot per beat on the page's metronome tempo
+  (the engine starts if idle and stops at the end) or a fixed 60 BPM when
+  there is no metronome. A diagram may declare beats per dot (`data-beats`),
+  the four-note line holds each note two beats. The current dot's fill goes
+  `accent` for its beat and returns; played dots dim to 60%. Fill and opacity
+  change over 120ms.
+- **Reduced motion:** `prefers-reduced-motion: reduce` turns every item above
+  into an instant state change: no transitions, no keyframes, no view
+  transition animation. The ring still fills, the dots still light one per
+  beat, the drawer still opens; none of it tweens.
+
+No shadow-lift, no parallax, no entrance animations, no hover scale.
 
 ## Responsive
 

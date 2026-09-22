@@ -1,7 +1,11 @@
 ---
 // App shell: rail · sidebar (pathway) · main. Sidebar is a drawer under 900px.
+// Page changes are client-side (ClientRouter); the sidebar persists across
+// them and is re-marked from main's data-active-day after each swap.
+import { ClientRouter } from "astro:transitions";
 import Head from "../components/Head.astro";
 import Sidebar from "../components/Sidebar.astro";
+import DiagramPlayer from "../components/DiagramPlayer.astro";
 const { title, description = "", activeDay = null } = Astro.props;
 const path = Astro.url.pathname;
 const rail = [
@@ -17,11 +21,12 @@ const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
 <html lang="en">
 <head>
 <Head title={title} description={description} />
+<ClientRouter />
 <style is:global>
   .app{display:grid;grid-template-columns:72px 320px 1fr;min-height:100dvh}
   .rail{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:4px;position:sticky;top:0;height:100dvh}
   .glyph{display:block;line-height:0}
-  .glyph img{display:block;border-radius:var(--radius)}
+  .glyph img{display:block;border-radius:var(--radius);mix-blend-mode:multiply}
   .rail .glyph{margin:2px 0 14px}
   .rail .glyph:hover{opacity:.8}
   .rail .mark{font-family:var(--display);font-variation-settings:"SOFT" 50,"WONK" 0;font-size:var(--t-md);letter-spacing:var(--track-tight);text-decoration:none;color:var(--ink);writing-mode:vertical-rl;transform:rotate(180deg);margin-bottom:28px;padding:4px 0}
@@ -66,38 +71,54 @@ const on = (prefixes) => prefixes.some((p) => path.startsWith(p));
 <a class="skip" href="#main">Skip to content</a>
 <div class="app">
   <nav class="rail" aria-label="sections">
-    <a href="/" class="glyph" aria-label="home"><img src="/icon-192.png" width="36" height="36" alt="" /></a>
+    <a href="/" class="glyph" aria-label="home"><img src="/mark-192.png" width="36" height="36" alt="" /></a>
     <a href="/" class="mark" aria-label="home">Back seat to lead</a>
     {rail.map(([href, label, d, pre]) => <a href={href} class={"item" + (on(pre) ? " on" : "")} aria-label={label}><svg viewBox="0 0 24 24" aria-hidden="true"><path d={d}/></svg><span>{label}</span></a>)}
   </nav>
   <Sidebar activeDay={activeDay} />
   <div class="scrim" aria-hidden="true"></div>
-  <main id="main" tabindex="-1">
+  <main id="main" tabindex="-1" data-active-day={activeDay ?? ""}>
     <div class="topbar">
-      <a href="/" class="glyph" aria-label="home"><img src="/icon-192.png" width="28" height="28" alt="" /></a>
+      <a href="/" class="glyph" aria-label="home"><img src="/mark-192.png" width="28" height="28" alt="" /></a>
       <button id="menu" aria-controls="side" aria-expanded="false">Days</button>
       <nav>{rail.map(([href, label, , pre]) => <a href={href} class={on(pre) ? "on" : ""}>{label}</a>)}</nav>
     </div>
     <div class="main-inner"><slot /></div>
   </main>
 </div>
+<DiagramPlayer />
 <script>
-  const side = document.getElementById("side")!;
-  const menu = document.getElementById("menu")!;
+  // Drawer. Everything is delegated to document so nothing needs rebinding
+  // when a page swaps: #side persists, #menu is fresh on every page.
+  const side = () => document.getElementById("side");
+  const menu = () => document.getElementById("menu");
+  const isOpen = () => side()?.classList.contains("open") ?? false;
   const setOpen = (open: boolean) => {
-    side.classList.toggle("open", open);
-    menu.setAttribute("aria-expanded", String(open));
+    side()?.classList.toggle("open", open);
+    menu()?.setAttribute("aria-expanded", String(open));
   };
-  menu.addEventListener("click", () => setOpen(!side.classList.contains("open")));
-  side.addEventListener("click", (e) => {
-    if ((e.target as HTMLElement).closest("a")) setOpen(false);
-  });
   document.addEventListener("click", (e) => {
-    if (side.classList.contains("open") && !side.contains(e.target as Node) && e.target !== menu) setOpen(false);
+    const t = e.target as HTMLElement;
+    if (t.closest("#menu")) return setOpen(!isOpen());
+    if (!isOpen()) return;
+    if (t.closest("#side a") || !side()!.contains(t)) setOpen(false);
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && side.classList.contains("open")) { setOpen(false); menu.focus(); }
+    if (e.key === "Escape" && isOpen()) { setOpen(false); menu()?.focus(); }
   });
+  document.addEventListener("astro:before-swap", () => setOpen(false));
+
+  // The persisted sidebar keeps the old page's active day; re-mark it from
+  // the new main. Landing has no sidebar, so every query is optional.
+  const mark = () => {
+    const s = side(); if (!s) return;
+    const day = document.getElementById("main")?.dataset.activeDay ?? "";
+    const path = location.pathname;
+    s.querySelectorAll<HTMLElement>(".days li").forEach((li) => li.classList.toggle("on", li.dataset.day === day));
+    s.querySelectorAll<HTMLElement>(".phase").forEach((p) => { if (p.querySelector(".days li.on")) (p as HTMLDetailsElement).open = true; });
+    s.querySelectorAll<HTMLAnchorElement>(".quick a").forEach((a) => a.classList.toggle("on", path.startsWith(a.getAttribute("href")!.replace(/\/$/, ""))));
+  };
+  document.addEventListener("astro:page-load", mark);
 </script>
 </body>
 </html>

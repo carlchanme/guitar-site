@@ -1,7 +1,7 @@
 ---
 import { fretboardSVG } from "../lib/fretboard.js";
 const one = fretboardSVG({ fretStart: 3, fretEnd: 7, dots: [{ string: 3, fret: 5, root: true, label: "C" }], marks: [0, 1, 2, 4, 5].map((s) => ({ string: s })), ariaLabel: "One note, C on the G string fret 5. Every other string marked silent." });
-const line = fretboardSVG({ fretStart: 3, fretEnd: 7, dots: [{ string: 3, fret: 5, label: "1" }, { string: 3, fret: 7, label: "2" }, { string: 2, fret: 5, label: "3" }, { string: 2, fret: 7, label: "4" }], marks: [0, 1, 4, 5].map((s) => ({ string: s })), ariaLabel: "Four-note line: G string 5 and 7, D string 5 and 7" });
+const line = fretboardSVG({ fretStart: 3, fretEnd: 7, dots: [{ string: 3, fret: 5, label: "1" }, { string: 3, fret: 7, label: "2" }, { string: 2, fret: 5, label: "3" }, { string: 2, fret: 7, label: "4" }], marks: [0, 1, 4, 5].map((s) => ({ string: s })), playOrder: true, playBeats: 2, ariaLabel: "Four-note line: G string 5 and 7, D string 5 and 7" });
 ---
 <Fragment set:html={one} />
 <p><strong>The test.</strong> Fret C on the G string, 5th fret. Pick it once. Let it ring four beats. Listen. Anything besides that C is a fail.</p>

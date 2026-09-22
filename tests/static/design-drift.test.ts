@@ -43,6 +43,7 @@ describe("DESIGN.md → Colors: the accent budget", () => {
     "src/components/StatusIcon.astro",  // status marks
     "src/components/Stepper.astro",     // done mark
     "src/components/Sidebar.astro",     // progress ring on the current day
+    "src/components/ExerciseTimer.astro", // the ring at zero is the "done" status mark (2026-09-22)
     "src/pages/progress.astro",         // "now" fill is a status mark
     "src/lib/fretboard.js",             // root dot via --root
     "src/pages/reference/index.astro",  // legend for the root dot
@@ -127,17 +128,43 @@ describe("DESIGN.md → Elevation & Depth: flat", () => {
   });
   it("the hero mask is the page colour at partial opacity, no hard edge", () => {
     const mask = grep(/\.hero h1::before\{/)[0]?.text ?? "";
-    expect(mask).toMatch(/oklch\(0\.955 0\.012 85 \/ 0\.\d+\)/);
-    expect(mask).toMatch(/oklch\(0\.955 0\.012 85 \/ 0\)/);
+    // the mask literals must be the current --bg (the token cannot be read inside a gradient stop with alpha)
+    const bg = /--bg:\s*oklch\(([^)]*)\)/.exec(read("src/styles/global.css"))![1].replace(/[.]/g, "\\.");
+    expect(mask).toMatch(new RegExp(`oklch\\(${bg} / 0\\.\\d+\\)`));
+    expect(mask).toMatch(new RegExp(`oklch\\(${bg} / 0\\)`));
   });
 });
 
 describe("DESIGN.md → Motion", () => {
-  it("no scale transforms on hover, no hover lift", () => {
-    const scale = grep(/transform\s*:[^;]*\bscale\(/);
+  it("no scale transforms on hover, no hover lift; scale only as a @keyframes state pulse on the audio clock", () => {
+    // 2026-09-22: transform is allowed for state pulses driven by the audio clock (the metronome's
+    // beat dot), never for hover. A scale outside a @keyframes block, or outside Metronome.astro, fails.
+    const scale = grep(/transform\s*:[^;]*\bscale\(/).filter((h) => !(/^@keyframes\b/.test(h.text) && h.file === "src/components/Metronome.astro"));
     expect(scale, `transform: scale( (DESIGN.md → Motion)\n${fmt(scale)}`).toEqual([]);
     const hoverLift = grep(/:hover[^{]*\{[^}]*(transform|box-shadow|filter)\s*:/);
     expect(hoverLift, fmt(hoverLift)).toEqual([]);
+  });
+  it("motion reports a state: no scroll-triggered reveals, no parallax, no entrance animations", () => {
+    const hits = grep(/IntersectionObserver|parallax|data-aos|animate-on-scroll|@keyframes\s+(fade|slide|reveal|enter)/i);
+    expect(hits, fmt(hits)).toEqual([]);
+  });
+  it("reduced motion turns every transition and animation off, view transitions included", () => {
+    const css = read("src/styles/global.css");
+    const block = /@media \(prefers-reduced-motion:\s*reduce\)\{([\s\S]*?)\n\}/.exec(css)?.[1] ?? "";
+    expect(block).toMatch(/transition:\s*none\s*!important/);
+    expect(block).toMatch(/animation:\s*none\s*!important/);
+    expect(block).toMatch(/::view-transition-(group|old|new)\(\*\)/);
+  });
+  it("both layouts use Astro's ClientRouter and the sidebar persists across pages", () => {
+    expect(read("src/layouts/App.astro")).toMatch(/<ClientRouter \/>/);
+    expect(read("src/layouts/Site.astro")).toMatch(/<ClientRouter \/>/);
+    expect(read("src/components/Sidebar.astro")).toMatch(/transition:persist/);
+    expect(read("src/components/Stepper.astro")).toMatch(/transition:name="stepper-under"/);
+  });
+  it("every DOM-binding script rebinds on astro:page-load", () => {
+    const binders = ["src/components/Metronome.astro", "src/components/ExerciseTimer.astro", "src/components/Stepper.astro", "src/components/DiagramPlayer.astro"];
+    for (const f of binders) expect(read(f), f).toMatch(/astro:page-load/);
+    for (const f of ["src/components/Metronome.astro", "src/components/ExerciseTimer.astro", "src/components/DiagramPlayer.astro"]) expect(read(f), f).toMatch(/astro:before-swap/);
   });
   it("never transition: all", () => {
     const hits = grep(/transition\s*:\s*all\b/);

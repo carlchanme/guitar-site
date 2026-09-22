@@ -20,15 +20,17 @@ const componentFiles = () => readdirSync(`${ROOT}src/components`).filter((f) => 
 
 describe("Card", () => {
   const css = () => styleOf("src/components/Card.astro");
-  it("renders slot content in a card surface with one radius and one padding", async () => {
+  // 2026-09-22: surfaces are borderless; hairlines separate, never enclose; radius stays 2px.
+  // The panel sits on --surface. The old assertion required a 1px --line border and --card.
+  it("renders slot content in a borderless surface with one radius and one padding", async () => {
     const html = await render(Card, {}, { default: "<p>hi</p>" });
     expect(html).toContain("<p>hi</p>");
     expect(html).toMatch(/class="card[^"]*"/);
     expect(css()).toMatch(/border-radius:\s*var\(--radius\)/);
     expect((css().match(/border-radius/g) ?? []).length).toBe(1);
     expect((css().match(/padding\s*:/g) ?? []).length).toBe(1);
-    expect(css()).toMatch(/border:\s*1px solid var\(--line\)/);
-    expect(css()).toMatch(/background:\s*var\(--card\)/);
+    expect(css(), "a surface has no border; hairlines separate, never enclose").not.toMatch(/border(-top|-right|-bottom|-left)?\s*:/);
+    expect(css()).toMatch(/background:\s*var\(--surface\)/);
   });
   it("refuses props that would override radius, padding or add a shadow", async () => {
     const html = await render(Card, { style: "box-shadow:0 4px 12px oklch(0 0 0/.5);border-radius:12px;padding:40px", class: "shadow-lg rounded-xl" }, { default: "x" });

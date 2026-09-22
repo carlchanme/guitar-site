@@ -1,5 +1,6 @@
 ---
 // Public layout: no rail, no sidebar. Used by the landing page only.
+import { ClientRouter } from "astro:transitions";
 import Head from "../components/Head.astro";
 const { title, description = "" } = Astro.props;
 ---
@@ -7,6 +8,7 @@ const { title, description = "" } = Astro.props;
 <html lang="en">
 <head>
 <Head title={title} description={description} />
+<ClientRouter />
 </head>
 <body>
 <slot />
