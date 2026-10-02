@@ -4,12 +4,13 @@
       "delegate_permission/common.handle_all_urls"
     ],
     "target": {
-      "namespace": "android_app",
+      "namespace": "com.pbb.mypb",
       "package_name": "com.pbb.mypb.uat",
       "sha256_cert_fingerprints": [
         "91:62:4D:04:F8:7E:E1:C6:6C:46:54:D6:47:6E:C3:4D:B9:34:50:E7:49:66:1D:63:14:D9:CB:05:71:F6:1B:93",
         "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C"
       ]
-    }
+    },
+    "path": "/link/*"
   }
 ]
